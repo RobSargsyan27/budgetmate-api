@@ -9,23 +9,18 @@ function setUserLogOutListener() {
 }
 
 async function validateToken(token) {
-    try {
-        const response = await fetch('http://app.budgetmate.com/api/v1/auth/validate-token', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({token})
-        })
+    const response = await fetch('http://app.budgetmate.com/api/v1/auth/validate-token', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({token})
+    })
 
-        if (response.ok) {
-            const {isTokenValid} = await response.json()
-            if (!isTokenValid) {
-                window.location.href = '/login'
-            }
-
-        } else {
+    if (response.ok) {
+        const { isTokenValid } = await response.json()
+        if (!isTokenValid) {
             window.location.href = '/login'
         }
-    } catch (error) {
+    } else {
         window.location.href = '/login'
     }
 }
@@ -41,12 +36,10 @@ async function getIdsTranslation(token, lang, body) {
 }
 
 async function getUserDetails(token) {
-    const response = await fetch('http://app.budgetmate.com/api/v1/user', {
+    return (await fetch('http://app.budgetmate.com/api/v1/user', {
         method: 'GET',
         headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-    })
-
-    return response.json();
+    })).json()
 }
 
 async function getNotifications(token) {

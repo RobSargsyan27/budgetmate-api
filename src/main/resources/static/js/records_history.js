@@ -32,20 +32,13 @@ function addActionToActivityLog(){
 }
 
 async function getRecordReportUrl(token){
-    const body = getRecordFilters();
+    const payload = getRecordFilters();
 
-    try{
-        const response = await fetch('api/v1/record/report', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-            body: JSON.stringify(body)
-        })
-
-        return response.blob();
-    }catch (e) {
-        window.location.href = "/500-error"
-    }
-
+    return (await fetch('api/v1/record/report', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify(payload)
+    })).blob()
 }
 
 function getRecordFilters() {
@@ -65,42 +58,28 @@ function getRecordFilters() {
 }
 
 async function getUserRecordsCount(token) {
-    const body = getRecordFilters();
+    const payload = getRecordFilters();
 
-    try{
-        const response = await fetch('api/v1/record/count', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-            body: JSON.stringify(body)
-        })
-
-        return response.json();
-    }catch (e) {
-        window.location.href = "/500-error"
-    }
+    return (await fetch('api/v1/record/count', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify(payload)
+    })).json()
 }
 
 async function getUserRecords(token, limit, offset) {
-    const body = getRecordFilters();
+    const payload = getRecordFilters();
 
-    try{
-        const result = await fetch(`api/v1/record/${limit}/${offset}`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-            body: JSON.stringify(body)
-        });
-
-        return result.json();
-    }catch (e) {
-        window.location.href = "/500-error"
-    }
+    return (await fetch(`api/v1/record/${limit}/${offset}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify(payload)
+    })).json()
 }
 
 function setRowLinkListeners(){
     document.querySelectorAll(".clickable-row").forEach(row => {
-        row.addEventListener("click", function () {
-            window.location.href = this.dataset.href;
-        });
+        row.addEventListener("click",  () => window.location.href = this.dataset.href);
     });
 }
 
@@ -151,7 +130,6 @@ async function renderGeneralUIByLanguage(token, lang){
 
     Object.keys(translations).forEach((id) => {
         if(document.getElementsByClassName(id)){
-            console.log(document.getElementsByClassName(id))
             Array.from(document.getElementsByClassName(id))
                 .forEach((item) => item.textContent = translations[id])
         }

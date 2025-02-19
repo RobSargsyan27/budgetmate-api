@@ -1,9 +1,9 @@
 const originIds = ["sidebar.dashboard", "sidebar.recordHistory", "sidebar.budgets", "sidebar.analytics",
-    "sidebar.profile", "name","amount", "budget.recordCategories", "budget.save", "budget.deleteBudget"]
+    "sidebar.profile", "name", "amount", "budget.recordCategories", "budget.save", "budget.deleteBudget"]
 
-function setUserActivityLogDetails(){
+function setUserActivityLogDetails() {
     const sessionActivityLog = sessionStorage.getItem('activityLog')
-    if(sessionActivityLog){
+    if (sessionActivityLog) {
         const activityLog = JSON.parse(sessionActivityLog)
         const activityLogTable = document.getElementById("activityLogTable")
 
@@ -18,7 +18,7 @@ function setUserActivityLogDetails(){
     }
 }
 
-function addActionToActivityLog(budgetId){
+function addActionToActivityLog(budgetId) {
     const sessionActivityLog = sessionStorage.getItem('activityLog')
     const activityLog = JSON.parse(sessionActivityLog) || []
 
@@ -28,45 +28,35 @@ function addActionToActivityLog(budgetId){
 }
 
 async function getRecordCategories(token) {
-    try{
-        const response = await fetch('http://app.budgetmate.com/api/v1/record/record-categories', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-
-        return response.json();
-    }catch (e){
-        window.location.href = "/500-error"
-    }
+    return (await (fetch('http://app.budgetmate.com/api/v1/record/record-categories', {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    }))).json()
 }
 
-async function getUserBudget(token, id){
-    try{
-        const response = await fetch(`http://app.budgetmate.com/api/v1/budget/${id}`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
+async function getUserBudget(token, id) {
+    return (await fetch(`http://app.budgetmate.com/api/v1/budget/${id}`, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
+}
 
-
-        return response.json();
-    }catch (e){
-        window.location.href = "/500-error"
-    }
+async function addUserBudget(token, id, payload) {
+    return (await fetch(`http://app.budgetmate.com/api/v1/budget/${id}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify(payload)
+    })).json()
 }
 
 async function deleteUserBudget(token, id) {
-   try{
-       const response =  await fetch(`http://app.budgetmate.com/api/v1/budget/${id}`, {
-           method: 'DELETE',
-           headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-       })
-   }catch (e) {
-       window.location.href = "/500-error"
-   }
-
+    await fetch(`http://app.budgetmate.com/api/v1/budget/${id}`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })
 }
 
-async function setBudgetDetails(token, id){
+async function setBudgetDetails(token, id) {
     const budget = await getUserBudget(token, id)
     const recordCategories = await getRecordCategories(token)
 
@@ -85,7 +75,7 @@ async function setBudgetDetails(token, id){
     ).join('');
 }
 
-async function setSubmitBudgetListener(token, id){
+async function setSubmitBudgetListener(token, id) {
     document.getElementById("updateBudgetForm").addEventListener("submit", async (event) => {
         event.preventDefault()
 
@@ -96,23 +86,13 @@ async function setSubmitBudgetListener(token, id){
             .from(document.querySelectorAll('#updateBudgetRecordCategoriesDropdown .form-check-input:checked'))
             .map(input => input.value);
 
-        try{
-            const response = await fetch(`http://app.budgetmate.com/api/v1/budget/${id}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ amount, name, recordCategories })
-            });
-        }catch (e) {
-            window.location.href = "/500-error"
-        }
-
-
+        await addUserBudget(token, id, {amount, name, recordCategories})
         await setBudgetDetails(token, id)
         submitButton.blur()
     });
 }
 
-function setDeleteBudgetListener(token, id){
+function setDeleteBudgetListener(token, id) {
     document.getElementById("deleteBudgetButton").addEventListener("click", async () => {
         await deleteUserBudget(token, id);
 
@@ -120,19 +100,14 @@ function setDeleteBudgetListener(token, id){
     })
 }
 
-function renderRecordCategories(recordCategories, selectedRecordCategories){
+function renderRecordCategories(recordCategories, selectedRecordCategories) {
     const updateBudgetRecordCategoriesDropdown = document.getElementById("updateBudgetRecordCategoriesDropdown")
 
     updateBudgetRecordCategoriesDropdown.innerHTML = ''
     recordCategories.forEach((recordCategory) => {
-        let input;
-        if(selectedRecordCategories.find((selectRecordCategory) => selectRecordCategory.id === recordCategory.id)) {
-            input = `<input checked type="checkbox" class="form-check-input" name="${recordCategory.name}" 
-                    value="${recordCategory.name}"/>`
-        }else {
-            input = `<input type="checkbox" class="form-check-input" name="${recordCategory.name}" value="${recordCategory.name}"/>`
-        }
-
+        const input = selectedRecordCategories.find((item) => item.id === recordCategory.id)
+            ? `<input checked type="checkbox" class="form-check-input" name="${recordCategory.name}" value="${recordCategory.name}"/>`
+            : `<input type="checkbox" class="form-check-input" name="${recordCategory.name}" value="${recordCategory.name}"/>`
 
         updateBudgetRecordCategoriesDropdown.innerHTML +=
             `<div class="form-check">
@@ -142,26 +117,25 @@ function renderRecordCategories(recordCategories, selectedRecordCategories){
     })
 }
 
-async function renderGeneralUIByLanguage(token, lang){
-    const {translations} = await getIdsTranslation(token, lang, { originIds })
+async function renderGeneralUIByLanguage(token, lang) {
+    const {translations} = await getIdsTranslation(token, lang, {originIds})
 
     Object.keys(translations).forEach((id) => {
-        if(document.getElementsByClassName(id)){
-            console.log(document.getElementsByClassName(id))
+        if (document.getElementsByClassName(id)) {
             Array.from(document.getElementsByClassName(id))
                 .forEach((item) => item.textContent = translations[id])
         }
     })
 }
 
-function setEnglishLanguageSelectorListener(token){
+function setEnglishLanguageSelectorListener(token) {
     document.getElementById("lang-en").addEventListener("click", async () => {
         sessionStorage.setItem('lang', 'en')
         await renderGeneralUIByLanguage(token, 'en')
     })
 }
 
-function setDutchLanguageSelectorListener(token){
+function setDutchLanguageSelectorListener(token) {
     document.getElementById("lang-nl").addEventListener("click", async () => {
         sessionStorage.setItem('lang', 'nl')
         await renderGeneralUIByLanguage(token, 'nl')

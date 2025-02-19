@@ -1,10 +1,10 @@
 const originIds = ["sidebar.dashboard", "sidebar.recordHistory", "sidebar.budgets", "sidebar.analytics",
     "sidebar.profile", "name", "account.currentBalance", "currency", "account.accountType", "account.accountColor",
-"account.save", "deleteAccount"]
+    "account.save", "deleteAccount"]
 
-function setUserActivityLogDetails(){
+function setUserActivityLogDetails() {
     const sessionActivityLog = sessionStorage.getItem('activityLog')
-    if(sessionActivityLog){
+    if (sessionActivityLog) {
         const activityLog = JSON.parse(sessionActivityLog)
         const activityLogTable = document.getElementById("activityLogTable")
 
@@ -19,7 +19,7 @@ function setUserActivityLogDetails(){
     }
 }
 
-function addActionToActivityLog(accountId){
+function addActionToActivityLog(accountId) {
     const sessionActivityLog = sessionStorage.getItem('activityLog')
     const activityLog = JSON.parse(sessionActivityLog) || []
 
@@ -29,30 +29,20 @@ function addActionToActivityLog(accountId){
 }
 
 async function getUserAccount(token, id) {
-    try{
-        const response = await fetch(`http://app.budgetmate.com/api/v1/account/${id}`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-
-        return response.json();
-    }catch (e){
-        window.location.href = "/500-error"
-    }
+    return (await fetch(`http://app.budgetmate.com/api/v1/account/${id}`, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
 }
 
 async function deleteUserAccount(token, id) {
-    try{
-        const response = await fetch(`http://app.budgetmate.com/api/v1/account/${id}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        });
-    }catch (e) {
-        window.location.href = "/500-error"
-    }
+    await fetch(`http://app.budgetmate.com/api/v1/account/${id}`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    });
 }
 
-async function setAccountDetails(token, id){
+async function setAccountDetails(token, id) {
     const account = await getUserAccount(token, id)
 
     const accountCard = document.getElementById("accountCard")
@@ -73,7 +63,7 @@ async function setAccountDetails(token, id){
 
 }
 
-function setSubmitAccountListener(token, id){
+function setSubmitAccountListener(token, id) {
     document.getElementById("updateAccountForm").addEventListener("submit", async (event) => {
         event.preventDefault()
 
@@ -83,18 +73,11 @@ function setSubmitAccountListener(token, id){
         const type = document.getElementById("updateAccountType").value
         const avatarColor = document.getElementById("updateAccountAvatarColor").value
 
-
-        try{
-            const response = await fetch(`http://app.budgetmate.com/api/v1/account/${id}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-                body: JSON.stringify({name, currentBalance, type, avatarColor})
-            })
-        }catch (e){
-            window.location.href = "/500-error"
-        }
-
-
+        await fetch(`http://app.budgetmate.com/api/v1/account/${id}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+            body: JSON.stringify({name, currentBalance, type, avatarColor})
+        })
 
         await setAccountDetails(token, id)
         submitButton.blur()
@@ -109,26 +92,23 @@ function setDeleteAccountListener(token, id) {
     })
 }
 
-async function renderGeneralUIByLanguage(token, lang){
-    const {translations} = await getIdsTranslation(token, lang, { originIds })
+async function renderGeneralUIByLanguage(token, lang) {
+    const {translations} = await getIdsTranslation(token, lang, {originIds})
 
     Object.keys(translations).forEach((id) => {
-        if(document.getElementsByClassName(id)){
-            console.log(document.getElementsByClassName(id))
-            Array.from(document.getElementsByClassName(id))
-                .forEach((item) => item.textContent = translations[id])
-        }
+        document.getElementsByClassName(id) && Array.from(document.getElementsByClassName(id))
+            .forEach((item) => item.textContent = translations[id])
     })
 }
 
-function setEnglishLanguageSelectorListener(token){
+function setEnglishLanguageSelectorListener(token) {
     document.getElementById("lang-en").addEventListener("click", async () => {
         sessionStorage.setItem('lang', 'en')
         await renderGeneralUIByLanguage(token, 'en')
     })
 }
 
-function setDutchLanguageSelectorListener(token){
+function setDutchLanguageSelectorListener(token) {
     document.getElementById("lang-nl").addEventListener("click", async () => {
         sessionStorage.setItem('lang', 'nl')
         await renderGeneralUIByLanguage(token, 'nl')

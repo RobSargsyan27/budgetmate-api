@@ -56,16 +56,10 @@ async function getUserBudgets(token){
 }
 
 async function getUsersBudgetsCurrentBalance(token) {
-    try{
-        const response = await fetch('api/v1/budget/current-balance', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        });
-
-        return response.json();
-    }catch (e) {
-        window.location.href = "/500-error"
-    }
+    return (await fetch('api/v1/budget/current-balance', {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
 }
 
 async function setBudgets(token) {
@@ -80,7 +74,6 @@ async function setBudgets(token) {
         ).join('');
 
         const budgetCurrentBalance = budgetsCurrentBalance.find((item) => budget.id === item.id).currentBalance
-
         const currentProgress = budgetCurrentBalance > 0
             ? budgetCurrentBalance * 100 / budget.amount
             : 0;
@@ -121,7 +114,6 @@ async function setBudgets(token) {
     </div>
     </a>
 </div>
-
 `
     })
 }
@@ -131,7 +123,6 @@ async function renderGeneralUIByLanguage(token, lang){
 
     Object.keys(translations).forEach((id) => {
         if(document.getElementsByClassName(id)){
-            console.log(document.getElementsByClassName(id))
             Array.from(document.getElementsByClassName(id))
                 .forEach((item) => item.textContent = translations[id])
         }

@@ -22,60 +22,45 @@ function addActionToActivityLog(recordId){
     const sessionActivityLog = sessionStorage.getItem('activityLog')
     const activityLog = JSON.parse(sessionActivityLog) || []
 
-    const message = {page: `Record ${recordId} details`, date: new Date()}
+    const message = { page: `Record ${recordId} details`, date: new Date() }
     activityLog.push(message)
     sessionStorage.setItem('activityLog', JSON.stringify(activityLog))
 }
 
 async function getRecordCategories(token) {
-    try{
-        const response = await fetch('http://app.budgetmate.com/api/v1/record/record-categories', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-
-        return response.json();
-    }catch (e) {
-        window.location.href = "/500-error"
-    }
+    return (await fetch('http://app.budgetmate.com/api/v1/record/record-categories', {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
 }
 
 async function getUserRecord(token, id) {
-    try{
-        const response = await fetch(`http://app.budgetmate.com/api/v1/record/${id}`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-
-
-        return response.json();
-    }catch (e){
-        window.location.href = "/500-error"
-    }
+   return (await fetch(`http://app.budgetmate.com/api/v1/record/${id}`, {
+       method: 'GET',
+       headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+   })).json()
 }
 
-async function getUserAccount(token, id) {
-    try{
-        const response = await fetch(`http://app.budgetmate.com/api/v1/account/${id}`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-
-        return response.json();
-    }catch (e) {
-        window.location.href = "/500-error"
-    }
+async function updateUserRecord(token, payload) {
+    return (await fetch(`http://app.budgetmate.com/api/v1/record/${id}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify(payload)
+    })).json()
 }
 
 async function deleterUserRecord(token, id) {
-    try{
-        const response = await fetch(`http://app.budgetmate.com/api/v1/record/${id}`, {
-            method: 'DELETE',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-    }catch (e) {
-        window.location.href = "/500-error"
-    }
+    return (await fetch(`http://app.budgetmate.com/api/v1/record/${id}`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
+}
+
+async function getUserAccount(token, id) {
+    return (await fetch(`http://app.budgetmate.com/api/v1/account/${id}`, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
 }
 
 async function setRecordDetails(token, id){
@@ -124,28 +109,16 @@ function setSubmitRecordListener(token, id){
         event.preventDefault()
 
         const submitButton = document.getElementById("submitRecordButton")
-        const recordPaymentTime = document.getElementById("updateRecordPaymentTime")
-        const recordNote = document.getElementById("updateRecordNote")
+        const {value: recordPaymentTimeValue } = document.getElementById("updateRecordPaymentTime")
+        const {value: recordNoteValue} = document.getElementById("updateRecordNote")
         const recordCategory = document.getElementById("accountField-Input")
 
-        const body = {
-            paymentTime: recordPaymentTime.value,
-            note: recordNote.value
+        const payload = {
+            paymentTime: recordPaymentTimeValue, note: recordNoteValue,
+            ...recordCategory.tagName === 'SELECT' && { category: recordCategory.value }
         }
 
-        if(recordCategory.tagName === 'SELECT'){
-            body["category"] = recordCategory.value
-        }
-
-        try{
-            const response = await fetch(`http://app.budgetmate.com/api/v1/record/${id}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-                body: JSON.stringify(body)
-            })
-        }catch (e) {
-            window.location.href = "/500-error"
-        }
+        await updateUserRecord(token, payload)
 
         await setRecordDetails(token, id)
         submitButton.blur()
@@ -223,7 +196,6 @@ async function renderGeneralUIByLanguage(token, lang){
 
     Object.keys(translations).forEach((id) => {
         if(document.getElementsByClassName(id)){
-            console.log(document.getElementsByClassName(id))
             Array.from(document.getElementsByClassName(id))
                 .forEach((item) => item.textContent = translations[id])
         }

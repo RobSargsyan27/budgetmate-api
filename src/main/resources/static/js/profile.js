@@ -29,52 +29,27 @@ function addActionToActivityLog(){
 }
 
 async function getUserDetails(token) {
-    try{
-        const response = await fetch('api/v1/user', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-
-        return await response.json();
-    }catch (e){
-        window.location.href = "/500-error"
-    }
+    return (await fetch('api/v1/user', {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
 }
 
-async function updateUserDetails(payload, token) {
-    const body = {
-        id: payload.id
-    }
-    Object.keys(payload).forEach((field) => {
-        if(payload[field]){
-            body[field] = payload[field]
-        }
-    })
+async function updateUserDetails(token, payload) {
+    Object.keys(payload).forEach(field => !payload[field] && delete payload[field])
 
-    try{
-        const response = await fetch('/api/v1/user', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-            body: JSON.stringify(body)
-        });
-
-        return response.json();
-    }catch (e) {
-        window.location.href = "/500-error"
-    }
+    return (await fetch('/api/v1/user', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify(payload)
+    })).json()
 }
 
 async function deleteUserDetails(id, token){
-    try{
-        const response = await fetch(`/api/v1/user/${id}`, {
-            method: 'DELETE',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-        });
-
-        return response.json();
-    }catch (e){
-        window.location.href = "/500-error"
-    }
+    return (await fetch(`/api/v1/user/${id}`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+    })).json()
 }
 
 function getFormFields() {
@@ -86,7 +61,7 @@ function getFormFields() {
     const profilePostalCode = document.getElementById('updatePostalCode')
     const profileAvatarColor = document.getElementById('updateAvatarColor')
 
-    return {profileFirstname, profileLastname, profileCountry, profileCity, profileAddress, profilePostalCode,
+    return { profileFirstname, profileLastname, profileCountry, profileCity, profileAddress, profilePostalCode,
         profileAvatarColor }
 }
 
@@ -132,14 +107,14 @@ function setUpdateUserListener(token, user){
             avatarColor: profileAvatarColor.value
         }
 
-        const result = await updateUserDetails(payload, token)
+        const result = await updateUserDetails(token, payload)
         setFormDetails(result)
         submitButton.active = false
     })
 }
 
 function setDeleteUserListener(token, user){
-    document.getElementById("deleteAccountButton").addEventListener("click", async function (event){
+    document.getElementById("deleteAccountButton").addEventListener("click", async function (){
         await deleteUserDetails(user.id, token)
 
         localStorage.removeItem('token')
@@ -152,7 +127,6 @@ async function renderGeneralUIByLanguage(token, lang){
 
     Object.keys(translations).forEach((id) => {
         if(document.getElementsByClassName(id)){
-            console.log(document.getElementsByClassName(id))
             Array.from(document.getElementsByClassName(id))
                 .forEach((item) => item.textContent = translations[id])
         }

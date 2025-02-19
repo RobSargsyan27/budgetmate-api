@@ -30,17 +30,10 @@ function addActionToActivityLog(){
 }
 
 async function getUserRecordsOverview(token, startDate, endDate) {
-    try{
-        const response = await fetch(`http://app.budgetmate.com/api/v1/analytics/overview/${startDate}/${endDate}`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-
-
-        return response.json();
-    }catch (e) {
-        window.location.href = "500-error"
-    }
+    return (await fetch(`http://app.budgetmate.com/api/v1/analytics/overview/${startDate}/${endDate}`, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
 }
 
 async function setUserOverviewDetails(token, startDate, endDate, dateOptions){
@@ -84,11 +77,9 @@ async function setUserMonthOverviewListener(token, startDate, endDate, dateOptio
     cashFlow.textContent = (monthlyEarnings - monthlyExpenses).toString();
     cashFlow.style.color = monthlyEarnings - monthlyExpenses > 0 ? '#008000' : '#c80000'
 
-    if(!monthlyEarnings && !monthlyExpenses){
-        outlookProgressBar.style.width = `0`
-    }else{
-        outlookProgressBar.style.width = `${Math.ceil(monthlyEarnings * 100 / (monthlyEarnings + monthlyExpenses))}%`
-    }
+    outlookProgressBar.style.width = monthlyEarnings && monthlyExpenses
+        ? `${Math.ceil(monthlyEarnings * 100 / (monthlyEarnings + monthlyExpenses))}%`
+        : `0`
 }
 
 async function renderGeneralUIByLanguage(token, lang){
@@ -96,7 +87,6 @@ async function renderGeneralUIByLanguage(token, lang){
 
     Object.keys(translations).forEach((id) => {
         if(document.getElementsByClassName(id)){
-            console.log(document.getElementsByClassName(id))
             Array.from(document.getElementsByClassName(id))
                 .forEach((item) => item.textContent = translations[id])
         }

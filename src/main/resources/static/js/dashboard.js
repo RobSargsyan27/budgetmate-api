@@ -37,56 +37,63 @@ function addActionToActivityLog() {
 }
 
 async function getUserDetails(token) {
-    try {
-        const response = await fetch('http://app.budgetmate.com/api/v1/user', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-
-        return response.json();
-    } catch (e) {
-        window.location.href = "/500-error"
-    }
+    return (await fetch('http://app.budgetmate.com/api/v1/user', {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
 }
 
 async function getUserDashboardAnalytics(token) {
-    try {
-        const response = await fetch('api/v1/analytics/dashboard', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-
-        return response.json();
-    } catch (e) {
-        window.location.href = "/500-error"
-    }
+    return (await fetch('api/v1/analytics/dashboard', {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
 }
 
 async function getRecordCategories(token) {
-    try {
-        const response = await fetch('api/v1/record/record-categories', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
-
-        return response.json();
-    } catch (e) {
-        window.location.href = "/500-error"
-    }
+    return (await fetch('api/v1/record/record-categories', {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
 }
 
 async function getUserAccounts(token) {
-    try {
-        const response = await fetch('api/v1/account', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        })
+    return (await fetch('api/v1/account', {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    })).json()
+}
 
+async function addUserRecord(token, payload, type){
+    return (await fetch(`api/v1/record/${type}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify(payload)
+    })).json()
+}
 
-        return response.json();
-    } catch (e) {
-        window.location.href = "/500-error"
-    }
+async function addUserBudget(token, payload) {
+    return (await fetch('api/v1/budget', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify(payload)
+    })).json()
+}
+
+async function addUserNewAccount(token, payload) {
+    return (await fetch('api/v1/account', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify(payload)
+    })).json()
+}
+
+async function addUserExistingAccountRequest(token, payload) {
+    return (await fetch('api/v1/account/existing', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify(payload)
+    })).json()
 }
 
 async function setRecordCategories(token) {
@@ -175,7 +182,6 @@ async function setDashboardUserAnalytics(token) {
     annualEarningsStat.textContent = annualEarnings
 
     const cashFlowIncome = monthlyEarnings * 100 / (monthlyEarnings + monthlyExpenses)
-
     cashFlowStat.innerHTML =
         `
         <div class="row no-gutters align-items-center">
@@ -193,7 +199,6 @@ async function setDashboardUserAnalytics(token) {
 function submitRecord(token, userId) {
     document.getElementById('addRecordButton').addEventListener('click', async function () {
         const activeTab = document.querySelector('#recordTabs .nav-link.active').textContent;
-
         switch (activeTab) {
             case 'Expense':
                 await submitExpenseRecord(token, userId)
@@ -225,17 +230,8 @@ async function submitExpenseRecord(token, userId) {
     const withdrawalAccountId = withdrawalAccountDropdown.value;
     const note = noteInput.value;
 
-    try{
-        const response = await fetch('api/v1/record/expense', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-            body: JSON.stringify({userId, amount, paymentTime, category, withdrawalAccountId, note})
-        });
-    }catch (e){
-        window.location.href = "/500-error"
-    }
-
-
+    const payload = {userId, amount, paymentTime, category, withdrawalAccountId, note}
+    await addUserRecord(token, payload, 'expense')
 
     amountInput.value = "";
     paymentTimeInput.value = "";
@@ -257,15 +253,8 @@ async function submitIncomeRecord(token, userId) {
     const receivingAccountId = receivingAccountDropdown.value;
     const note = noteInput.value;
 
-    try{
-        const response = await fetch('api/v1/record/income', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-            body: JSON.stringify({userId, amount, paymentTime, category, receivingAccountId, note})
-        });
-    }catch (e){
-        window.location.href = "/500-error"
-    }
+    const payload = {userId, amount, paymentTime, category, receivingAccountId, note}
+    await addUserRecord(token, id, payload, 'income')
 
     amountInput.value = "";
     paymentTimeInput.value = "";
@@ -288,15 +277,8 @@ async function submitTransferRecord(token, userId) {
     const withdrawalAccountId = withdrawalAccountDropdown.value;
     const note = noteInput.value;
 
-    try{
-        const response = await fetch('api/v1/record/transfer', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-            body: JSON.stringify({userId, amount, paymentTime, withdrawalAccountId, receivingAccountId, note})
-        });
-    }catch (e){
-        window.location.href = "/500-error"
-    }
+    const payload = {userId, amount, paymentTime, withdrawalAccountId, receivingAccountId, note}
+    await addUserRecord(token, payload, 'transfer')
 
     amountInput.value = "";
     paymentTimeInput.value = "";
@@ -318,21 +300,12 @@ function submitBudget(token, userId) {
             .from(document.querySelectorAll('#budgetRecordCategoriesDropdown .form-check-input:checked'))
             .map(input => input.value);
 
-        try{
-            const response = await fetch('api/v1/budget', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-                body: JSON.stringify({userId, amount, name, budgetCategories})
-            });
-        }catch (e){
-            window.location.href = "/500-error"
-        }
+        const payload = {userId, amount, name, budgetCategories}
+        await addUserBudget(token, payload)
 
         nameInput.value = "";
         amountInput.value = "";
-        budgetCategoriesCheckboxes.forEach(checkbox => {
-            checkbox.checked = false;
-        });
+        budgetCategoriesCheckboxes.forEach(checkbox => checkbox.checked = false );
 
         document.getElementById('closeBudgetModalButton').click();
     })
@@ -364,28 +337,11 @@ async function submitNewAccount(token, userId) {
     const type = document.getElementById("accountType")
     const avatarColor = document.getElementById("accountAvatarColor")
 
-    const nameValue = name.value
-    const currencyValue = currency.value
-    const currentBalanceValue = currentBalance.value
-    const typeValue = type.value
-    const avatarColorValue = avatarColor.value
-
-try{
-    const response = await fetch('api/v1/account', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        body: JSON.stringify({
-            userId,
-            name: nameValue,
-            currency: currencyValue,
-            currentBalance: currentBalanceValue,
-            type: typeValue,
-            avatarColor: avatarColorValue
-        })
-    });
-} catch (e) {
-    window.location.href = "/500-error"
-}
+    const payload = {
+        userId, name: name.value, currency: currency.value, currentBalance: currentBalance.value, type: type.value,
+        avatarColor: avatarColor.value
+    }
+    await addUserNewAccount(token, payload)
 
     name.value = ""
     currency.selectedIndex = 0
@@ -398,18 +354,8 @@ async function submitExistingAccountRequest(token, userId) {
     const accountName = document.getElementById("existingAccountName")
     const ownerUsername = document.getElementById("existingAccountOwnerUsername")
 
-    const accountNameValue = accountName.value
-    const ownerUsernameValue = ownerUsername.value
-
-try{
-    const response = await fetch('api/v1/account/existing', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        body: JSON.stringify({userId, accountName: accountNameValue, ownerUsername: ownerUsernameValue})
-    });
-}catch (e) {
-    window.location.href = "/500-error"
-}
+    const payload = {userId, accountName: accountName.value, ownerUsername: ownerUsername.value}
+    await addUserExistingAccountRequest(token, payload)
 
     accountName.value = ""
     ownerUsername.value = ""
@@ -420,7 +366,6 @@ async function renderGeneralUIByLanguage(token, lang) {
 
     Object.keys(translations).forEach((id) => {
         if (document.getElementsByClassName(id)) {
-            console.log(document.getElementsByClassName(id))
             Array.from(document.getElementsByClassName(id))
                 .forEach((item) => item.textContent = translations[id])
         }
