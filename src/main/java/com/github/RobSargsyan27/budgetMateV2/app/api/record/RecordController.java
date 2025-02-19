@@ -1,7 +1,6 @@
 package com.github.RobSargsyan27.budgetMateV2.app.api.record;
 
 import com.github.RobSargsyan27.budgetMateV2.app.api.record.request.*;
-import com.gitlab.robertsargsyan.budgetMate.app.api.record.request.*;
 import com.github.RobSargsyan27.budgetMateV2.app.api.record.response.RecordResponse;
 import com.github.RobSargsyan27.budgetMateV2.app.api.record.service.RecordService;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.RecordCategory;
