@@ -1,0 +1,15 @@
+#register-bg {
+    background-image: url('../img/register-login-page/animation1.png');
+}
+
+#login-bg {
+    background-image: url('../img/register-login-page/animation2.png');
+}
+
+#message {
+    display: none;
+}
+
+#emailNotification {
+    display: none;
+}
