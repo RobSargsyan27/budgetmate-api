@@ -5,7 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.6"
 }
 
-group = "com.github.RobSargsyan27"
+group = "com.github.RobSargsyan27.budgetMateV2"
 version = "1.0.0"
 description = "BudgetMate is a application which helps you manage you finances."
 
