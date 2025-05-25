@@ -34,6 +34,7 @@ dependencies {
 	implementation("org.webjars:jquery-easing:1.4.1")
 	implementation("org.webjars.npm:fortawesome__fontawesome-free:5.15.3")
 	implementation("com.google.code.gson:gson:2.8.9")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 }
 
 tasks.test {

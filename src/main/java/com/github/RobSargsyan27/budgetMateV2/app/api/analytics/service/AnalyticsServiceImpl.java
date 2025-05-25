@@ -7,7 +7,7 @@ import com.github.RobSargsyan27.budgetMateV2.app.domain.User;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.enums.RecordType;
 import com.github.RobSargsyan27.budgetMateV2.app.lib.AnalyticsLib;
 import com.github.RobSargsyan27.budgetMateV2.app.lib.UserLib;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.recordRepository.RecordRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.RecordRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

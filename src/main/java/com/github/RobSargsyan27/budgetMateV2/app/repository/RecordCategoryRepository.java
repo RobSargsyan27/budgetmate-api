@@ -1,7 +1,6 @@
-package com.github.RobSargsyan27.budgetMateV2.app.repository.recordCategoryRepository;
+package com.github.RobSargsyan27.budgetMateV2.app.repository;
 
 import com.github.RobSargsyan27.budgetMateV2.app.domain.RecordCategory;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -9,9 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 
-@Profile("prod")
 @Repository
-public interface RecordCategoryRepositoryJpaImpl extends JpaRepository<RecordCategory, UUID>, RecordCategoryRepository {
+public interface RecordCategoryRepository extends JpaRepository<RecordCategory, UUID> {
 
     @Query("SELECT rc FROM RecordCategory rc")
     List<RecordCategory> getAllRecordCategories();

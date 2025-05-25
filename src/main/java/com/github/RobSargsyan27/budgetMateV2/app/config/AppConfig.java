@@ -1,6 +1,6 @@
 package com.github.RobSargsyan27.budgetMateV2.app.config;
 
-import com.github.RobSargsyan27.budgetMateV2.app.repository.userRepository.UserRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

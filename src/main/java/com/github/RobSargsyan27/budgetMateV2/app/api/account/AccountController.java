@@ -35,7 +35,7 @@ public class AccountController {
         return ResponseEntity.ok(accountService.addAccount(request));
     }
 
-    @PostMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<AccountResponse> updateAccount(
             @RequestBody @Valid UpdateAccountRequest request,
             @PathVariable String id) {
@@ -56,7 +56,7 @@ public class AccountController {
         return HttpStatus.ACCEPTED;
     }
 
-    @GetMapping("/{id}/{status}")
+    @PostMapping("/{id}/{status}")
     public HttpStatus updateAccountRequestStatus(@PathVariable String id, @PathVariable String status){
         accountService.updateAccountRequestStatus(id, status);
         return HttpStatus.ACCEPTED;

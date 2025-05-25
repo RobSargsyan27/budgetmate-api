@@ -1,7 +1,6 @@
-package com.github.RobSargsyan27.budgetMateV2.app.repository.userRepository;
+package com.github.RobSargsyan27.budgetMateV2.app.repository;
 
 import com.github.RobSargsyan27.budgetMateV2.app.domain.User;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,9 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-@Profile("prod")
 @Repository
-public interface UserRepositoryJpaImpl extends JpaRepository<User, UUID>, UserRepository{
+public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findUserByUsername(String username);
 

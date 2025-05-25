@@ -1,10 +1,9 @@
-package com.github.RobSargsyan27.budgetMateV2.app.repository.recordRepository;
+package com.github.RobSargsyan27.budgetMateV2.app.repository;
 
 import com.github.RobSargsyan27.budgetMateV2.app.domain.Record;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.RecordCategory;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.User;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.enums.RecordType;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -18,9 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Profile("prod")
 @Repository
-public interface RecordRepositoryJpaImpl extends JpaRepository<Record, UUID>, JpaSpecificationExecutor<Record>, RecordRepository {
+public interface RecordRepository extends JpaRepository<Record, UUID>, JpaSpecificationExecutor<Record> {
     Optional<Record> getRecordById(UUID id);
 
     List<Record> getRecordsByUser(User user);

@@ -71,7 +71,7 @@ public class RecordController {
         return ResponseEntity.ok(recordService.addTransferRecord(request));
     }
 
-    @PostMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<RecordResponse> updateRecord(
             @RequestBody @Valid UpdateRecordRequest request,
             @PathVariable String id){

@@ -5,8 +5,8 @@ import com.github.RobSargsyan27.budgetMateV2.app.api.user.request.UpdateUserRequ
 import com.github.RobSargsyan27.budgetMateV2.app.api.user.response.UserResponse;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.User;
 import com.github.RobSargsyan27.budgetMateV2.app.lib.UserLib;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.accountAdditionRequestRepository.AccountAdditionRequestRepository;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.userRepository.UserRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.AccountAdditionRequestRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public UserResponse updateUser(UpdateUserRequest request){
+    public UserResponse updateUser(Integer id, UpdateUserRequest request){
         final User user = userRepository.findUserById(UUID.fromString(request.getId()))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
 

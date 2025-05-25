@@ -26,10 +26,18 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(request));
     }
 
-    @PostMapping("")
-    public ResponseEntity<UserResponse> updateUser(@RequestBody @Valid UpdateUserRequest request){
-        return ResponseEntity.ok(userService.updateUser(request));
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(
+            @PathVariable Integer id,
+            @RequestBody @Valid UpdateUserRequest request)
+    {
+        return ResponseEntity.ok(userService.updateUser(id, request));
     }
+
+//    @PostMapping("")
+//    public ResponseEntity<UserResponse> updateUser(@RequestBody @Valid UpdateUserRequest request){
+//        return ResponseEntity.ok(userService.updateUser(request));
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteUser(@PathVariable String id){

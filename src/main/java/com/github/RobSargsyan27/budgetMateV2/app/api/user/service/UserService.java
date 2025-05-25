@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService {
     UserResponse getUser(HttpServletRequest request);
 
-    UserResponse updateUser(UpdateUserRequest request);
+    UserResponse updateUser(Integer id, UpdateUserRequest request);
 
     Integer deleteUser(String id);
 

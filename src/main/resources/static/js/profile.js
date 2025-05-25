@@ -38,8 +38,8 @@ async function getUserDetails(token) {
 async function updateUserDetails(token, payload) {
     Object.keys(payload).forEach(field => !payload[field] && delete payload[field])
 
-    return (await fetch('/api/v1/user', {
-        method: 'POST',
+    return (await fetch(`/api/v1/user/${id}`, {
+        method: 'PATCH',
         headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
         body: JSON.stringify(payload)
     })).json()

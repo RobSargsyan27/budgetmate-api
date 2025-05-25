@@ -1,8 +1,7 @@
-package com.github.RobSargsyan27.budgetMateV2.app.repository.accountAdditionRequestRepository;
+package com.github.RobSargsyan27.budgetMateV2.app.repository;
 
 import com.github.RobSargsyan27.budgetMateV2.app.domain.AccountAdditionRequest;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.User;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,9 +11,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Profile("prod")
 @Repository
-public interface AccountAdditionRequestRepositoryJpaImpl extends JpaRepository<AccountAdditionRequest, UUID>, AccountAdditionRequestRepository{
+public interface AccountAdditionRequestRepository extends JpaRepository<AccountAdditionRequest, UUID> {
     Optional<AccountAdditionRequest> getAccountAdditionRequestById(UUID id);
 
     List<AccountAdditionRequest> findAllByOwnerUser(User ownerUser);

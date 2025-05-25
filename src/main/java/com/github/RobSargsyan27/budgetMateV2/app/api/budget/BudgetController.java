@@ -51,7 +51,7 @@ public class BudgetController {
         return ResponseEntity.ok(budgetService.getBudget(id));
     }
 
-    @PostMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<BudgetResponse> updateBudget(
             @RequestBody @Valid UpdateBudgetRequest request,
             @PathVariable String id){

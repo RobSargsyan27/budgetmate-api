@@ -1,4 +1,4 @@
-package com.github.RobSargsyan27.budgetMateV2.app.repository.recordRepository;
+package com.github.RobSargsyan27.budgetMateV2.app.repository.specification;
 
 import com.github.RobSargsyan27.budgetMateV2.app.domain.Record;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.User;

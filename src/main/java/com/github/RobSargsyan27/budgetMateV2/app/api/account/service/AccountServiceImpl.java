@@ -1,5 +1,15 @@
 package com.github.RobSargsyan27.budgetMateV2.app.api.account.service;
 
+import java.util.List;
+import java.util.UUID;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
 import com.github.RobSargsyan27.budgetMateV2.app.api.account.request.AddAccountRequest;
 import com.github.RobSargsyan27.budgetMateV2.app.api.account.request.AddExistingAccountRequest;
 import com.github.RobSargsyan27.budgetMateV2.app.api.account.request.UpdateAccountRequest;
@@ -8,22 +18,11 @@ import com.github.RobSargsyan27.budgetMateV2.app.domain.Account;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.AccountAdditionRequest;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.User;
 import com.github.RobSargsyan27.budgetMateV2.app.lib.UserLib;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.accountAdditionRequestRepository.AccountAdditionRequestRepository;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.accountRepository.AccountRepository;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.recordRepository.RecordRepository;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.userRepository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Profile;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.AccountAdditionRequestRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.AccountRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.RecordRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.UserRepository;
 
-import java.util.List;
-import java.util.UUID;
-
-@Profile("prod")
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -37,28 +36,14 @@ public class AccountServiceImpl implements AccountService{
     public List<AccountResponse> getAccounts(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
-        return user.getAccounts().stream().map((account -> AccountResponse.builder()
-                .id(account.getId())
-                .type(account.getType())
-                .name(account.getName())
-                .avatarColor(account.getAvatarColor())
-                .currency(account.getCurrency())
-                .currentBalance(account.getCurrentBalance())
-                .build())).toList();
+        return AccountResponse.from(user.getAccounts());
     }
 
     public AccountResponse getAccount(String id){
         final Account account =  accountRepository.getAccountById(UUID.fromString(id))
                 .orElseThrow(() -> new IllegalStateException("Account not found!"));
 
-        return AccountResponse.builder()
-                .id(account.getId())
-                .type(account.getType())
-                .name(account.getName())
-                .avatarColor(account.getAvatarColor())
-                .currency(account.getCurrency())
-                .currentBalance(account.getCurrentBalance())
-                .build();
+        return AccountResponse.from(account);
     }
 
     @Transactional
@@ -77,14 +62,7 @@ public class AccountServiceImpl implements AccountService{
         user.addAccount(account);
         final User updatedUser = userRepository.save(user);
 
-        return AccountResponse.builder()
-                .id(updatedUser.getAccounts().getLast().getId())
-                .name(account.getName())
-                .type(account.getType())
-                .currency(account.getCurrency())
-                .currentBalance(account.getCurrentBalance())
-                .avatarColor(account.getAvatarColor())
-                .build();
+        return AccountResponse.from(updatedUser.getAccounts().getLast());
     }
 
     @Transactional
@@ -100,14 +78,7 @@ public class AccountServiceImpl implements AccountService{
 
         final Account updatedAccount = accountRepository.save(account);
 
-        return AccountResponse.builder()
-                .id(updatedAccount.getId())
-                .name(updatedAccount.getName())
-                .currency(updatedAccount.getCurrency())
-                .currentBalance(updatedAccount.getCurrentBalance())
-                .type(updatedAccount.getType())
-                .avatarColor(updatedAccount.getAvatarColor())
-                .build();
+        return AccountResponse.from(updatedAccount);
     }
 
     @Override

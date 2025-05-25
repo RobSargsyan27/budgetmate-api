@@ -1,7 +1,7 @@
 package com.github.RobSargsyan27.budgetMateV2.app.lib;
 
 import com.github.RobSargsyan27.budgetMateV2.app.domain.User;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.userRepository.UserRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.UserRepository;
 import com.github.RobSargsyan27.budgetMateV2.app.security.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

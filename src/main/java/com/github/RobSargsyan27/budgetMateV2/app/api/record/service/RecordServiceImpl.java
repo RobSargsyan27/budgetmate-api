@@ -1,7 +1,6 @@
 package com.github.RobSargsyan27.budgetMateV2.app.api.record.service;
 
 import com.github.RobSargsyan27.budgetMateV2.app.api.record.request.*;
-import com.gitlab.robertsargsyan.budgetMate.app.api.record.request.*;
 import com.github.RobSargsyan27.budgetMateV2.app.api.record.response.RecordResponse;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.Account;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.Record;
@@ -10,11 +9,11 @@ import com.github.RobSargsyan27.budgetMateV2.app.domain.User;
 import com.github.RobSargsyan27.budgetMateV2.app.domain.enums.RecordType;
 import com.github.RobSargsyan27.budgetMateV2.app.lib.RecordLib;
 import com.github.RobSargsyan27.budgetMateV2.app.lib.UserLib;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.accountRepository.AccountRepository;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.recordCategoryRepository.RecordCategoryRepository;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.recordRepository.RecordFilterSpecification;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.recordRepository.RecordRepository;
-import com.github.RobSargsyan27.budgetMateV2.app.repository.userRepository.UserRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.AccountRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.RecordCategoryRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.specification.RecordFilterSpecification;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.RecordRepository;
+import com.github.RobSargsyan27.budgetMateV2.app.repository.UserRepository;
 import com.github.RobSargsyan27.budgetMateV2.app.util.FileUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
