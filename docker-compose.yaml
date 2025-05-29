@@ -7,5 +7,20 @@ services:
       - "80:80"
     volumes:
       - ./landing/public:/usr/share/nginx/html:ro
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
     command: ["nginx", "-g", "daemon off;"]
+
+  db:
+    image: postgres:alpine
+    container_name: budgetmate-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./docker/initdb:/docker-entrypoint-initdb.d
+
+volumes:
+  db-data:

@@ -1,7 +1,7 @@
 package com.github.RobSargsyan27.budgetMateV2.api.domain;
 
-import com.github.RobSargsyan27.budgetMateV2.app.domain.enums.Currency;
-import com.github.RobSargsyan27.budgetMateV2.app.domain.enums.RecordType;
+import com.github.RobSargsyan27.budgetMateV2.api.domain.enums.Currency;
+import com.github.RobSargsyan27.budgetMateV2.api.domain.enums.RecordType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
