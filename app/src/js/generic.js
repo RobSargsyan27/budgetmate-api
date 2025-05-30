@@ -30,16 +30,6 @@ async function validateToken(token) {
   }
 }
 
-async function getIdsTranslation(token, lang, body) {
-  const response = await fetch(`http://app.budgetmate.com/api/v1/translate?lang=${lang}`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-    body: JSON.stringify(body)
-  });
-
-  return response.json();
-}
-
 async function getUserDetails(token) {
   const response = await fetch('http://app.budgetmate.com/api/v1/user', {
     method: 'GET',

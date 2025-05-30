@@ -31,17 +31,17 @@
 
 <body id="page-top" style="display: none">
 <div id="wrapper">
-    <th:block th:replace="~{components/nav-sidebar.html}"></th:block>
+    <!--#include virtual="/components/nav-sidebar.html" -->
 
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
 
-            <th:block th:replace="~{components/nav-topbar.html}"></th:block>
+            <!--#include virtual="/components/nav-topbar.html" -->
 
             <div class="container-fluid">
 
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800 dashboard.action"></h1>
+                    <h1 class="h3 mb-0 text-gray-800 dashboard.action">Dashboard</h1>
                 </div>
 
                 <div class="row justify-content-around mb-3">
@@ -51,7 +51,7 @@
                             <div type="button"
                                  class="card-body d-flex flex-column justify-content-center align-items-center"
                                  data-toggle="modal" data-target="#addRecordModal">
-                                <span class="text-lg font-weight-bold text-uppercase mb-1 dashboard.addRecordModal.addRecord"></span>
+                                <span class="text-lg font-weight-bold text-uppercase mb-1 dashboard.addRecordModal.addRecord">Add Record</span>
                                 <i class="fas fa-plus-circle fa-2x text-gray-300"></i>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                             <div type="button"
                                  class="card-body d-flex flex-column justify-content-center align-items-center"
                                  data-toggle="modal" data-target="#addBudgetModal">
-                                <span class="text-lg font-weight-bold text-uppercase mb-1 dashboard.action.addBudget"></span>
+                                <span class="text-lg font-weight-bold text-uppercase mb-1 dashboard.action.addBudget">Add Budget</span>
                                 <i class="fas fa-wallet fa-2x text-gray-300"></i>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                             <div type="button"
                                  class="card-body d-flex flex-column justify-content-center align-items-center"
                                  data-toggle="modal" data-target="#addAccountModal">
-                                <span class="text-lg font-weight-bold text-uppercase mb-1 dashboard.action.addAccount"></span>
+                                <span class="text-lg font-weight-bold text-uppercase mb-1 dashboard.action.addAccount">Add Account</span>
                                 <i class="fas fa-landmark fa-2x text-gray-300"></i>
                             </div>
                         </div>
@@ -81,13 +81,13 @@
                 </div>
 
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800 dashboard.accounts"></h1>
+                    <h1 class="h3 mb-0 text-gray-800 dashboard.accounts">Accounts</h1>
                 </div>
 
                 <div class="row mb-3" id="dashboardAccounts"></div>
 
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800 dashboard.overview"></h1>
+                    <h1 class="h3 mb-0 text-gray-800 dashboard.overview">Overview</h1>
                 </div>
 
                 <div class="row mb-3">
@@ -98,6 +98,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-lg font-weight-bold dark-blue text-uppercase mb-1 dashboard.overview.monthlyEarnings">
+                                        Monthly Earnings
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="monthlyEarningsStat"></div>
                                     </div>
@@ -115,6 +116,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-lg font-weight-bold dark-blue text-uppercase mb-1 dashboard.overview.annualEarnings">
+                                        Annual Earnings
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="annualEarningsStat"></div>
                                     </div>
@@ -132,6 +134,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-lg font-weight-bold dark-blue text-uppercase mb-1 dashboard.overview.monthlyExpenses">
+                                            Monthly Expenses
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="monthlyExpensesStat"></div>
                                     </div>
@@ -149,6 +152,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-lg font-weight-bold dark-blue text-uppercase mb-1 dashboard.overview.monthlyOutlook">
+                                        Monthly Outlook
                                         </div>
                                         <div id="cashFlowStat"></div>
                                     </div>
@@ -166,7 +170,7 @@
                     <div class="col-xl-8 col-lg-11">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary dashboard.overview.monthlyExpensesOverview"></h6>
+                                <h6 class="m-0 font-weight-bold text-primary dashboard.overview.monthlyExpensesOverview">Monthly Expenses Overview</h6>
                             </div>
 
                             <div class="card-body">
@@ -178,7 +182,7 @@
                     <div class="col-xl-4 col-lg-5">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary dashboard.overview.topExpenseCategories"></h6>
+                                <h6 class="m-0 font-weight-bold text-primary dashboard.overview.topExpenseCategories">Top Expense Categories</h6>
                             </div>
 
                             <div class="card-body">
@@ -192,20 +196,19 @@
             </div>
         </div>
 
-        <th:block th:replace="~{components/footer.html}"></th:block>
+        <!--#include virtual="/components/footer.html" -->
     </div>
 </div>
-</div>
 
-<th:block th:replace="~{components/addRecordModal.html}"></th:block>
+<!--#include virtual="/components/addRecordModal.html" -->
 
-<th:block th:replace="~{components/addBudgetModal.html}"></th:block>
+<!--#include virtual="/components/addBudgetModal.html" -->
 
-<th:block th:replace="~{components/addAccountModal.html}"></th:block>
+<!--#include virtual="/components/addAccountModal.html" -->
 
-<th:block th:replace="~{components/scrollToTop.html}"></th:block>
+<!--#include virtual="/components/scrollToTop.html" -->
 
-<th:block th:replace="~{components/logoutModal.html}"></th:block>
+<!--#include virtual="/components/logoutModal.html" -->
 </body>
 
 </html>

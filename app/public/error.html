@@ -23,12 +23,12 @@
 
 <body id="page-top">
 <div id="wrapper">
-    <th:block th:replace="~{components/nav-sidebar.html}"></th:block>
+    <!--#include virtual="/components/nav-sidebar.html" -->
 
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
 
-            <th:block th:replace="~{components/nav-topbar.html}"></th:block>
+            <!--#include virtual="/components/nav-topbar.html" -->
 
             <div class="container-fluid">
 
@@ -43,13 +43,13 @@
         </div>
 
 
-        <th:block th:replace="~{components/footer.html}"></th:block>
+        <!--#include virtual="/components/footer.html" -->
     </div>
 </div>
 
-<th:block th:replace="~{components/scrollToTop.html}"></th:block>
+<!--#include virtual="/components/scrollToTop.html" -->
 
-<th:block th:replace="~{components/logoutModal.html}"></th:block>
+<!--#include virtual="/components/logoutModal.html" -->
 </body>
 
 </html>

@@ -1,7 +1,3 @@
-const originIds = ['sidebar.dashboard', 'sidebar.recordHistory', 'sidebar.budgets', 'sidebar.analytics',
-  'sidebar.profile', 'name', 'account.currentBalance', 'currency', 'account.accountType', 'account.accountColor',
-  'account.save', 'deleteAccount'];
-
 function setUserActivityLogDetails(){
   const sessionActivityLog = sessionStorage.getItem('activityLog');
   if(sessionActivityLog){
@@ -109,34 +105,8 @@ function setDeleteAccountListener(token, id) {
   });
 }
 
-async function renderGeneralUIByLanguage(token, lang){
-  const {translations} = await getIdsTranslation(token, lang, { originIds });
-
-  Object.keys(translations).forEach((id) => {
-    if(document.getElementsByClassName(id)){
-      Array.from(document.getElementsByClassName(id))
-        .forEach((item) => item.textContent = translations[id]);
-    }
-  });
-}
-
-function setEnglishLanguageSelectorListener(token){
-  document.getElementById('lang-en').addEventListener('click', async () => {
-    sessionStorage.setItem('lang', 'en');
-    await renderGeneralUIByLanguage(token, 'en');
-  });
-}
-
-function setDutchLanguageSelectorListener(token){
-  document.getElementById('lang-nl').addEventListener('click', async () => {
-    sessionStorage.setItem('lang', 'nl');
-    await renderGeneralUIByLanguage(token, 'nl');
-  });
-}
-
 document.addEventListener('DOMContentLoaded', async function () {
   const token = localStorage.getItem('token');
-  const lang = sessionStorage.getItem('lang');
   const accountId = window.location.pathname.split('/').pop();
 
   await setAccountDetails(token, accountId);
@@ -145,8 +115,4 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   addActionToActivityLog(accountId);
   setUserActivityLogDetails();
-
-  await renderGeneralUIByLanguage(token, lang);
-  setEnglishLanguageSelectorListener(token);
-  setDutchLanguageSelectorListener(token);
 });

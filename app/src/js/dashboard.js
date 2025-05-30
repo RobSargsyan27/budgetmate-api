@@ -1,14 +1,4 @@
-const originIds = ['sidebar.dashboard', 'sidebar.recordHistory', 'sidebar.budgets', 'sidebar.analytics',
-  'sidebar.profile', 'dashboard.action', 'dashboard.action.addRecord', 'dashboard.action.addBudget',
-  'dashboard.action.addAccount', 'dashboard.accounts', 'dashboard.overview', 'dashboard.overview.monthlyEarnings',
-  'dashboard.overview.monthlyExpenses', 'dashboard.overview.annualEarnings', 'dashboard.overview.monthlyOutlook',
-  'dashboard.overview.monthlyExpensesOverview', 'dashboard.overview.topExpenseCategories',
-  'dashboard.addRecordModal.addRecord', 'dashboard.addRecordModal.expense', 'dashboard.addRecordModal.income',
-  'dashboard.addRecordModal.transfer', 'dashboard.addAccountModal.addAccount', 'dashboard.addAccountModal.newAccount',
-  'dashboard.addAccountModal.existingAccount', 'record.date', 'record.category', 'receivingAccount',
-  'withdrawalAccount', 'name', 'currency', 'amount', 'modal.close', 'note', 'budget.category',
-  'account.currentBalance', 'account.accountType', 'account.accountColor', 'account.ownerUsername',
-  'logout.warning.header', 'logout.warning', 'logout.cancel', 'logout.button'];
+
 
 function setUserActivityLogDetails() {
   const sessionActivityLog = sessionStorage.getItem('activityLog');
@@ -415,35 +405,8 @@ async function submitExistingAccountRequest(token, userId) {
   ownerUsername.value = '';
 }
 
-async function renderGeneralUIByLanguage(token, lang) {
-  const {translations} = await getIdsTranslation(token, lang, {originIds});
-
-  Object.keys(translations).forEach((id) => {
-    if (document.getElementsByClassName(id)) {
-      console.log(document.getElementsByClassName(id));
-      Array.from(document.getElementsByClassName(id))
-        .forEach((item) => item.textContent = translations[id]);
-    }
-  });
-}
-
-function setEnglishLanguageSelectorListener(token) {
-  document.getElementById('lang-en').addEventListener('click', async () => {
-    sessionStorage.setItem('lang', 'en');
-    await renderGeneralUIByLanguage(token, 'en');
-  });
-}
-
-function setDutchLanguageSelectorListener(token) {
-  document.getElementById('lang-nl').addEventListener('click', async () => {
-    sessionStorage.setItem('lang', 'nl');
-    await renderGeneralUIByLanguage(token, 'nl');
-  });
-}
-
 document.addEventListener('DOMContentLoaded', async function () {
   const token = localStorage.getItem('token');
-  const lang = sessionStorage.getItem('lang');
   const user = await getUserDetails(token);
 
   await setDashboardUserAccounts(token);
@@ -457,8 +420,4 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   addActionToActivityLog();
   setUserActivityLogDetails();
-
-  await renderGeneralUIByLanguage(token, lang);
-  setEnglishLanguageSelectorListener(token);
-  setDutchLanguageSelectorListener(token);
 });

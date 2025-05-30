@@ -26,12 +26,12 @@
 
 <body id="page-top" style="display: none">
 <div id="wrapper">
-    <th:block th:replace="~{components/nav-sidebar.html}"></th:block>
+    <!--#include virtual="/components/nav-sidebar.html" -->
 
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
 
-            <th:block th:replace="~{components/nav-topbar.html}"></th:block>
+            <!--#include virtual="/components/nav-topbar.html" -->
 
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800" id="budgetName"></h1>
@@ -44,14 +44,14 @@
                                     <div class="form-group">
                                         <label for="updateBudgetName" class="d-flex flex-row align-items-start">
                                             <i class="fas fa-asterisk fa-xs" style="color: #f22626; font-size: 6px;"></i>
-                                            <span class="name"></span>
+                                            <span class="name">Name</span>
                                         </label>
                                         <input type="text" class="form-control" id="updateBudgetName">
                                     </div>
                                     <div class="form-group">
                                         <label for="updateBudgetAmount" class="d-flex flex-row align-items-start">
                                             <i class="fas fa-asterisk fa-xs" style="color: #f22626; font-size: 6px;"></i>
-                                            <span class="amount"></span>
+                                            <span class="amount">Amount</span>
                                         </label>
                                         <input type="number" class="form-control" id="updateBudgetAmount">
                                     </div>
@@ -62,7 +62,7 @@
                                                   <span>
                                                     <span class="d-flex flex-row align-items-start">
                                                       <i class="fas fa-asterisk fa-xs" style="color: #f22626; font-size: 6px;"></i>
-                                                        <span class="budget.recordCategories"></span>
+                                                        <span class="budget.recordCategories">Record Categories</span>
                                                       <i class="fas fa-angle-down ml-2 align-self-center"></i>
                                                     </span>
                                                   </span>
@@ -78,10 +78,10 @@
                                 <div class="gd-r1 d-flex flex-row justify-content-between">
                                     <button id="submitBudgetButton" class="btn btn-primary btn-xl form-btn mb-3 mt-4"
                                             type="submit" form="updateBudgetForm">
-                                        <span class="budget.save"></span>
+                                        <span class="budget.save">Save</span>
                                     </button>
                                     <button id="deleteBudgetButton" class="btn btn-danger btn-xl form-btn mb-3 mt-4">
-                                        <span class="budget.deleteBudget"></span>
+                                        <span class="budget.deleteBudget">Delete Budget</span>
                                     </button>
                                 </div>
                             </div>
@@ -92,13 +92,13 @@
 
         </div>
 
-        <th:block th:replace="~{components/footer.html}"></th:block>
+        <!--#include virtual="/components/footer.html" -->
     </div>
 </div>
 
-<th:block th:replace="~{components/scrollToTop.html}"></th:block>
+<!--#include virtual="/components/scrollToTop.html" -->
 
-<th:block th:replace="~{components/logoutModal.html}"></th:block>
+<!--#include virtual="/components/logoutModal.html" -->
 </body>
 
 </html>

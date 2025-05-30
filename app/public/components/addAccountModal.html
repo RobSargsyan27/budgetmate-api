@@ -2,7 +2,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title dashboard.action.addAccount" id="addAccountModalMessage"></h5>
+        <h5 class="modal-title dashboard.action.addAccount" id="addAccountModalMessage">Add Account</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -10,10 +10,10 @@
       <div class="modal-body">
         <ul class="nav nav-tabs" id="accountTabs">
           <li class="nav-item">
-            <a class="nav-link active dashboard.addAccountModal.newAccount" id="newAccountTab" data-toggle="tab" href="#newAccount"></a>
+            <a class="nav-link active dashboard.addAccountModal.newAccount" id="newAccountTab" data-toggle="tab" href="#newAccount">New Account</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link dashboard.addAccountModal.existingAccount" id="existingAccountTab" data-toggle="tab" href="#existingAccount"></a>
+            <a class="nav-link dashboard.addAccountModal.existingAccount" id="existingAccountTab" data-toggle="tab" href="#existingAccount">Existing Account</a>
           </li>
         </ul>
         <div class="tab-content mt-2" id="accountForms">
@@ -22,21 +22,21 @@
               <div class="form-group">
                 <label for="accountName" class="d-flex flex-row align-items-start">
                   <i class="fas fa-asterisk fa-xs" style="color: #f22626; font-size: 6px;"></i>
-                  <span class="name"></span>
+                  <span class="name">Name</span>
                 </label>
                 <input type="text" class="form-control" id="accountName" required>
               </div>
               <div class="form-group">
                 <label for="accountCurrentBalance" class="d-flex flex-row align-items-start">
                   <i class="fas fa-asterisk fa-xs" style="color: #f22626; font-size: 6px;"></i>
-                  <span class="account.currentBalance"></span>
+                  <span class="account.currentBalance">Current Balance</span>
                 </label>
                 <input type="number" class="form-control" id="accountCurrentBalance" required>
               </div>
               <div class="form-group">
                 <label for="accountCurrency" class="d-flex flex-row align-items-start">
                   <i class="fas fa-asterisk fa-xs" style="color: #f22626; font-size: 6px;"></i>
-                  <span class="currency"></span>
+                  <span class="currency">Currency</span>
                 </label>
                 <select name="accountCurrency" id="accountCurrency" class="form-control">
                   <option name="USD" value="USD" id="currency-USD">USD</option>
@@ -45,7 +45,7 @@
               <div class="form-group">
                 <label for="accountType" class="d-flex flex-row align-items-start">
                   <i class="fas fa-asterisk fa-xs" style="color: #f22626; font-size: 6px;"></i>
-                  <span class="account.accountType"></span>
+                  <span class="account.accountType">Account Type</span>
                 </label>
                 <select name="accountCurrency" id="accountType" class="form-control">
                   <option name="GENERAL" value="GENERAL" id="accountType-GENERAL">General</option>
@@ -67,14 +67,14 @@
               <div class="form-group">
                 <label for="existingAccountName" class="d-flex flex-row align-items-start">
                   <i class="fas fa-asterisk fa-xs" style="color: #f22626; font-size: 6px;"></i>
-                  <span class="name"></span>
+                  <span class="name">Name</span>
                 </label>
                 <input type="text" class="form-control" id="existingAccountName" required>
               </div>
               <div class="form-group">
                 <label for="existingAccountOwnerUsername" class="d-flex flex-row align-items-start">
                   <i class="fas fa-asterisk fa-xs" style="color: #f22626; font-size: 6px;"></i>
-                  <span class="account.ownerUsername"></span>
+                  <span class="account.ownerUsername">Owner's Username</span>
                 </label>
                 <input type="text" class="form-control" id="existingAccountOwnerUsername" required>
               </div>
@@ -83,8 +83,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary modal.close" data-dismiss="modal" id="closeAccountModalButton"></button>
-        <button type="button" class="btn btn-primary dashboard.addAccountModal.addAccount" id="addAccountButton"></button>
+        <button type="button" class="btn btn-secondary modal.close" data-dismiss="modal" id="closeAccountModalButton">Close</button>
+        <button type="button" class="btn btn-primary dashboard.addAccountModal.addAccount" id="addAccountButton">Add Account</button>
       </div>
     </div>
   </div>

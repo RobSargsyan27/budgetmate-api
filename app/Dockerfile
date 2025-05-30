@@ -16,7 +16,8 @@ RUN mkdir -p \
     cp node_modules/bootstrap/dist/js/bootstrap.bundle.min.js src/vendor/bootstrap/ && \
     cp node_modules/jquery.easing/jquery.easing.min.js src/vendor/jquery-easing/ && \
     cp node_modules/@fortawesome/fontawesome-free/css/all.min.css src/vendor/fortawesome-fontawesome/css/all.min.css && \
-    cp node_modules/chart.js/dist/chart.umd.js src/vendor/chartjs/chart.js
+    cp node_modules/chart.js/dist/chart.umd.js src/vendor/chartjs/chart.js && \
+    cp -r node_modules/@fortawesome/fontawesome-free/webfonts src/vendor/fortawesome-fontawesome/
 
 
 

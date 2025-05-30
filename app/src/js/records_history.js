@@ -1,10 +1,3 @@
-const originIds = ['sidebar.dashboard', 'sidebar.recordHistory', 'sidebar.budgets', 'sidebar.analytics', 'sidebar.profile',
-  'record.date', 'record.type', 'record.category', 'record.paymentTime', 'receivingAccount', 'withdrawalAccount',
-  'name', 'amount', 'recordsHistory', 'recordsPerPage', 'modal.close', 'timestamp', 'recordHistory.income',
-  'recordHistory.expense', 'recordHistory.transfer', 'recordHistory.all', 'recordHistory.applyFilters',
-  'generateReport'];
-
-
 function setUserActivityLogDetails(){
   const sessionActivityLog = sessionStorage.getItem('activityLog');
   if(sessionActivityLog){
@@ -146,32 +139,6 @@ function renderPagination(recordsCount, recordsPerPage, currentPage, token) {
   }
 }
 
-async function renderGeneralUIByLanguage(token, lang){
-  const {translations} = await getIdsTranslation(token, lang, { originIds });
-
-  Object.keys(translations).forEach((id) => {
-    if(document.getElementsByClassName(id)){
-      console.log(document.getElementsByClassName(id));
-      Array.from(document.getElementsByClassName(id))
-        .forEach((item) => item.textContent = translations[id]);
-    }
-  });
-}
-
-function setEnglishLanguageSelectorListener(token){
-  document.getElementById('lang-en').addEventListener('click', async () => {
-    sessionStorage.setItem('lang', 'en');
-    await renderGeneralUIByLanguage(token, 'en');
-  });
-}
-
-function setDutchLanguageSelectorListener(token){
-  document.getElementById('lang-nl').addEventListener('click', async () => {
-    sessionStorage.setItem('lang', 'nl');
-    await renderGeneralUIByLanguage(token, 'nl');
-  });
-}
-
 function setGenerateReportListener(token){
   document.getElementById('recordReportButton').addEventListener('click', async () => {
     const blob = await getRecordReportUrl(token);
@@ -185,7 +152,6 @@ function setGenerateReportListener(token){
 
 document.addEventListener('DOMContentLoaded', async function () {
   const token = localStorage.getItem('token');
-  const lang = sessionStorage.getItem('lang');
 
   let currentPage = 1;
   const recordsCount = await getUserRecordsCount(token);
@@ -216,10 +182,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   addActionToActivityLog();
   setUserActivityLogDetails();
-
-  await renderGeneralUIByLanguage(token, lang);
-  setEnglishLanguageSelectorListener(token);
-  setDutchLanguageSelectorListener(token);
 
   setGenerateReportListener(token);
 });
