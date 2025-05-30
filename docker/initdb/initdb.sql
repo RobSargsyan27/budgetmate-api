@@ -1,8 +1,3 @@
-CREATE TYPE account_type AS ENUM ('GENERAL', 'CASH', 'CREDIT_CARD', 'SAVINGS_ACCOUNT', 'BONUS');
-CREATE TYPE currency AS ENUM ('USD');
-CREATE TYPE record_type AS ENUM ('EXPENSE', 'INCOME', 'TRANSFER');
-CREATE TYPE role AS ENUM ('USER', 'ADMIN');
-
 CREATE TABLE users (
                        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                        username VARCHAR(255) NOT NULL UNIQUE,
@@ -17,15 +12,15 @@ CREATE TABLE users (
                        receive_news_letters BOOLEAN DEFAULT FALSE,
                        is_locked BOOLEAN DEFAULT FALSE,
                        is_enabled BOOLEAN DEFAULT TRUE,
-                       role role NOT NULL
+                       role VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE accounts (
                           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                           name VARCHAR(255) NOT NULL,
-                          currency currency NOT NULL,
+                          currency VARCHAR(20) NOT NULL,
                           current_balance DOUBLE PRECISION NOT NULL,
-                          type account_type NOT NULL,
+                          type VARCHAR(255) NOT NULL,
                           avatar_color VARCHAR(20),
                           user_id UUID NOT NULL,
                           CONSTRAINT fk_accounts_user FOREIGN KEY(user_id) REFERENCES users(id)
@@ -86,9 +81,9 @@ CREATE TABLE records (
                          user_id UUID NOT NULL,
                          payment_time TIMESTAMP,
                          category_id UUID,
-                         type record_type NOT NULL,
+                         type VARCHAR(255) NOT NULL,
                          note TEXT,
-                         currency currency NOT NULL,
+                         currency VARCHAR(20) NOT NULL,
                          withdrawal_account_id UUID,
                          reciving_account_id UUID,
                          CONSTRAINT fk_records_user FOREIGN KEY(user_id) REFERENCES users(id),

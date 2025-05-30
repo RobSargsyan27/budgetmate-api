@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     container_name: budgetmate-nginx
     restart: unless-stopped
+    depends_on:
+      - api
     ports:
       - "80:80"
     volumes:
@@ -38,6 +40,8 @@ services:
     image: postgres:alpine
     container_name: budgetmate-db
     restart: unless-stopped
+    ports:
+      - "5437:5432"
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
