@@ -1,6 +1,8 @@
 services:
   nginx:
-    image: nginx:alpine
+    build:
+      context: ./app
+      dockerfile: Dockerfile
     container_name: budgetmate-nginx
     restart: unless-stopped
     ports:
