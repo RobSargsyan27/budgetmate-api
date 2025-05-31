@@ -1,11 +1,9 @@
-:root {
-    --cc-dark-blue: #2d4161;
-    --cc-light-gray: #707a7f;
-    --cc-light-gray-2: #c5c5c5;
-    --cc-dark-gray: #454545;
-}
+$cc-dark-blue: #2d4161;
+$cc-light-gray: #707a7f;
+$cc-light-gray-2: #c5c5c5;
+$cc-dark-gray: #454545;
 
-.dropdown-list-language{
+.dropdown-list-language {
     width: 5rem !important;
 }
 
@@ -28,31 +26,31 @@
 }
 
 .dark-blue {
-    color: var(--cc-dark-blue);
+    color: $cc-dark-blue;
 }
 
 .dark-blue-background {
-    background-color: var(--cc-dark-blue);
+    background-color: $cc-dark-blue;
 }
 
 .dark-blue-left-border {
-    border-left: 0.25rem solid var(--cc-dark-blue) !important;
+    border-left: 0.25rem solid $cc-dark-blue !important;
 }
 
 .light-gray-background {
-    background-color: var(--cc-light-gray);
+    background-color: $cc-light-gray;
 }
 
 .light-gray {
-    color: var(--cc-light-gray)
+    color: $cc-light-gray;
 }
 
 .dark-gray {
-    color: var(--cc-dark-gray)
+    color: $cc-dark-gray;
 }
 
 .light-gray-2-bottom-border {
-    border-bottom: 1px solid var(--cc-light-gray-2);
+    border-bottom: 1px solid $cc-light-gray-2;
 }
 
 .gd-1 {
@@ -92,35 +90,36 @@
     max-width: 15%;
 }
 
-.dropdown-toggle::after {
-    display: none !important;
+.dropdown-toggle {
+    &::after {
+        display: none !important;
+    }
 }
 
 .border-radius1 {
     border-radius: 0.5rem;
 }
 
-.prf-avatar {
-    display: flex;
-    flex-flow: row;
-    justify-content: center;
-    align-items: center;
-    border-radius: 2.5rem;
-    width: 5rem;
-    height: 5rem;
-    color: white;
-    margin-right: 0.5rem;
-}
-
+.prf-avatar,
 .prf-avatar-small {
     display: flex;
     flex-flow: row;
     justify-content: center;
     align-items: center;
+    color: white;
+}
+
+.prf-avatar {
+    border-radius: 2.5rem;
+    width: 5rem;
+    height: 5rem;
+    margin-right: 0.5rem;
+}
+
+.prf-avatar-small {
     border-radius: 0.5rem;
     width: 2rem;
     height: 2rem;
-    color: white;
     margin-left: 0.5rem;
 }
 
@@ -129,8 +128,13 @@
 }
 
 .dark-blue-avatar {
-    background-image: linear-gradient(to right bottom,
-    rgb(45, 63, 165), rgb(44, 72, 187), rgb(39, 81, 209), rgb(30, 90, 232), rgb(0, 100, 255)
+    background-image: linear-gradient(
+            to right bottom,
+            rgb(45, 63, 165),
+            rgb(44, 72, 187),
+            rgb(39, 81, 209),
+            rgb(30, 90, 232),
+            rgb(0, 100, 255)
     );
 }
 
@@ -141,7 +145,7 @@
     justify-content: space-around;
 }
 
-.bg-lightgray-hover:hover{
+.bg-lightgray-hover:hover {
     background-color: #f3f3f3;
 }
 

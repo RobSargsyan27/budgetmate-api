@@ -7,7 +7,8 @@
     "eslint": "8.0.0",
     "htmlhint": "1.2.0",
     "stylelint": "16.20.0",
-    "stylelint-config-standard": "38.0.0"
+    "stylelint-config-standard": "38.0.0",
+    "sass": "1.89.1"
   },
   "dependencies": {
     "jquery": "3.6.0",
@@ -22,6 +23,7 @@
     "lint:js:fix": "eslint src/**/*.js --fix",
     "lint:html": "htmlhint public/**/*.html",
     "lint:css": "stylelint src/**/*.css",
-    "lint:css:fix": "stylelint src/**/*.css --fix"
+    "lint:css:fix": "stylelint src/**/*.css --fix",
+    "build:css": "sass src/scss:src/css"
   }
 }

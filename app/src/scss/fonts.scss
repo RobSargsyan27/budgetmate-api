@@ -1,0 +1,18 @@
+$font-family: 'Inter';
+$font-url: '../';
+
+@mixin font-face($weight, $file-base) {
+    @font-face {
+        font-family: $font-family;
+        font-style: normal;
+        font-weight: $weight;
+        font-display: swap;
+        src: local(''),
+        url('#{$font-url}#{$file-base}.woff2') format('woff2'),
+        url('#{$font-url}#{$file-base}.woff') format('woff');
+    }
+}
+
+@include font-face(300, 'fonts-latin-300');
+@include font-face(500, 'fonts-latin-500');
+@include font-face(700, 'fonts-latin-700');
