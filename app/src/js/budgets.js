@@ -1,20 +1,3 @@
-function setUserActivityLogDetails(){
-  const sessionActivityLog = sessionStorage.getItem('activityLog');
-  if(sessionActivityLog){
-    const activityLog = JSON.parse(sessionActivityLog);
-    const activityLogTable = document.getElementById('activityLogTable');
-
-    activityLogTable.innerHTML = '';
-    activityLog.forEach((log) => {
-      activityLogTable.innerHTML +=
-                `<tr>
-                <td>${log.page}</td>
-                <td>${log.date}</td>
-            </tr> `;
-    });
-  }
-}
-
 function addActionToActivityLog(){
   const sessionActivityLog = sessionStorage.getItem('activityLog');
   const activityLog = JSON.parse(sessionActivityLog) || [];

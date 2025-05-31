@@ -1,22 +1,3 @@
-
-
-function setUserActivityLogDetails(){
-  const sessionActivityLog = sessionStorage.getItem('activityLog');
-  if(sessionActivityLog){
-    const activityLog = JSON.parse(sessionActivityLog);
-    const activityLogTable = document.getElementById('activityLogTable');
-
-    activityLogTable.innerHTML = '';
-    activityLog.forEach((log) => {
-      activityLogTable.innerHTML +=
-                `<tr>
-                <td>${log.page}</td>
-                <td>${log.date}</td>
-            </tr> `;
-    });
-  }
-}
-
 function addActionToActivityLog(){
   const sessionActivityLog = sessionStorage.getItem('activityLog');
   const activityLog = JSON.parse(sessionActivityLog) || [];
@@ -27,52 +8,33 @@ function addActionToActivityLog(){
 }
 
 async function getUserDetails(token) {
-  try{
-    const response = await fetch('api/v1/user', {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-    });
-
-    return await response.json();
-  }catch (e){
-    window.location.href = '/500-error';
-  }
-}
-
-async function updateUserDetails(payload, token) {
-  const body = {
-    id: payload.id
-  };
-  Object.keys(payload).forEach((field) => {
-    if(payload[field]){
-      body[field] = payload[field];
-    }
+  const response = await fetch('api/v1/user', {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
   });
 
-  try{
-    const response = await fetch('/api/v1/user', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-      body: JSON.stringify(body)
-    });
+  return await response.json();
+}
 
-    return response.json();
-  }catch (e) {
-    window.location.href = '/500-error';
-  }
+async function updateUserDetails(token, id, payload) {
+  Object.keys(payload).forEach(field => !payload[field] && delete payload[field]);
+
+  const response = await fetch(`/api/v1/user/${id}`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    body: JSON.stringify(payload)
+  });
+
+  return response.json();
 }
 
 async function deleteUserDetails(id, token){
-  try{
-    const response = await fetch(`/api/v1/user/${id}`, {
-      method: 'DELETE',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-    });
+  const response = await fetch(`/api/v1/user/${id}`, {
+    method: 'DELETE',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+  });
 
-    return response.json();
-  }catch (e){
-    window.location.href = '/500-error';
-  }
+  return response.json();
 }
 
 function getFormFields() {
@@ -84,14 +46,13 @@ function getFormFields() {
   const profilePostalCode = document.getElementById('updatePostalCode');
   const profileAvatarColor = document.getElementById('updateAvatarColor');
 
-  return {profileFirstname, profileLastname, profileCountry, profileCity, profileAddress, profilePostalCode,
+  return { profileFirstname, profileLastname, profileCountry, profileCity, profileAddress, profilePostalCode,
     profileAvatarColor };
 }
 
 function setFormDetails(payload) {
-  const {firstname, lastname, username, role, avatarColor, country, address, city, postalCode} = payload;
-  const {profileFirstname, profileLastname, profileCountry, profileCity, profileAddress, profilePostalCode,
-    profileAvatarColor } = getFormFields();
+  const { firstname, lastname, username, role, avatarColor, country, address, city, postalCode } = payload;
+  const {profileFirstname, profileLastname, profileCountry, profileCity, profileAddress, profilePostalCode, profileAvatarColor } = getFormFields();
   const profileUsername = document.getElementById('profileUsername');
   const profileRole = document.getElementById('profileRole');
   const profileAvatar = document.getElementById('profileAvatar');
@@ -112,15 +73,11 @@ function setFormDetails(payload) {
 
 function setUpdateUserListener(token, user){
   document.getElementById('updateProfileForm').addEventListener('submit', async function (event) {
-    const submitButton = document.getElementById('submitButton');
     event.preventDefault();
+    const submitButton = document.getElementById('submitButton');
 
-    const {profileFirstname, profileLastname, profileCountry,
-      profileCity, profileAddress, profilePostalCode,
-      profileAvatarColor} = getFormFields();
-
+    const { profileFirstname, profileLastname, profileCountry, profileCity, profileAddress, profilePostalCode, profileAvatarColor} = getFormFields();
     const payload = {
-      id: user.id,
       firstname: profileFirstname.value,
       lastname: profileLastname.value,
       country: profileCountry.value,
@@ -129,15 +86,15 @@ function setUpdateUserListener(token, user){
       postalCode: profilePostalCode.value,
       avatarColor: profileAvatarColor.value
     };
+    const result = await updateUserDetails(token, user.id, payload);
 
-    const result = await updateUserDetails(payload, token);
     setFormDetails(result);
     submitButton.active = false;
   });
 }
 
 function setDeleteUserListener(token, user){
-  document.getElementById('deleteAccountButton').addEventListener('click', async function (event){
+  document.getElementById('deleteAccountButton').addEventListener('click', async () => {
     await deleteUserDetails(user.id, token);
 
     localStorage.removeItem('token');

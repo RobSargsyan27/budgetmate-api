@@ -1,20 +1,3 @@
-function setUserActivityLogDetails(){
-  const sessionActivityLog = sessionStorage.getItem('activityLog');
-  if(sessionActivityLog){
-    const activityLog = JSON.parse(sessionActivityLog);
-    const activityLogTable = document.getElementById('activityLogTable');
-
-    activityLogTable.innerHTML = '';
-    activityLog.forEach((log) => {
-      activityLogTable.innerHTML +=
-                `<tr>
-                <td>${log.page}</td>
-                <td>${log.date}</td>
-            </tr> `;
-    });
-  }
-}
-
 function addActionToActivityLog(){
   const sessionActivityLog = sessionStorage.getItem('activityLog');
   const activityLog = JSON.parse(sessionActivityLog) || [];
@@ -25,17 +8,12 @@ function addActionToActivityLog(){
 }
 
 async function getUserRecordsOverview(token, startDate, endDate) {
-  try{
-    const response = await fetch(`http://app.budgetmate.com/api/v1/analytics/overview/${startDate}/${endDate}`, {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-    });
+  const response = await fetch(`/api/v1/analytics/overview/${startDate}/${endDate}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+  });
 
-
-    return response.json();
-  }catch (e) {
-    window.location.href = '500-error';
-  }
+  return response.json();
 }
 
 async function setUserOverviewDetails(token, startDate, endDate, dateOptions){
@@ -72,18 +50,16 @@ async function setUserMonthOverviewListener(token, startDate, endDate, dateOptio
 
 
   overviewDates.textContent =
-        `${startDate.toLocaleString('en-US', dateOptions)} - ${endDate.toLocaleString('en-US', dateOptions)}`;
+      `${startDate.toLocaleString('en-US', dateOptions)} - ${endDate.toLocaleString('en-US', dateOptions)}`;
 
   expenseOverview.textContent = monthlyExpenses;
   earningsOverview.textContent = monthlyEarnings;
   cashFlow.textContent = (monthlyEarnings - monthlyExpenses).toString();
   cashFlow.style.color = monthlyEarnings - monthlyExpenses > 0 ? '#008000' : '#c80000';
 
-  if(!monthlyEarnings && !monthlyExpenses){
-    outlookProgressBar.style.width = '0';
-  }else{
-    outlookProgressBar.style.width = `${Math.ceil(monthlyEarnings * 100 / (monthlyEarnings + monthlyExpenses))}%`;
-  }
+  outlookProgressBar.style.width = monthlyEarnings && monthlyExpenses
+    ? `${Math.ceil(monthlyEarnings * 100 / (monthlyEarnings + monthlyExpenses))}%`
+    : '0';
 }
 
 document.addEventListener('DOMContentLoaded', async function () {

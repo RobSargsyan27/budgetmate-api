@@ -1,5 +1,5 @@
 async function registerUser (userForm) {
-  const { firstname, lastname, email, password, receiveNewsLetters } = userForm
+  const { firstname, lastname, email, password, receiveNewsLetters } = userForm;
 
   return fetch('/api/v1/auth/register', {
     method: 'POST',
@@ -27,7 +27,7 @@ function getFormFields () {
 
 async function submitForm(emailModal, errorModal, errorModalBody){
   const userForm = getFormFields();
-  const response = await registerUser(userForm)
+  const response = await registerUser(userForm);
 
   if (response.ok) {
     emailModal.show();

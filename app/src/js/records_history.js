@@ -1,20 +1,3 @@
-function setUserActivityLogDetails(){
-  const sessionActivityLog = sessionStorage.getItem('activityLog');
-  if(sessionActivityLog){
-    const activityLog = JSON.parse(sessionActivityLog);
-    const activityLogTable = document.getElementById('activityLogTable');
-
-    activityLogTable.innerHTML = '';
-    activityLog.forEach((log) => {
-      activityLogTable.innerHTML +=
-                `<tr>
-                <td>${log.page}</td>
-                <td>${log.date}</td>
-            </tr> `;
-    });
-  }
-}
-
 function addActionToActivityLog(){
   const sessionActivityLog = sessionStorage.getItem('activityLog');
   const activityLog = JSON.parse(sessionActivityLog) || [];
@@ -25,20 +8,15 @@ function addActionToActivityLog(){
 }
 
 async function getRecordReportUrl(token){
-  const body = getRecordFilters();
+  const payload = getRecordFilters();
 
-  try{
-    const response = await fetch('api/v1/record/report', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-      body: JSON.stringify(body)
-    });
+  const response = await fetch('api/v1/record/report', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    body: JSON.stringify(payload)
+  });
 
-    return response.blob();
-  }catch (e) {
-    window.location.href = '/500-error';
-  }
-
+  return response.blob();
 }
 
 function getRecordFilters() {
@@ -58,35 +36,27 @@ function getRecordFilters() {
 }
 
 async function getUserRecordsCount(token) {
-  const body = getRecordFilters();
+  const payload = getRecordFilters();
 
-  try{
-    const response = await fetch('api/v1/record/count', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-      body: JSON.stringify(body)
-    });
+  const response = await fetch('api/v1/record/count', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    body: JSON.stringify(payload)
+  });
 
-    return response.json();
-  }catch (e) {
-    window.location.href = '/500-error';
-  }
+  return response.json();
 }
 
 async function getUserRecords(token, limit, offset) {
-  const body = getRecordFilters();
+  const payload = getRecordFilters();
 
-  try{
-    const result = await fetch(`api/v1/record/${limit}/${offset}`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-      body: JSON.stringify(body)
-    });
+  const result = await fetch(`api/v1/record/${limit}/${offset}`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    body: JSON.stringify(payload)
+  });
 
-    return result.json();
-  }catch (e) {
-    window.location.href = '/500-error';
-  }
+  return result.json();
 }
 
 function setRowLinkListeners(){
@@ -105,17 +75,17 @@ async function renderRecordTable(token, currentPage) {
 
   recordsTableBody.innerHTML = '';
   records.forEach((record) => {
-    const _paymentTime = new Date(record.paymentTime);
+    const paymentTime = new Date(record.paymentTime);
     recordsTableBody.innerHTML +=
-            `<tr class="clickable-row" data-href="http://app.budgetmate.com/record/${record.id}">
-                <td>${record.amount}</td>
-                <td>${record.type}</td>
-                <td>${record.category?.name || ''}</td>
-                <td>${record.currency}</td>
-                <td>${_paymentTime.getMonth() + 1}/${_paymentTime.getDate()}/${_paymentTime.getFullYear()}</td>
-                <td>${record.receivingAccountName || ''}</td>
-                <td>${record.withdrawalAccountName || ''}</td>
-             </tr>`;
+      `<tr class="clickable-row" data-href="/record/${record.id}">
+          <td>${record.amount}</td>
+          <td>${record.type}</td>
+          <td>${record.category?.name || ''}</td>
+          <td>${record.currency}</td>
+          <td>${paymentTime.getMonth() + 1}/${paymentTime.getDate()}/${paymentTime.getFullYear()}</td>
+          <td>${record.receivingAccountName || ''}</td>
+          <td>${record.withdrawalAccountName || ''}</td>
+       </tr>`;
   });
 }
 
@@ -179,9 +149,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   });
 
   setRowLinkListeners();
+  setGenerateReportListener(token);
 
   addActionToActivityLog();
   setUserActivityLogDetails();
-
-  setGenerateReportListener(token);
 });

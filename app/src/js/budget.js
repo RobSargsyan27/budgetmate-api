@@ -1,20 +1,3 @@
-function setUserActivityLogDetails(){
-  const sessionActivityLog = sessionStorage.getItem('activityLog');
-  if(sessionActivityLog){
-    const activityLog = JSON.parse(sessionActivityLog);
-    const activityLogTable = document.getElementById('activityLogTable');
-
-    activityLogTable.innerHTML = '';
-    activityLog.forEach((log) => {
-      activityLogTable.innerHTML +=
-                `<tr>
-                <td>${log.page}</td>
-                <td>${log.date}</td>
-            </tr> `;
-    });
-  }
-}
-
 function addActionToActivityLog(budgetId){
   const sessionActivityLog = sessionStorage.getItem('activityLog');
   const activityLog = JSON.parse(sessionActivityLog) || [];
@@ -25,42 +8,38 @@ function addActionToActivityLog(budgetId){
 }
 
 async function getRecordCategories(token) {
-  try{
-    const response = await fetch('http://app.budgetmate.com/api/v1/record/record-categories', {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-    });
+  const response = await fetch('/api/v1/record/record-categories', {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+  });
 
-    return response.json();
-  }catch (e){
-    window.location.href = '/500-error';
-  }
+  return response.json();
 }
 
 async function getUserBudget(token, id){
-  try{
-    const response = await fetch(`http://app.budgetmate.com/api/v1/budget/${id}`, {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-    });
+  const response = await fetch(`/api/v1/budget/${id}`, {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+  });
 
-
-    return response.json();
-  }catch (e){
-    window.location.href = '/500-error';
-  }
+  return response.json();
 }
 
-async function deleteUserBudget(token, id) {
-  try{
-    const response =  await fetch(`http://app.budgetmate.com/api/v1/budget/${id}`, {
-      method: 'DELETE',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-    });
-  }catch (e) {
-    window.location.href = '/500-error';
-  }
+function updateUserBudget(token, id, payload){
+  const { amount, name, recordCategories } = payload;
 
+  return fetch(`http://app.budgetmate.com/api/v1/budget/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+    body: JSON.stringify({ amount, name, recordCategories })
+  });
+}
+
+function deleteUserBudget(token, id) {
+  return fetch(`/api/v1/budget/${id}`, {
+    method: 'DELETE',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+  });
 }
 
 async function setBudgetDetails(token, id){
@@ -82,7 +61,7 @@ async function setBudgetDetails(token, id){
   ).join('');
 }
 
-async function setSubmitBudgetListener(token, id){
+function setSubmitBudgetListener(token, id){
   document.getElementById('updateBudgetForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -93,17 +72,7 @@ async function setSubmitBudgetListener(token, id){
       .from(document.querySelectorAll('#updateBudgetRecordCategoriesDropdown .form-check-input:checked'))
       .map(input => input.value);
 
-    try{
-      const response = await fetch(`http://app.budgetmate.com/api/v1/budget/${id}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ amount, name, recordCategories })
-      });
-    }catch (e) {
-      window.location.href = '/500-error';
-    }
-
-
+    await updateUserBudget(token, id, { name, amount, recordCategories });
     await setBudgetDetails(token, id);
     submitButton.blur();
   });
@@ -122,19 +91,14 @@ function renderRecordCategories(recordCategories, selectedRecordCategories){
 
   updateBudgetRecordCategoriesDropdown.innerHTML = '';
   recordCategories.forEach((recordCategory) => {
-    let input;
-    if(selectedRecordCategories.find((selectRecordCategory) => selectRecordCategory.id === recordCategory.id)) {
-      input = `<input checked type="checkbox" class="form-check-input" name="${recordCategory.name}" 
-                    value="${recordCategory.name}"/>`;
-    }else {
-      input = `<input type="checkbox" class="form-check-input" name="${recordCategory.name}" value="${recordCategory.name}"/>`;
-    }
-
+    const input = selectedRecordCategories.find((category) => category.id === recordCategory.id)
+      ? `<input checked type="checkbox" class="form-check-input" name="${recordCategory.name}" value="${recordCategory.name}"/>`
+      : `<input type="checkbox" class="form-check-input" name="${recordCategory.name}" value="${recordCategory.name}"/>`;
 
     updateBudgetRecordCategoriesDropdown.innerHTML +=
             `<div class="form-check">
-                    ${input}
-                    <label class="mr-2">${recordCategory.name}</label>
+                ${input}
+                <label class="mr-2">${recordCategory.name}</label>
             </div>`;
   });
 }

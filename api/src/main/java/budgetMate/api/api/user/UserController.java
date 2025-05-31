@@ -34,11 +34,6 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(id, request));
     }
 
-//    @PostMapping("")
-//    public ResponseEntity<UserResponse> updateUser(@RequestBody @Valid UpdateUserRequest request){
-//        return ResponseEntity.ok(userService.updateUser(request));
-//    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteUser(@PathVariable String id){
         return ResponseEntity.ok(userService.deleteUser(id));

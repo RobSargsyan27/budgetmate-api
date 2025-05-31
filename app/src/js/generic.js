@@ -1,3 +1,21 @@
+function setUserActivityLogDetails() {
+  const sessionActivityLog = sessionStorage.getItem('activityLog');
+
+  if (sessionActivityLog) {
+    const activityLog = JSON.parse(sessionActivityLog);
+    const activityLogTable = document.getElementById('activityLogTable');
+
+    activityLogTable.innerHTML = '';
+    activityLog.forEach((log) => {
+      activityLogTable.innerHTML +=
+      `<tr>
+        <td>${log.page}</td>
+        <td>${log.date}</td>
+      </tr>`;
+    });
+  }
+}
+
 function setUserLogOutListener() {
   const logOutButton = document.getElementById('logOutButton');
 
@@ -10,7 +28,7 @@ function setUserLogOutListener() {
 
 async function validateToken(token) {
   try {
-    const response = await fetch('http://app.budgetmate.com/api/v1/auth/validate-token', {
+    const response = await fetch('/api/v1/auth/validate-token', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({token})
@@ -31,7 +49,7 @@ async function validateToken(token) {
 }
 
 async function getUserDetails(token) {
-  const response = await fetch('http://app.budgetmate.com/api/v1/user', {
+  const response = await fetch('/api/v1/user', {
     method: 'GET',
     headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
   });
@@ -39,98 +57,76 @@ async function getUserDetails(token) {
   return response.json();
 }
 
-async function getNotifications(token) {
-  const response = await fetch('http://app.budgetmate.com/api/v1/user/notifications', {
+async function getUserNotifications(token){
+  const response = await fetch('/api/v1/user/notifications', {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
   });
-  const responseBody = await response.json();
 
+  return response.json();
+}
+
+
+function submitNotificationAnswer(token, id, type){
+  const isApproved = type === 'approved';
+
+  return fetch(`http://app.budgetmate.com/api/v1/account/${id}/${isApproved}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+  });
+}
+
+function setNotificationButtons(token, buttons, type, topNavbarNotificationCount){
+  buttons.forEach((button) => {
+    button.addEventListener('click', async (event) => {
+      await submitNotificationAnswer(token, event.target.id, type);
+
+      const link = document.getElementById(`${event.target.id}-link`);
+      if (link) {
+        link.remove();
+      }
+
+      if (parseInt(topNavbarNotificationCount.textContent) - 1 === 0) {
+        topNavbarNotificationCount.style.display = 'none';
+      } else {
+        topNavbarNotificationCount.textContent = (parseInt(topNavbarNotificationCount.textContent) - 1).toString();
+      }
+    });
+  });
+}
+
+async function setNotifications(token) {
   const topNavbarNotificationCount = document.getElementById('topNavbarNotificationCount');
   const dropdownMenu = document.getElementById('topNavbarNotifications');
   dropdownMenu.innerHTML = '<h6 class="dropdown-header">Notifications Center</h6>';
+  const notifications = getUserNotifications(token);
 
+  if (notifications.length) {
+    topNavbarNotificationCount.textContent = notifications.length;
 
-  if (responseBody.length) {
-    topNavbarNotificationCount.textContent = responseBody.length;
-
-    responseBody.forEach(notification => {
-      const alertHTML = `
-                <a class="dropdown-item d-flex flex-column" href="#" id="${notification.id}-link">
-                <div class="d-flex flex-row">
-                        <div class="icon-circle bg-primary mr-3">
-                            <i class="fas fa-info text-white"></i>
-                        </div>
-                        <div class="text-gray-500">
-                        "${notification.requestedUsername}" requested to add "${notification.accountName}" account.
-                        </div>
-                </div>
-                <div class="d-flex flex-row justify-content-between mt-2">
-                    <div class="btn btn-sm btn-danger notification-reject-button" id="${notification.id}">Reject</div>
-                    <div class="btn btn-sm btn-primary notification-approve-button" id="${notification.id}">Accept</div>
-                </div>
-                </a>`;
-      dropdownMenu.innerHTML += alertHTML;
+    notifications.forEach(notification => {
+      dropdownMenu.innerHTML += `
+        <a class="dropdown-item d-flex flex-column" href="#" id="${notification.id}-link">
+          <div class="d-flex flex-row">
+            <div class="icon-circle bg-primary mr-3">
+                <i class="fas fa-info text-white"></i>
+            </div>
+            <div class="text-gray-500">
+                "${notification.requestedUsername}" requested to add "${notification.accountName}" account.
+            </div>
+          </div>
+          <div class="d-flex flex-row justify-content-between mt-2">
+            <div class="btn btn-sm btn-danger notification-reject-button" id="${notification.id}">Reject</div>
+            <div class="btn btn-sm btn-primary notification-approve-button" id="${notification.id}">Accept</div>
+          </div>
+        </a>`;
     });
   }
 
-
   const rejectButtons = Array.from(document.getElementsByClassName('notification-reject-button'));
-  rejectButtons.forEach((button) => {
-    button.addEventListener('click', async (event) => {
-      try {
-        await fetch(`http://app.budgetmate.com/api/v1/account/${event.target.id}/false`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      } finally {
-        const link = document.getElementById(`${event.target.id}-link`);
-        if (link) {
-          link.remove();
-        }
-        if (parseInt(topNavbarNotificationCount.textContent) - 1 === 0) {
-          topNavbarNotificationCount.style.display = 'none';
-        } else {
-          topNavbarNotificationCount.textContent = (parseInt(topNavbarNotificationCount.textContent) - 1).toString();
-        }
-      }
-    });
-  });
-
+  setNotificationButtons(token, rejectButtons, 'rejected', topNavbarNotificationCount);
   const approvedButtons = Array.from(document.getElementsByClassName('notification-approve-button'));
-  approvedButtons.forEach((button) => {
-    button.addEventListener('click', async (event) => {
-      try {
-        await fetch(`http://app.budgetmate.com/api/v1/account/${event.target.id}/true`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      } finally {
-        const link = document.getElementById(`${event.target.id}-link`);
-        if (link) {
-          link.remove();
-        }
-        if (parseInt(topNavbarNotificationCount.textContent) - 1 === 0) {
-          topNavbarNotificationCount.style.display = 'none';
-        } else {
-          topNavbarNotificationCount.textContent = (parseInt(topNavbarNotificationCount.textContent) - 1).toString();
-        }
-      }
-    });
-  });
+  setNotificationButtons(token, approvedButtons, 'approved', topNavbarNotificationCount);
 }
 
 function setTopNavDetails(username, firstname, lastname, avatarColor) {
@@ -156,7 +152,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   setUserLogOutListener();
   const user = await getUserDetails(token);
-  await getNotifications(token);
+  await setNotifications(token);
   setTopNavDetails(user.username, user.firstname, user.lastname, user.avatarColor);
 
   body.style.display = 'block';

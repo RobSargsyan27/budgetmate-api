@@ -1,22 +1,3 @@
-
-
-function setUserActivityLogDetails() {
-  const sessionActivityLog = sessionStorage.getItem('activityLog');
-  if (sessionActivityLog) {
-    const activityLog = JSON.parse(sessionActivityLog);
-    const activityLogTable = document.getElementById('activityLogTable');
-
-    activityLogTable.innerHTML = '';
-    activityLog.forEach((log) => {
-      activityLogTable.innerHTML +=
-                `<tr>
-                <td>${log.page}</td>
-                <td>${log.date}</td>
-            </tr> `;
-    });
-  }
-}
-
 function addActionToActivityLog() {
   const sessionActivityLog = sessionStorage.getItem('activityLog');
   const activityLog = JSON.parse(sessionActivityLog) || [];
@@ -26,75 +7,107 @@ function addActionToActivityLog() {
   sessionStorage.setItem('activityLog', JSON.stringify(activityLog));
 }
 
-async function getUserDetails(token) {
-  try {
-    const response = await fetch('http://app.budgetmate.com/api/v1/user', {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-    });
+function addUserRecord(token, type, payload){
+  return fetch(`api/v1/record/${type}`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    body: JSON.stringify(payload)
+  });
+}
 
-    return response.json();
-  } catch (e) {
-    window.location.href = '/500-error';
-  }
+function addUserBudget(token, payload){
+  const { userId, amount, name, budgetCategories } = payload;
+
+  return fetch('api/v1/budget', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    body: JSON.stringify({userId, amount, name, budgetCategories})
+  });
+}
+
+function addUserNewAccount(token, payload){
+  const { userId, name, currency, currentBalance, type, avatarColor } = payload;
+
+  return fetch('api/v1/account', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    body: JSON.stringify({ userId, name, currency, currentBalance, type, avatarColor })
+  });
+}
+
+function addUserExistingAccount(token, payload){
+  const { userId, accountName, ownerUsername } = payload;
+
+  return fetch('api/v1/account/existing', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    body: JSON.stringify({ userId, accountName, ownerUsername })
+  });
+}
+
+async function getUserDetails(token) {
+  const response = await fetch('/api/v1/user', {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+  });
+
+  return response.json();
 }
 
 async function getUserDashboardAnalytics(token) {
-  try {
-    const response = await fetch('api/v1/analytics/dashboard', {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-    });
+  const response = await fetch('api/v1/analytics/dashboard', {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+  });
 
-    return response.json();
-  } catch (e) {
-    window.location.href = '/500-error';
-  }
+  return response.json();
 }
 
-async function getRecordCategories(token) {
-  try {
-    const response = await fetch('api/v1/record/record-categories', {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-    });
+async function getUserRecordCategories(token) {
+  const response = await fetch('api/v1/record/record-categories', {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+  });
 
-    return response.json();
-  } catch (e) {
-    window.location.href = '/500-error';
-  }
+  return response.json();
 }
 
 async function getUserAccounts(token) {
-  try {
-    const response = await fetch('api/v1/account', {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
-    });
+  const response = await fetch('api/v1/account', {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+  });
 
-
-    return response.json();
-  } catch (e) {
-    window.location.href = '/500-error';
-  }
+  return response.json();
 }
 
 async function setRecordCategories(token) {
   const incomeRecordCategoryDropdown = document.getElementById('incomeRecordCategoryDropdown');
   const expenseRecordCategoryDropdown = document.getElementById('expenseRecordCategoryDropdown');
   const budgetRecordCategoriesDropdown = document.getElementById('budgetRecordCategoriesDropdown');
-  const recordCategories = await getRecordCategories(token);
+  const recordCategories = await getUserRecordCategories(token);
 
   recordCategories.forEach((recordCategories) => {
     incomeRecordCategoryDropdown.innerHTML +=
-            `<option name="${recordCategories.name}" value="${recordCategories.name}" id="${recordCategories.id}">"${recordCategories.name}"</option>`;
+            `<option 
+                name="${recordCategories.name}" 
+                value="${recordCategories.name}" 
+                id="${recordCategories.id}">"${recordCategories.name}"
+            </option>`;
 
     expenseRecordCategoryDropdown.innerHTML +=
-            `<option name="${recordCategories.name}" value="${recordCategories.name}" id="${recordCategories.id}">"${recordCategories.name}"</option>`;
+            `<option 
+                name="${recordCategories.name}" 
+                value="${recordCategories.name}" 
+                id="${recordCategories.id}">"${recordCategories.name}"
+            </option>`;
 
     budgetRecordCategoriesDropdown.innerHTML +=
             `<div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="${recordCategories.name}" value="${recordCategories.name}"/>
+                    <input  type="checkbox" 
+                            class="form-check-input" 
+                            name="${recordCategories.name}" 
+                            value="${recordCategories.name}"/>
                     <label class="mr-2">${recordCategories.name}</label>
             </div>`;
   });
@@ -131,24 +144,24 @@ async function setDashboardUserAccounts(token) {
     const accountColor = account.avatarColor;
 
     dashboardAccounts.innerHTML += `
-        <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card h-100 py-2" style="border-left: 0.25rem solid ${accountColor}">
-                            <div class="card-body">
-                                <a class="text-decoration-none" 
-                                href="/account/${account.id}">
-                                  <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-lg font-weight-bold text-uppercase mb-1" style="color: ${accountColor}">${account.name}</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">${account.currentBalance}</div>
-                                        <div class="h6 mb-0 font-weight-light text-gray-900">${account.currency}</div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-landmark fa-2x" style="color: ${accountColor}"></i></div>
-                                  </div>
-                                </a>
-                            </div>
-                        </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card h-100 py-2" style="border-left: 0.25rem solid ${accountColor}">
+            <div class="card-body">
+                <a class="text-decoration-none" href="/account/${account.id}">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-uppercase mb-1" style="color: ${accountColor}">${account.name}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">${account.currentBalance}</div>
+                      <div class="h6 mb-0 font-weight-light text-gray-900">${account.currency}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-landmark fa-2x" style="color: ${accountColor}"></i>
+                    </div>
+                  </div>
+                </a>
+            </div>
         </div>
-        `;
+    </div>`;
   });
 }
 
@@ -167,17 +180,15 @@ async function setDashboardUserAnalytics(token) {
   const cashFlowIncome = monthlyEarnings * 100 / (monthlyEarnings + monthlyExpenses);
 
   cashFlowStat.innerHTML =
-        `
-        <div class="row no-gutters align-items-center">
-                    <div class="col">
-                        <div class="progress-oppose progress-lg">
-                            <div class="progress-bar bg-success" role="progressbar" 
-                                 style="width: ${cashFlowIncome.toFixed(2)}%" aria-valuemin="0" 
-                                 aria-valuemax="100"></div>
-                        </div>
-                    </div>
+    `<div class="row no-gutters align-items-center">
+        <div class="col">
+            <div class="progress-oppose progress-lg">
+                <div class="progress-bar bg-success" role="progressbar" 
+                     style="width: ${cashFlowIncome.toFixed(2)}%" aria-valuemin="0" 
+                     aria-valuemax="100"></div>
+            </div>
         </div>
-        `;
+    </div>`;
 }
 
 function submitRecord(token, userId) {
@@ -215,17 +226,7 @@ async function submitExpenseRecord(token, userId) {
   const withdrawalAccountId = withdrawalAccountDropdown.value;
   const note = noteInput.value;
 
-  try{
-    const response = await fetch('api/v1/record/expense', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-      body: JSON.stringify({userId, amount, paymentTime, category, withdrawalAccountId, note})
-    });
-  }catch (e){
-    window.location.href = '/500-error';
-  }
-
-
+  await addUserRecord(token, 'expense', {userId, amount, paymentTime, category, withdrawalAccountId, note});
 
   amountInput.value = '';
   paymentTimeInput.value = '';
@@ -247,15 +248,7 @@ async function submitIncomeRecord(token, userId) {
   const receivingAccountId = receivingAccountDropdown.value;
   const note = noteInput.value;
 
-  try{
-    const response = await fetch('api/v1/record/income', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-      body: JSON.stringify({userId, amount, paymentTime, category, receivingAccountId, note})
-    });
-  }catch (e){
-    window.location.href = '/500-error';
-  }
+  await addUserRecord(token, 'income', {userId, amount, paymentTime, category, receivingAccountId, note});
 
   amountInput.value = '';
   paymentTimeInput.value = '';
@@ -278,15 +271,7 @@ async function submitTransferRecord(token, userId) {
   const withdrawalAccountId = withdrawalAccountDropdown.value;
   const note = noteInput.value;
 
-  try{
-    const response = await fetch('api/v1/record/transfer', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-      body: JSON.stringify({userId, amount, paymentTime, withdrawalAccountId, receivingAccountId, note})
-    });
-  }catch (e){
-    window.location.href = '/500-error';
-  }
+  await addUserRecord(token, 'transfer', {userId, amount, paymentTime, withdrawalAccountId, receivingAccountId, note});
 
   amountInput.value = '';
   paymentTimeInput.value = '';
@@ -308,22 +293,11 @@ function submitBudget(token, userId) {
       .from(document.querySelectorAll('#budgetRecordCategoriesDropdown .form-check-input:checked'))
       .map(input => input.value);
 
-    try{
-      const response = await fetch('api/v1/budget', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-        body: JSON.stringify({userId, amount, name, budgetCategories})
-      });
-    }catch (e){
-      window.location.href = '/500-error';
-    }
+    await addUserBudget(token, {userId, amount, name, budgetCategories});
 
     nameInput.value = '';
     amountInput.value = '';
-    budgetCategoriesCheckboxes.forEach(checkbox => {
-      checkbox.checked = false;
-    });
-
+    budgetCategoriesCheckboxes.forEach(checkbox => checkbox.checked = false );
     document.getElementById('closeBudgetModalButton').click();
   });
 }
@@ -332,14 +306,9 @@ function submitAccount(token, userId) {
   document.getElementById('addAccountButton').addEventListener('click', async function () {
     const activeTab = document.querySelector('#accountTabs .nav-link.active').textContent;
 
-    switch (activeTab) {
-    case 'New Account':
-      await submitNewAccount(token, userId);
-      break;
-    case 'Existing Account':
-      await submitExistingAccountRequest(token, userId);
-      break;
-    }
+    activeTab === 'New Account'
+      ? await submitNewAccount(token, userId)
+      : await submitExistingAccountRequest(token, userId);
 
     await setDashboardUserAccounts(token);
     await setDashboardUserAnalytics(token);
@@ -354,28 +323,15 @@ async function submitNewAccount(token, userId) {
   const type = document.getElementById('accountType');
   const avatarColor = document.getElementById('accountAvatarColor');
 
-  const nameValue = name.value;
-  const currencyValue = currency.value;
-  const currentBalanceValue = currentBalance.value;
-  const typeValue = type.value;
-  const avatarColorValue = avatarColor.value;
-
-  try{
-    const response = await fetch('api/v1/account', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-      body: JSON.stringify({
-        userId,
-        name: nameValue,
-        currency: currencyValue,
-        currentBalance: currentBalanceValue,
-        type: typeValue,
-        avatarColor: avatarColorValue
-      })
-    });
-  } catch (e) {
-    window.location.href = '/500-error';
-  }
+  const payload= {
+    userId,
+    name: name.value,
+    currency: currency.value,
+    currentBalance: currentBalance.value,
+    type: type.value,
+    avatarColor: avatarColor.value
+  };
+  await addUserNewAccount(token, payload);
 
   name.value = '';
   currency.selectedIndex = 0;
@@ -388,18 +344,8 @@ async function submitExistingAccountRequest(token, userId) {
   const accountName = document.getElementById('existingAccountName');
   const ownerUsername = document.getElementById('existingAccountOwnerUsername');
 
-  const accountNameValue = accountName.value;
-  const ownerUsernameValue = ownerUsername.value;
-
-  try{
-    const response = await fetch('api/v1/account/existing', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-      body: JSON.stringify({userId, accountName: accountNameValue, ownerUsername: ownerUsernameValue})
-    });
-  }catch (e) {
-    window.location.href = '/500-error';
-  }
+  const payload = {userId, accountName: accountName.value, ownerUsername: ownerUsername.value};
+  await addUserExistingAccount(token, payload);
 
   accountName.value = '';
   ownerUsername.value = '';
