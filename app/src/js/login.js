@@ -36,7 +36,6 @@ function setLoginFormListener(loginForm, message){
       }
 
     }catch (error){
-      console.error('Error during login:', error);
       showMessage(message, 'An error occurred. Please try again later.', 'alert-danger', 'red');
     }
   });

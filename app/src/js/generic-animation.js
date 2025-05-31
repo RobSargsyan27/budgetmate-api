@@ -1,7 +1,7 @@
 (function($) {
   'use strict';
 
-  $('#sidebarToggle, #sidebarToggleTop').on('click', function(e) {
+  $('#sidebarToggle, #sidebarToggleTop').on('click', () => {
     $('body').toggleClass('sidebar-toggled');
     $('.sidebar').toggleClass('toggled');
     if ($('.sidebar').hasClass('toggled')) {

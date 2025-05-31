@@ -55,8 +55,8 @@ async function setRecordDetails(token, id){
 
   const recordPaymentTime = new Date(record.paymentTime);
   const formattedPaymentTime = recordPaymentTime.toISOString().split('.')[0];
-  const receivingAccount = record.receivingAccountId == null ? undefined : await getUserAccount(token, record.receivingAccountId);
-  const withdrawalAccount = record.withdrawalAccountId == null ? undefined : await getUserAccount(token, record.withdrawalAccountId);
+  const receivingAccount = record.receivingAccountId === null ? undefined : await getUserAccount(token, record.receivingAccountId);
+  const withdrawalAccount = record.withdrawalAccountId === null ? undefined : await getUserAccount(token, record.withdrawalAccountId);
 
   const recordHeader = document.getElementById('recordHeader');
   const amount = document.getElementById('updateRecordAmount');
@@ -82,7 +82,7 @@ async function setRecordDetails(token, id){
   if(receivingAccount && withdrawalAccount){
     renderRecordAccounts(accountField, receivingAccount, 'accountField-Input', 'Receiving Account');
     renderRecordAccounts(accountField2, withdrawalAccount, 'accountField-2-Input', 'Withdrawal Account');
-  }else if(receivingAccount == null && withdrawalAccount){
+  }else if(receivingAccount === null && withdrawalAccount){
     renderRecordCategoriesDropdown(accountField, recordCategories, 'accountField-Input', record.category);
     renderRecordAccounts(accountField2, withdrawalAccount, 'accountField-2-Input', 'Withdrawal Account');
   }else if(receivingAccount){
