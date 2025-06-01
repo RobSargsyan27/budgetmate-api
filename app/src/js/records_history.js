@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     await renderRecordTable(token, currentPage);
     setRowLinkListeners();
 
-    event.target.active = false;
+    event.target.blur();
   });
 
   setRowLinkListeners();
