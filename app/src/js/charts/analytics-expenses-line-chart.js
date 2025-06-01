@@ -65,8 +65,8 @@ async function renderExpenseLineChart(chart, token, startDate, endDate){
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem("token")
-    let startDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1,0,0,0,0);
-    let endDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1, 0,0,0,0);
+    let startDate = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1,0,0,0,0);
+    let endDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1, 0,0,0,0);
 
     const expensesLineChart = await renderExpenseLineChart(undefined, token, startDate, endDate)
 

@@ -94,19 +94,46 @@ function renderPagination(recordsCount, recordsPerPage, currentPage, token) {
   const totalPages = Math.ceil(recordsCount / recordsPerPage);
   paginationControls.innerHTML = '';
 
-  for (let i = 1; i <= totalPages; i++) {
+  function createPageItem(page, label = null, isActive = false, isDisabled = false) {
     const li = document.createElement('li');
-    li.className = `page-item ${i === currentPage ? 'active' : ''}`;
-    li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-    li.addEventListener('click', async function (e) {
-      e.preventDefault();
-      currentPage = i;
-      await renderRecordTable(token, currentPage);
-      renderPagination(recordsCount, recordsPerPage, currentPage, token);
-      setRowLinkListeners();
-    });
+    li.className = `page-item ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}`;
+    li.innerHTML = `<a class="page-link" href="#">${label || page}</a>`;
+    if (!isDisabled && !isActive) {
+      li.addEventListener('click', async function (e) {
+        e.preventDefault();
+        currentPage = page;
+        await renderRecordTable(token, currentPage);
+        renderPagination(recordsCount, recordsPerPage, currentPage, token);
+        setRowLinkListeners();
+      });
+    }
     paginationControls.appendChild(li);
   }
+
+  createPageItem(currentPage - 1, '&laquo;', false, currentPage === 1);
+
+  currentPage > 3 && createPageItem(1);
+
+  if (currentPage > 4) {
+    const li = document.createElement('li');
+    li.className = 'page-item disabled';
+    li.innerHTML = `<span class="page-link">...</span>`;
+    paginationControls.appendChild(li);
+  }
+
+  for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+    createPageItem(i, null, i === currentPage);
+  }
+
+  if (currentPage < totalPages - 3) {
+    const li = document.createElement('li');
+    li.className = 'page-item disabled';
+    li.innerHTML = `<span class="page-link">...</span>`;
+    paginationControls.appendChild(li);
+  }
+
+  currentPage < totalPages - 2 && createPageItem(totalPages);
+  createPageItem(currentPage + 1, '&raquo;', false, currentPage === totalPages);
 }
 
 function setGenerateReportListener(token){
@@ -139,13 +166,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     setRowLinkListeners();
   });
 
-  document.getElementById('recordsApplyFilters').addEventListener('click', async () => {
+  document.getElementById('recordsApplyFilters').addEventListener('click', async (event) => {
     const recordsPerPage = parseInt(document.getElementById('recordsPerPageSelect').value);
     currentPage = 1;
     const recordsCount = await getUserRecordsCount(token);
     renderPagination(recordsCount, recordsPerPage, currentPage, token);
     await renderRecordTable(token, currentPage);
     setRowLinkListeners();
+
+    event.target.active = false;
   });
 
   setRowLinkListeners();

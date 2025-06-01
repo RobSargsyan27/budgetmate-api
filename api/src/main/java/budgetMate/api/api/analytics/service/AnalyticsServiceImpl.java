@@ -59,9 +59,9 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     public ChartResponse getDashboardCategoriesPieChart(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
-        YearMonth currentMonth = YearMonth.now();
-        LocalDateTime startOfMonth = currentMonth.atDay(1).atStartOfDay();
-        LocalDateTime startOfNextMonth = currentMonth.plusMonths(1).atDay(1).atStartOfDay();
+        YearMonth lastMonth = YearMonth.now().minusMonths(1);
+        LocalDateTime startOfMonth = lastMonth.atDay(1).atStartOfDay();
+        LocalDateTime startOfNextMonth = lastMonth.plusMonths(1).atDay(1).atStartOfDay();
         Pageable pageable = PageRequest.of(0, 5);
 
         final List<Object[]> categoriesPieChartData = recordRepository

@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   const token = localStorage.getItem('token');
 
   const options = { year: 'numeric', month: 'short' };
-  let startDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1,0,0,0,0);
-  let endDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1, 0,0,0,0);
+  let startDate = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1,0,0,0,0);
+  let endDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1, 0,0,0,0);
 
   await setUserOverviewDetails(token, startDate, endDate, options);
 
