@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public UserResponse updateUser(Integer id, UpdateUserRequest request){
-        final User user = userRepository.findUserById(UUID.fromString(request.getId()))
+    public UserResponse updateUser(UUID id, UpdateUserRequest request){
+        final User user = userRepository.findUserById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
 
         user.setFirstname(request.getFirstname());

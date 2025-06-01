@@ -10,9 +10,6 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class UpdateUserRequest {
-    @NotEmpty
-    private String id;
-
     @Size(min = 3, max = 255, message = "User's firstname should be between 3 and 255 characters.")
     private String firstname;
 

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Slf4j
@@ -28,7 +29,7 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(
-            @PathVariable Integer id,
+            @PathVariable UUID id,
             @RequestBody @Valid UpdateUserRequest request)
     {
         return ResponseEntity.ok(userService.updateUser(id, request));
