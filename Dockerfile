@@ -3,9 +3,9 @@ FROM gradle:8.14.1-jdk21 AS builder
 WORKDIR /home/gradle/project
 
 COPY --chown=gradle:gradle gradle/ gradle/
-COPY --chown=gradle:gradle api/build.gradle.kts settings.gradle.kts gradlew ./
+COPY --chown=gradle:gradle build.gradle.kts settings.gradle.kts gradlew ./
 
-COPY --chown=gradle:gradle api/src/ src/
+COPY --chown=gradle:gradle src/ src/
 
 RUN chmod +x gradlew
 

@@ -1,3 +1,1 @@
-rootProject.name = "budgetmate-v2"
-
-include("app", "api")
+rootProject.name = "budgetmate-v2-api"
