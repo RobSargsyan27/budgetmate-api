@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
         if (user != null && user.isEnabled()) {
             throw new IllegalStateException("User is already registered!");
         }
-
+        log.info("user123: {}", passwordEncoder.encode(request.getPassword()));
         if (user == null) {
             user = User.builder()
                     .username(request.getEmail())
