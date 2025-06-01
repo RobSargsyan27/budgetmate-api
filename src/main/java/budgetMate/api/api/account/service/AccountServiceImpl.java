@@ -39,24 +39,24 @@ public class AccountServiceImpl implements AccountService{
         return AccountResponse.from(user.getAccounts());
     }
 
-    public AccountResponse getAccount(String id){
-        final Account account =  accountRepository.getAccountById(UUID.fromString(id))
+    public AccountResponse getAccount(UUID id, HttpServletRequest request){
+        final User user = userLib.fetchRequestUser(request);
+        final Account account =  accountRepository.getUserAccountById(user, id)
                 .orElseThrow(() -> new IllegalStateException("Account not found!"));
 
         return AccountResponse.from(account);
     }
 
     @Transactional
-    public AccountResponse addAccount(AddAccountRequest request){
-        final User user = userRepository.findUserById(UUID.fromString(request.getUserId()))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+    public AccountResponse addAccount(HttpServletRequest request, AddAccountRequest body){
+        final User user = userLib.fetchRequestUser(request);
 
         final Account account = new Account();
-        account.setName(request.getName());
-        account.setCurrency(request.getCurrency());
-        account.setCurrentBalance(request.getCurrentBalance());
-        account.setType(request.getType());
-        account.setAvatarColor(request.getAvatarColor());
+        account.setName(body.getName());
+        account.setCurrency(body.getCurrency());
+        account.setCurrentBalance(body.getCurrentBalance());
+        account.setType(body.getType());
+        account.setAvatarColor(body.getAvatarColor());
         account.setCreatedBy(user);
 
         user.addAccount(account);
@@ -66,15 +66,16 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Transactional
-    public AccountResponse updateAccount(UpdateAccountRequest request, String id){
-        final UUID accountId = UUID.fromString(id);
+    public AccountResponse updateAccount(HttpServletRequest request, UpdateAccountRequest body, UUID id){
+        final User user = userLib.fetchRequestUser(request);
 
-        final Account account = accountRepository.getAccountById(accountId)
+        final Account account = accountRepository.getUserAccountById(user, id)
                 .orElseThrow(() -> new IllegalStateException("Account is not found!"));
-        account.setName(request.getName());
-        account.setType(request.getType());
-        account.setCurrentBalance(request.getCurrentBalance());
-        account.setAvatarColor(request.getAvatarColor());
+
+        account.setName(body.getName());
+        account.setType(body.getType());
+        account.setCurrentBalance(body.getCurrentBalance());
+        account.setAvatarColor(body.getAvatarColor());
 
         final Account updatedAccount = accountRepository.save(account);
 
@@ -83,27 +84,24 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     @Transactional
-    public void deleteAccount(HttpServletRequest request, String id){
+    public void deleteAccount(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
-        final UUID accountId = UUID.fromString(id);
 
-        accountRepository.deleteUserAccountAssociation(user.getId(), accountId);
-        recordRepository.deleteAccountRecords(accountId);
+        accountRepository.deleteUserAccountAssociation(user.getId(), id);
+        recordRepository.deleteAccountRecords(id);
 
-        int associationCount = accountRepository.countUsersByAccountId(accountId);
+        int associationCount = accountRepository.countUsersByAccountId(id);
         if(associationCount == 0){
-            accountRepository.deleteAccountById(accountId);
+            accountRepository.deleteAccountById(id);
         }
     }
 
-    public void sendAddExistingAccountRequest(AddExistingAccountRequest request){
-        final UUID userId = UUID.fromString(request.getUserId());
-        final String accountOwnerUsername = request.getOwnerUsername();
-        final String accountName = request.getAccountName();
+    public void sendAddExistingAccountRequest(HttpServletRequest request, AddExistingAccountRequest body){
+        final User user = userLib.fetchRequestUser(request);
+        final String accountOwnerUsername = body.getOwnerUsername();
+        final String accountName = body.getAccountName();
 
         final User accountOwner = userRepository.findUserByUsername(accountOwnerUsername)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-        final User user = userRepository.findUserById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
 
         final AccountAdditionRequest accountAdditionRequest = AccountAdditionRequest.builder()
@@ -116,31 +114,30 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Transactional
-    public void updateAccountRequestStatus(String requestId, String status){
-        final UUID _requestId = UUID.fromString(requestId);
-        final boolean _status = Boolean.parseBoolean(status);
+    public void updateAccountRequestStatus(HttpServletRequest request, UUID requestId, Boolean status){
+        final User user = userLib.fetchRequestUser(request);
 
         try{
-            accountAdditionRequestRepository.updateAccountAdditionRequest(_requestId, _status);
+            accountAdditionRequestRepository.updateAccountAdditionRequest(user, requestId, status);
 
-            if(_status){
+            if(status){
                 final AccountAdditionRequest accountAdditionRequest = accountAdditionRequestRepository
-                        .getAccountAdditionRequestById(_requestId)
+                        .getAccountAdditionRequestById(requestId)
                         .orElseThrow(() -> new IllegalArgumentException("Account addition request is not found!"));
 
                 final Account account = accountRepository
                         .getUserAccount(accountAdditionRequest.getOwnerUser().getId(), accountAdditionRequest.getAccountName())
                         .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
 
-                final User user = userRepository
+                final User requestedUser = userRepository
                         .findUserById(accountAdditionRequest.getRequestedUser().getId())
                         .orElseThrow(() -> new IllegalArgumentException("User is not found!"));
 
-                user.addAccount(account);
-                userRepository.save(user);
+                requestedUser.addAccount(account);
+                userRepository.save(requestedUser);
             }
         } finally {
-            accountAdditionRequestRepository.updateAccountAdditionRequest(_requestId, _status);
+            accountAdditionRequestRepository.updateAccountAdditionRequest(user, requestId, status);
         }
     }
 }

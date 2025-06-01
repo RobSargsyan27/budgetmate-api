@@ -14,17 +14,14 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 public class AddBudgetRequest {
-    @NotEmpty(message = "User should be specified!")
-    private String userId;
-
     @NotEmpty
     @Size(message = "Budget name should be between 3 and 50 characters.")
     private String name;
-
 
     @Positive(message = "Budget amount should be specified!")
     private double amount;
 
     @NotNull
+    @NotEmpty
     private List<String> budgetCategories;
 }

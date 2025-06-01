@@ -10,16 +10,18 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/budget")
+@RequestMapping("/api/v2/budget")
 public class BudgetController {
     private final BudgetService budgetService;
 
@@ -29,8 +31,11 @@ public class BudgetController {
     }
 
     @PostMapping("")
-    public ResponseEntity<BudgetResponse> addBudget(@RequestBody @Valid AddBudgetRequest request){
-        return ResponseEntity.ok(budgetService.addBudget(request));
+    public ResponseEntity<BudgetResponse> addBudget(
+            HttpServletRequest request,
+            @RequestBody @Valid AddBudgetRequest body)
+    {
+        return ResponseEntity.ok(budgetService.addBudget(request, body));
     }
 
     @GetMapping("/current-balance")
@@ -47,19 +52,22 @@ public class BudgetController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BudgetResponse> getBudget(@PathVariable String id){
-        return ResponseEntity.ok(budgetService.getBudget(id));
+    public ResponseEntity<BudgetResponse> getBudget(HttpServletRequest request, @PathVariable UUID id){
+        return ResponseEntity.ok(budgetService.getBudget(request, id));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<BudgetResponse> updateBudget(
-            @RequestBody @Valid UpdateBudgetRequest request,
-            @PathVariable String id){
-        return ResponseEntity.ok(budgetService.updateBudget(request, id));
+            HttpServletRequest request,
+            @RequestBody @Valid UpdateBudgetRequest body,
+            @PathVariable UUID id)
+    {
+        return ResponseEntity.ok(budgetService.updateBudget(request, body, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Integer> deleteBudget(@PathVariable String id){
-        return ResponseEntity.ok(budgetService.deleteBudget(id));
+    public HttpStatus deleteBudget(HttpServletRequest request, @PathVariable UUID id){
+        budgetService.deleteBudget(request, id);
+        return HttpStatus.ACCEPTED;
     }
 }

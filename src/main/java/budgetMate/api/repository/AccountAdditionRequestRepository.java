@@ -21,6 +21,6 @@ public interface AccountAdditionRequestRepository extends JpaRepository<AccountA
     List<AccountAdditionRequest> findUnapprovedRequestsByOwnerUser(User ownerUser);
 
     @Modifying
-    @Query("UPDATE AccountAdditionRequest r SET r.isRequestApproved = :status, r.isRequestChecked = TRUE WHERE r.id = :id")
-    void updateAccountAdditionRequest(UUID id, boolean status);
+    @Query("UPDATE AccountAdditionRequest r SET r.isRequestApproved = :status, r.isRequestChecked = TRUE WHERE r.id = :id AND r.ownerUser = :user")
+    void updateAccountAdditionRequest(User user, UUID id, boolean status);
 }

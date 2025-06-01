@@ -19,7 +19,6 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-
     private static final String SECRET_KEY = "n7wfDeE91HArAnZGewzSoADRBP8Vo2vCwdVSOJ5TW6VdahlEXa2tIROhINORFz1+";
 
     public String extractUsername(String token) throws ExpiredJwtException {

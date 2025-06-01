@@ -16,7 +16,4 @@ public class AddExistingAccountRequest {
     @NotEmpty
     @Size(min = 3, max = 50, message = "Account should have a name.")
     private String accountName;
-
-    @NotEmpty
-    private String userId;
 }

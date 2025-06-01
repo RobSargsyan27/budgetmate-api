@@ -8,22 +8,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/record")
+@RequestMapping("/api/v2/record")
 public class RecordController {
     private final RecordService recordService;
-
-    @GetMapping("/{id}")
-    public ResponseEntity<RecordResponse> getRecord(@PathVariable String id){
-        return ResponseEntity.ok(recordService.getUserRecord(id));
-    }
 
     @GetMapping("")
     public ResponseEntity<List<RecordResponse>> getRecords(HttpServletRequest request){
@@ -57,34 +54,56 @@ public class RecordController {
     }
 
     @PostMapping("/income")
-    public ResponseEntity<RecordResponse> addInputRecord(@RequestBody @Valid AddIncomeRecordRequest request){
-        return ResponseEntity.ok(recordService.addIncomeRecord(request));
+    public ResponseEntity<RecordResponse> addInputRecord(
+            HttpServletRequest request,
+            @RequestBody @Valid AddIncomeRecordRequest body)
+    {
+        return ResponseEntity.ok(recordService.addIncomeRecord(request, body));
     }
 
     @PostMapping("/expense")
-    public ResponseEntity<RecordResponse> addExpenseRecord(@RequestBody @Valid AddExpenseRecordRequest request){
-        return ResponseEntity.ok(recordService.addExpenseRecord(request));
+    public ResponseEntity<RecordResponse> addExpenseRecord(
+            HttpServletRequest request,
+            @RequestBody @Valid AddExpenseRecordRequest body)
+    {
+        return ResponseEntity.ok(recordService.addExpenseRecord(request, body));
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<RecordResponse> addTransferRecord(@RequestBody @Valid AddTransferRecordRequest request){
-        return ResponseEntity.ok(recordService.addTransferRecord(request));
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<RecordResponse> updateRecord(
-            @RequestBody @Valid UpdateRecordRequest request,
-            @PathVariable String id){
-        return ResponseEntity.ok(recordService.updateRecord(request, id));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Integer> deleteRecord(@PathVariable String id){
-        return ResponseEntity.ok(recordService.deleteRecord(id));
+    public ResponseEntity<RecordResponse> addTransferRecord(
+            HttpServletRequest request,
+            @RequestBody @Valid AddTransferRecordRequest body)
+    {
+        return ResponseEntity.ok(recordService.addTransferRecord(request, body));
     }
 
     @GetMapping("/record-categories")
     public ResponseEntity<List<RecordCategory>> getRecordCategories(){
         return ResponseEntity.ok(recordService.getRecordCategories());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RecordResponse> getRecord(
+            HttpServletRequest request,
+            @PathVariable UUID id)
+    {
+        return ResponseEntity.ok(recordService.getUserRecord(request, id));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<RecordResponse> updateRecord(
+            HttpServletRequest request,
+            @RequestBody @Valid UpdateRecordRequest body,
+            @PathVariable UUID id){
+        return ResponseEntity.ok(recordService.updateRecord(request, body, id));
+    }
+
+    @DeleteMapping("/{id}")
+    public HttpStatus deleteRecord(
+            HttpServletRequest request,
+            @PathVariable UUID id)
+    {
+        recordService.deleteRecord(request, id);
+        return HttpStatus.ACCEPTED;
     }
 }

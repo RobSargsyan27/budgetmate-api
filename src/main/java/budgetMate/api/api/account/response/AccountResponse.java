@@ -24,6 +24,6 @@ public record AccountResponse (
     }
 
     public static List<AccountResponse> from(List<Account> accounts){
-        return accounts.stream().map(AccountResponse::from).toList();
+        return accounts.isEmpty() ? List.of() : accounts.stream().map(AccountResponse::from).toList();
     }
 }

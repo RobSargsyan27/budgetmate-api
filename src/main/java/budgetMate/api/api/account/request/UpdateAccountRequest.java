@@ -10,7 +10,6 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class UpdateAccountRequest {
-
     @Size(min = 3, max = 50, message = "Account should have a name.")
     private String name;
 

@@ -19,7 +19,6 @@ services:
   api:
     build:
       context: ./budgetmate-v2-api
-      dockerfile: DockerFile
     container_name: budgetmate-api
     restart: unless-stopped
     env_file:

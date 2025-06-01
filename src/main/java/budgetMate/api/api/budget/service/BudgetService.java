@@ -7,6 +7,7 @@ import budgetMate.api.api.budget.response.BudgetsCurrentBalanceResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface BudgetService {
     List<BudgetResponse> getUserBudgets(HttpServletRequest request);
@@ -15,11 +16,11 @@ public interface BudgetService {
 
     byte[] getBudgetsReport(HttpServletRequest request);
 
-    BudgetResponse getBudget(String id);
+    BudgetResponse getBudget(HttpServletRequest request, UUID id);
 
-    BudgetResponse addBudget(AddBudgetRequest request);
+    BudgetResponse addBudget(HttpServletRequest request, AddBudgetRequest body);
 
-    BudgetResponse updateBudget(UpdateBudgetRequest request, String id);
+    BudgetResponse updateBudget(HttpServletRequest request, UpdateBudgetRequest body, UUID id);
 
-    Integer deleteBudget(String id);
+    Integer deleteBudget(HttpServletRequest request, UUID id);
 }

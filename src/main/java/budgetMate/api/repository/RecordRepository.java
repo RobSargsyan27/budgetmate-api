@@ -19,7 +19,8 @@ import java.util.UUID;
 
 @Repository
 public interface RecordRepository extends JpaRepository<Record, UUID>, JpaSpecificationExecutor<Record> {
-    Optional<Record> getRecordById(UUID id);
+    @Query("SELECT r FROM Record r WHERE r.id = :id AND r.user = :user ")
+    Optional<Record> getUserRecordById(User user, UUID id);
 
     List<Record> getRecordsByUser(User user);
 

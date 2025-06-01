@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -19,17 +21,30 @@ public class AccountAdditionRequest {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_user_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(
+            name = "owner_user_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_owner_user")
+    )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User ownerUser;
 
-    @ManyToOne
-    @JoinColumn(name = "requested_user_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(
+            name = "requested_user_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_requested_user")
+    )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User requestedUser;
 
+    @Column(name = "account_name", nullable = false)
     private String accountName;
 
-    private boolean isRequestApproved;
+    @Column(name = "is_request_approved", nullable = false)
+    private boolean isRequestApproved = false;
 
-    private boolean isRequestChecked;
+    @Column(name = "is_request_checked", nullable = false)
+    private boolean isRequestChecked = false;
 }

@@ -26,7 +26,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -39,7 +38,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class RecordServiceImpl implements RecordService {
-    private final UserRepository userRepository;
     private final AccountRepository accountRepository;
     private final RecordRepository recordRepository;
     private final RecordFilterSpecification recordFilterSpecification;
@@ -49,27 +47,29 @@ public class RecordServiceImpl implements RecordService {
     private final FileUtil fileUtil;
 
     @Override
-    public RecordResponse getUserRecord(String id){
-        final UUID recordId = UUID.fromString(id);
+    public RecordResponse getUserRecord(HttpServletRequest request, UUID id){
+        final User user = userLib.fetchRequestUser(request);
 
-        final Record record = recordRepository.getRecordById(recordId).
+        final Record record = recordRepository.getUserRecordById(user, id).
                 orElseThrow(() -> new IllegalStateException("Record is not found!"));
 
-        return recordLib.buildRecordResponse(record);
+        return RecordResponse.from(record);
     }
 
 
     @Override
     public List<RecordResponse> getUserRecords(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
+
         final List<Record> records = recordRepository.getRecordsByUser(user);
 
-        return records.stream().map(recordLib::buildRecordResponse).toList();
+        return RecordResponse.from(records);
     }
 
     @Override
     public Long getUserRecordsCount(HttpServletRequest request, GetAccountFilteredRecordsRequest requestBody){
         final User user = userLib.fetchRequestUser(request);
+
         final RecordType recordType = RecordType.fromString(requestBody.getRecordType());
         final String paymentTimeGreaterThan = requestBody.getPaymentTimeGreaterThan();
         final String paymentTimeLessThan = requestBody.getPaymentTimeLessThan();
@@ -91,6 +91,7 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public byte[] getRecordsReport(HttpServletRequest request, GetAccountFilteredRecordsRequest requestBody) {
         final User user = userLib.fetchRequestUser(request);
+
         final RecordType recordType = RecordType.fromString(requestBody.getRecordType());
         final String paymentTimeGreaterThan = requestBody.getPaymentTimeGreaterThan();
         final String paymentTimeLessThan = requestBody.getPaymentTimeLessThan();
@@ -121,6 +122,7 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public List<RecordResponse> getUserPaginatedRecords(HttpServletRequest request, GetAccountFilteredRecordsRequest requestBody, int limit, int offset){
         final User user = userLib.fetchRequestUser(request);
+
         final RecordType recordType = RecordType.fromString(requestBody.getRecordType());
         final String paymentTimeGreaterThan = requestBody.getPaymentTimeGreaterThan();
         final String paymentTimeLessThan = requestBody.getPaymentTimeLessThan();
@@ -139,121 +141,79 @@ public class RecordServiceImpl implements RecordService {
 
         final List<Record> filteredRecords = recordRepository.findAll(specification, pageable).stream().toList();
 
-        return filteredRecords.stream().map(recordLib::buildRecordResponse).toList();
+        return RecordResponse.from(filteredRecords);
     }
 
     @Override
     @Transactional
-    public RecordResponse addIncomeRecord(AddIncomeRecordRequest request) {
-        final UUID userId = UUID.fromString(request.getUserId());
-        final UUID receivingAccountId = UUID.fromString(request.getReceivingAccountId());
-        final double amount = request.getAmount();
-        final String recordCategoryName = request.getCategory();
-        final String note = request.getNote();
-        final LocalDateTime paymentTime = request.getPaymentTime() == null ? LocalDateTime.now() : request.getPaymentTime();
+    public RecordResponse addIncomeRecord(HttpServletRequest request, AddIncomeRecordRequest body) {
+        final User user = userLib.fetchRequestUser(request);
 
-        final User user = userRepository.findUserById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-        final Account receivingAccount = accountRepository.getAccountById(receivingAccountId)
+        final LocalDateTime paymentTime = body.getPaymentTime() == null ? LocalDateTime.now() : body.getPaymentTime();
+        final Account receivingAccount = accountRepository.getUserAccountById(user, body.getReceivingAccountId())
                 .orElseThrow(() -> new IllegalStateException("Receiving account not found!"));
-        final RecordCategory recordCategory = recordCategoryRepository.getRecordCategoryByName(recordCategoryName)
+        final RecordCategory recordCategory = recordCategoryRepository.getRecordCategoryByName(body.getCategory())
                 .getFirst();
 
         final Record record = Record.builder()
-                .amount(amount)
+                .amount(body.getAmount())
                 .user(user)
                 .paymentTime(paymentTime)
                 .category(recordCategory)
                 .type(RecordType.INCOME)
-                .note(note)
+                .note(body.getNote())
                 .currency(receivingAccount.getCurrency())
                 .receivingAccount(receivingAccount)
                 .build();
-
         recordRepository.save(record);
-        accountRepository.addUpAccountCurrentBalance(amount, receivingAccountId);
+        accountRepository.addUpAccountCurrentBalance(body.getAmount(), body.getReceivingAccountId());
 
-        return RecordResponse.builder()
-                .id(record.getId())
-                .amount(record.getAmount())
-                .paymentTime(record.getPaymentTime())
-                .userId(record.getUser().getId())
-                .category(record.getCategory())
-                .type(record.getType())
-                .note(record.getNote())
-                .currency(record.getCurrency())
-                .receivingAccountName(receivingAccount.getName())
-                .receivingAccountId(receivingAccount.getId())
-                .build();
+        return RecordResponse.from(record);
     }
 
     @Override
     @Transactional
-    public RecordResponse addExpenseRecord(AddExpenseRecordRequest request) {
-        final UUID userId = UUID.fromString(request.getUserId());
-        final double amount = request.getAmount();
-        final String recordCategoryName = request.getCategory();
-        final String note = request.getNote();
-        final UUID withdrawalAccountId = UUID.fromString(request.getWithdrawalAccountId());
-        final LocalDateTime paymentTime = request.getPaymentTime() == null ? LocalDateTime.now() : request.getPaymentTime();
+    public RecordResponse addExpenseRecord(HttpServletRequest request, AddExpenseRecordRequest body) {
+        final User user = userLib.fetchRequestUser(request);
 
-        final User user = userRepository.findUserById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-        final Account withdrawalAccount = accountRepository.getAccountById(withdrawalAccountId)
+        final LocalDateTime paymentTime = body.getPaymentTime() == null ? LocalDateTime.now() : body.getPaymentTime();
+        final Account withdrawalAccount = accountRepository.getUserAccountById(user, body.getWithdrawalAccountId())
                 .orElseThrow(() -> new IllegalStateException("Withdrawal account not found!"));
-        final RecordCategory recordCategory = recordCategoryRepository.getRecordCategoryByName(recordCategoryName)
+        final RecordCategory recordCategory = recordCategoryRepository.getRecordCategoryByName(body.getCategory())
                 .getFirst();
 
-        if(withdrawalAccount.getCurrentBalance() - amount < 0){
+        if(withdrawalAccount.getCurrentBalance() - body.getAmount() < 0){
             throw new IllegalStateException("Insufficient balance on account");
         }
 
         final Record record = Record.builder()
-                .amount(amount)
+                .amount(body.getAmount())
                 .user(user)
                 .paymentTime(paymentTime)
                 .category(recordCategory)
                 .type(RecordType.EXPENSE)
-                .note(note)
+                .note(body.getNote())
                 .currency(withdrawalAccount.getCurrency())
                 .withdrawalAccount(withdrawalAccount)
                 .build();
-
         recordRepository.save(record);
-        accountRepository.withdrawFromAccountCurrentBalance(amount, withdrawalAccountId);
+        accountRepository.withdrawFromAccountCurrentBalance(body.getAmount(), body.getWithdrawalAccountId());
 
-        return RecordResponse.builder()
-                .id(record.getId())
-                .amount(record.getAmount())
-                .paymentTime(record.getPaymentTime())
-                .userId(record.getUser().getId())
-                .category(record.getCategory())
-                .type(record.getType())
-                .note(record.getNote())
-                .currency(record.getCurrency())
-                .withdrawalAccountName(withdrawalAccount.getName())
-                .withdrawalAccountId(withdrawalAccount.getId())
-                .build();
+        return RecordResponse.from(record);
     }
 
     @Override
     @Transactional
-    public RecordResponse addTransferRecord(AddTransferRecordRequest request) {
-        final UUID userId = UUID.fromString(request.getUserId());
-        final double amount = request.getAmount();
-        final String note = request.getNote();
-        final UUID withdrawalAccountId = UUID.fromString(request.getWithdrawalAccountId());
-        final UUID receivingAccountId = UUID.fromString(request.getReceivingAccountId());
-        final LocalDateTime paymentTime = request.getPaymentTime() == null ? LocalDateTime.now() : request.getPaymentTime();
+    public RecordResponse addTransferRecord(HttpServletRequest request, AddTransferRecordRequest body) {
+        final User user = userLib.fetchRequestUser(request);
 
-        final User user = userRepository.findUserById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-        final Account withdrawalAccount = accountRepository.getAccountById(withdrawalAccountId)
+        final LocalDateTime paymentTime = body.getPaymentTime() == null ? LocalDateTime.now() : body.getPaymentTime();
+        final Account withdrawalAccount = accountRepository.getUserAccountById(user, body.getWithdrawalAccountId())
                 .orElseThrow(() -> new IllegalStateException("Withdrawal account not found!"));
-        final Account receivingAccount = accountRepository.getAccountById(receivingAccountId)
+        final Account receivingAccount = accountRepository.getUserAccountById(user, body.getReceivingAccountId())
                 .orElseThrow(() -> new IllegalStateException("Receiving account not found!"));
 
-        if(withdrawalAccount.getCurrentBalance() - amount < 0){
+        if(withdrawalAccount.getCurrentBalance() - body.getAmount() < 0){
             throw new IllegalStateException("Insufficient balance on account");
         }
 
@@ -262,61 +222,48 @@ public class RecordServiceImpl implements RecordService {
         }
 
         final Record record = Record.builder()
-                .amount(amount)
+                .amount(body.getAmount())
                 .user(user)
                 .paymentTime(paymentTime)
                 .type(RecordType.TRANSFER)
-                .note(note)
+                .note(body.getNote())
                 .currency(withdrawalAccount.getCurrency())
                 .withdrawalAccount(withdrawalAccount)
                 .receivingAccount(receivingAccount)
                 .build();
-
         recordRepository.save(record);
-        accountRepository.withdrawFromAccountCurrentBalance(amount, withdrawalAccountId);
-        accountRepository.addUpAccountCurrentBalance(amount, receivingAccountId);
+        accountRepository.withdrawFromAccountCurrentBalance(body.getAmount(), body.getWithdrawalAccountId());
+        accountRepository.addUpAccountCurrentBalance(body.getAmount(), body.getReceivingAccountId());
 
-        return RecordResponse.builder()
-                .id(record.getId())
-                .amount(record.getAmount())
-                .paymentTime(record.getPaymentTime())
-                .userId(record.getUser().getId())
-                .type(record.getType())
-                .note(record.getNote())
-                .currency(record.getCurrency())
-                .withdrawalAccountName(withdrawalAccount.getName())
-                .withdrawalAccountId(withdrawalAccount.getId())
-                .receivingAccountName(receivingAccount.getName())
-                .receivingAccountId(receivingAccount.getId())
-                .build();
+        return RecordResponse.from(record);
     }
 
     @Transactional
-    public RecordResponse updateRecord(UpdateRecordRequest request, String id){
-        final UUID recordId = UUID.fromString(id);
+    public RecordResponse updateRecord(HttpServletRequest request, UpdateRecordRequest body, UUID id){
+        final User user = userLib.fetchRequestUser(request);
 
-        final Record record = recordRepository.getRecordById(recordId)
+        final Record record = recordRepository.getUserRecordById(user, id)
                 .orElseThrow(() -> new IllegalStateException("Record is not found!"));
-        record.setNote(request.getNote());
-        record.setPaymentTime(request.getPaymentTime());
+        record.setNote(body.getNote());
+        record.setPaymentTime(body.getPaymentTime());
 
-        if(request.getCategory() != null){
+        if(body.getCategory() != null){
             final RecordCategory recordCategory = recordCategoryRepository
-                    .getRecordCategoryByName(request.getCategory()).getFirst();
+                    .getRecordCategoryByName(body.getCategory()).getFirst();
             record.setCategory(recordCategory);
         }
 
         final Record updatedRecord = recordRepository.save(record);
 
-        return recordLib.buildRecordResponse(updatedRecord);
+        return RecordResponse.from(updatedRecord);
     }
 
     @Override
     @Transactional
-    public Integer deleteRecord(String id) {
-        final UUID recordId = UUID.fromString(id);
+    public Integer deleteRecord(HttpServletRequest request, UUID id) {
+        final User user = userLib.fetchRequestUser(request);
 
-        final Record record = recordRepository.getRecordById(recordId)
+        final Record record = recordRepository.getUserRecordById(user, id)
                 .orElseThrow(() -> new IllegalStateException("Record is not found!"));
 
         switch (record.getType()){
@@ -331,7 +278,7 @@ public class RecordServiceImpl implements RecordService {
                 accountRepository.addUpAccountCurrentBalance(record.getAmount(), record.getWithdrawalAccount().getId());
         }
 
-        return recordRepository.deleteRecordById(recordId);
+        return recordRepository.deleteRecordById(id);
     }
 
     @Override

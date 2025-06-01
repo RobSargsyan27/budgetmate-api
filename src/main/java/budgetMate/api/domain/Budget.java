@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,21 +18,28 @@ import java.util.UUID;
 @Entity
 @Table(name = "budgets")
 public class Budget {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "amount", nullable = false)
     private double amount;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(
+            name = "user_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_budgets_user")
+    )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "budget_record_categories",
             joinColumns = @JoinColumn(name = "budget_id"),
@@ -39,27 +47,14 @@ public class Budget {
     )
     private List<RecordCategory> recordCategories;
 
-    public void addRecordCategory(RecordCategory recordCategory) {
-        if (recordCategories == null) {
-            recordCategories = new ArrayList<>();
-        }
-
-        recordCategories.add(recordCategory);
-    }
 
     public void setName(String name) {
-        if(name != null){
+        if (name != null) {
             this.name = name;
         }
     }
 
     public void setAmount(double amount) {
         this.amount = amount < 1 ? 1 : amount;
-    }
-
-    public void setRecordCategories(List<RecordCategory> recordCategories) {
-        if(recordCategories != null && !recordCategories.isEmpty()){
-            this.recordCategories = recordCategories;
-        }
     }
 }

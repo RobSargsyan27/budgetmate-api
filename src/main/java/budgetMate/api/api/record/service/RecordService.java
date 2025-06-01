@@ -10,27 +10,28 @@ import budgetMate.api.domain.RecordCategory;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface RecordService {
-    RecordResponse getUserRecord(String id);
+    RecordResponse getUserRecord(HttpServletRequest request, UUID id);
 
     List<RecordResponse> getUserRecords(HttpServletRequest request);
 
-    Long getUserRecordsCount(HttpServletRequest request, GetAccountFilteredRecordsRequest requestBody);
+    Long getUserRecordsCount(HttpServletRequest request, GetAccountFilteredRecordsRequest body);
 
-    byte[] getRecordsReport(HttpServletRequest request, GetAccountFilteredRecordsRequest requestBody);
+    byte[] getRecordsReport(HttpServletRequest request, GetAccountFilteredRecordsRequest body);
 
-    List<RecordResponse> getUserPaginatedRecords(HttpServletRequest request, GetAccountFilteredRecordsRequest requestBody, int limit, int offset);
+    List<RecordResponse> getUserPaginatedRecords(HttpServletRequest request, GetAccountFilteredRecordsRequest body, int limit, int offset);
 
-    RecordResponse addIncomeRecord(AddIncomeRecordRequest request);
+    RecordResponse addIncomeRecord(HttpServletRequest request, AddIncomeRecordRequest body);
 
-    RecordResponse addExpenseRecord(AddExpenseRecordRequest request);
+    RecordResponse addExpenseRecord(HttpServletRequest request, AddExpenseRecordRequest body);
 
-    RecordResponse addTransferRecord(AddTransferRecordRequest request);
+    RecordResponse addTransferRecord(HttpServletRequest request, AddTransferRecordRequest body);
 
-    RecordResponse updateRecord(UpdateRecordRequest request, String id);
+    RecordResponse updateRecord(HttpServletRequest request, UpdateRecordRequest body, UUID id);
 
-    Integer deleteRecord(String id);
+    Integer deleteRecord(HttpServletRequest request, UUID id);
 
     List<RecordCategory> getRecordCategories();
 }

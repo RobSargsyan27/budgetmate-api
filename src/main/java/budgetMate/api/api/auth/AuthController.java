@@ -18,7 +18,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v2/auth")
 public class AuthController {
     private final AuthService registrationService;
 

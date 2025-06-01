@@ -1,6 +1,7 @@
 package budgetMate.api.repository;
 
 import budgetMate.api.domain.Account;
+import budgetMate.api.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +13,8 @@ import java.util.UUID;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID>{
 
-    Optional<Account> getAccountById(UUID id);
+    @Query("SELECT ac FROM Account ac WHERE ac.id = :id AND ac.createdBy = :user")
+    Optional<Account> getUserAccountById(User user, UUID id);
 
     @Query("SELECT ac FROM Account ac WHERE ac.createdBy.id = :ownerUserId AND ac.name = :accountName")
     Optional<Account> getUserAccount(UUID ownerUserId, String accountName);

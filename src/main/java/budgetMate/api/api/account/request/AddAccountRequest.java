@@ -14,9 +14,6 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class AddAccountRequest {
     @NotEmpty
-    private String userId;
-
-    @NotEmpty
     @Size(min = 3, max = 50, message = "Account should have a name.")
     private String name;
 

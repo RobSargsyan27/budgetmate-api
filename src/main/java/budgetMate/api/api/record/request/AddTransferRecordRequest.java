@@ -1,6 +1,5 @@
 package budgetMate.api.api.record.request;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
@@ -8,15 +7,12 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @ToString
 @EqualsAndHashCode
 public class AddTransferRecordRequest {
-
-    @NotEmpty(message = "User should be specified!")
-    private String userId;
-
     @Positive
     private double amount;
 
@@ -25,8 +21,8 @@ public class AddTransferRecordRequest {
     private String note;
 
     @NotNull
-    private String withdrawalAccountId;
+    private UUID withdrawalAccountId;
 
     @NotNull
-    private String receivingAccountId;
+    private UUID receivingAccountId;
 }
