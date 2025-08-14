@@ -166,7 +166,7 @@ public class RecordServiceImpl implements RecordService {
                 .receivingAccount(receivingAccount)
                 .build();
         recordRepository.save(record);
-        accountRepository.addUpAccountCurrentBalance(body.getAmount(), body.getReceivingAccountId());
+        accountRepository.updateAccountCurrentBalance(body.getReceivingAccountId(), body.getAmount());
 
         return RecordResponse.from(record);
     }
@@ -197,7 +197,7 @@ public class RecordServiceImpl implements RecordService {
                 .withdrawalAccount(withdrawalAccount)
                 .build();
         recordRepository.save(record);
-        accountRepository.withdrawFromAccountCurrentBalance(body.getAmount(), body.getWithdrawalAccountId());
+        accountRepository.updateAccountCurrentBalance(body.getWithdrawalAccountId(), -body.getAmount());
 
         return RecordResponse.from(record);
     }
@@ -232,8 +232,8 @@ public class RecordServiceImpl implements RecordService {
                 .receivingAccount(receivingAccount)
                 .build();
         recordRepository.save(record);
-        accountRepository.withdrawFromAccountCurrentBalance(body.getAmount(), body.getWithdrawalAccountId());
-        accountRepository.addUpAccountCurrentBalance(body.getAmount(), body.getReceivingAccountId());
+        accountRepository.updateAccountCurrentBalance(body.getWithdrawalAccountId(), -body.getAmount());
+        accountRepository.updateAccountCurrentBalance(body.getReceivingAccountId(), body.getAmount());
 
         return RecordResponse.from(record);
     }
@@ -268,14 +268,14 @@ public class RecordServiceImpl implements RecordService {
 
         switch (record.getType()){
             case RecordType.INCOME:
-                accountRepository.withdrawFromAccountCurrentBalance(record.getAmount(), record.getReceivingAccount().getId());
+                accountRepository.updateAccountCurrentBalance(record.getReceivingAccount().getId(), -record.getAmount());
                 break;
             case RecordType.EXPENSE:
-                accountRepository.addUpAccountCurrentBalance(record.getAmount(), record.getWithdrawalAccount().getId());
+                accountRepository.updateAccountCurrentBalance(record.getWithdrawalAccount().getId(), record.getAmount());
                 break;
             case RecordType.TRANSFER:
-                accountRepository.withdrawFromAccountCurrentBalance(record.getAmount(), record.getReceivingAccount().getId());
-                accountRepository.addUpAccountCurrentBalance(record.getAmount(), record.getWithdrawalAccount().getId());
+                accountRepository.updateAccountCurrentBalance(record.getReceivingAccount().getId(), -record.getAmount());
+                accountRepository.updateAccountCurrentBalance(record.getWithdrawalAccount().getId(), record.getAmount());
         }
 
         return recordRepository.deleteRecordById(id);

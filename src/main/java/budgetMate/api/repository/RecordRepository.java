@@ -22,11 +22,14 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, JpaSpecif
     @Query("SELECT r FROM Record r WHERE r.id = :id AND r.user = :user ")
     Optional<Record> getUserRecordById(User user, UUID id);
 
+    @Query("SELECT r FROM Record r WHERE r.user = :user")
     List<Record> getRecordsByUser(User user);
 
     @Query("SELECT SUM(r.amount) FROM Record r WHERE r.category IN :categories AND r.user = :user")
     BigDecimal findSumOfUserRecordsAmountsByCategories(User user, List<RecordCategory> categories);
 
+    @Modifying
+    @Query("DELETE FROM Record r WHERE r.id = :id")
     int deleteRecordById(UUID id);
 
     @Modifying

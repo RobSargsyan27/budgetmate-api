@@ -21,21 +21,17 @@ public interface AccountRepository extends JpaRepository<Account, UUID>{
 
     @Modifying
     @Query("UPDATE Account ac SET ac.currentBalance = ac.currentBalance + :amount WHERE ac.id = :id")
-    void addUpAccountCurrentBalance(double amount, UUID id);
-
-    @Modifying
-    @Query("UPDATE Account ac SET ac.currentBalance = ac.currentBalance - :amount WHERE ac.id = :id")
-    void withdrawFromAccountCurrentBalance(double amount, UUID id);
+    void updateAccountCurrentBalance(UUID id, double amount);
 
     @Modifying
     @Query(value = "DELETE FROM user_accounts WHERE user_id = :userId AND account_id = :accountId", nativeQuery = true)
     void deleteUserAccountAssociation(UUID userId, UUID accountId);
 
-    @Query(value = "SELECT COUNT(*) FROM user_accounts WHERE account_id = :accountId", nativeQuery = true)
-    int countUsersByAccountId(UUID accountId);
+    @Query(value = "SELECT COUNT(*) FROM user_accounts WHERE account_id = :id", nativeQuery = true)
+    int countUsersByAccountId(UUID id);
 
     @Modifying
-    @Query(value = "DELETE FROM accounts WHERE id = :accountId", nativeQuery = true)
-    void deleteAccountById(UUID accountId);
+    @Query(value = "DELETE FROM Account a WHERE a.id = :id")
+    void deleteAccountById(UUID id);
 
 }

@@ -118,7 +118,7 @@ public class AccountServiceImpl implements AccountService{
         final User user = userLib.fetchRequestUser(request);
 
         try{
-            accountAdditionRequestRepository.updateAccountAdditionRequest(user, requestId, status);
+            accountAdditionRequestRepository.updateAccountAdditionRequest(requestId, user, status);
 
             if(status){
                 final AccountAdditionRequest accountAdditionRequest = accountAdditionRequestRepository
@@ -137,7 +137,7 @@ public class AccountServiceImpl implements AccountService{
                 userRepository.save(requestedUser);
             }
         } finally {
-            accountAdditionRequestRepository.updateAccountAdditionRequest(user, requestId, status);
+            accountAdditionRequestRepository.updateAccountAdditionRequest(requestId, user, status);
         }
     }
 }

@@ -19,8 +19,4 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Modifying
     @Query("UPDATE User u SET u.isEnabled = TRUE WHERE u.username = :username")
     void enableUser(String username);
-
-    @Modifying
-    @Query("DELETE User u WHERE u.id = :id")
-    int deleteUserById(UUID id);
 }

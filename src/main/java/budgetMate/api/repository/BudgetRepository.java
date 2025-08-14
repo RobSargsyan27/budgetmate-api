@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, UUID> {
+    @Query("SELECT bd FROM Budget bd WHERE bd.user = :user")
     List<Budget> getBudgetsByUser(User user);
 
     @Query("SELECT bd FROM Budget bd WHERE bd.id = :id AND bd.user = :user")

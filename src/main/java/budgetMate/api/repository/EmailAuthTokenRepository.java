@@ -11,8 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface EmailAuthTokenRepository extends JpaRepository<EmailAuthToken, UUID> {
-
-    @Query("SELECT t FROM EmailAuthToken t JOIN t.user u WHERE t.token = ?1 AND u.username = ?2 AND t.isUsed = FALSE")
+    @Query("SELECT t FROM EmailAuthToken t JOIN t.user u WHERE t.token = :token AND u.username = :username AND t.isUsed = FALSE")
     Optional<EmailAuthToken> getUserEmailAuthToken(UUID token, String username);
 
     @Modifying

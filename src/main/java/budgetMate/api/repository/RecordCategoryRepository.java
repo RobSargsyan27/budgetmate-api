@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface RecordCategoryRepository extends JpaRepository<RecordCategory, UUID> {
-
     @Query("SELECT rc FROM RecordCategory rc")
     List<RecordCategory> getAllRecordCategories();
 
