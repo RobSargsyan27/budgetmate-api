@@ -21,7 +21,7 @@ public class AccountAdditionRequest {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(
             name = "owner_user_id",
             nullable = false,
@@ -30,7 +30,7 @@ public class AccountAdditionRequest {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User ownerUser;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(
             name = "requested_user_id",
             nullable = false,

@@ -18,7 +18,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "budgets")
 public class Budget {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -29,7 +28,7 @@ public class Budget {
     @Column(name = "amount", nullable = false)
     private double amount;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(
             name = "user_id",
             nullable = false,
@@ -38,15 +37,13 @@ public class Budget {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "budget_record_categories",
             joinColumns = @JoinColumn(name = "budget_id"),
             inverseJoinColumns = @JoinColumn(name = "record_category_id")
     )
     private List<RecordCategory> recordCategories;
-
 
     public void setName(String name) {
         if (name != null) {

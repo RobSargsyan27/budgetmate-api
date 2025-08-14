@@ -20,7 +20,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "records")
 public class Record {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -28,7 +27,7 @@ public class Record {
     @Column(name = "amount", nullable = false)
     private double amount;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(
             name = "user_id",
             nullable = false,
@@ -40,11 +39,8 @@ public class Record {
     @Column(name = "payment_time")
     private LocalDateTime paymentTime;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "category_id",
-            foreignKey = @ForeignKey(name = "fk_records_category")
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_records_category"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     private RecordCategory category;
 
@@ -59,19 +55,13 @@ public class Record {
     @Column(name = "currency", nullable = false)
     private Currency currency;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "withdrawal_account_id",
-            foreignKey = @ForeignKey(name = "fk_records_withdrawal_account")
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "withdrawal_account_id", foreignKey = @ForeignKey(name = "fk_records_withdrawal_account"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Account withdrawalAccount;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "reciving_account_id",
-            foreignKey = @ForeignKey(name = "fk_records_reciving_account")
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reciving_account_id", foreignKey = @ForeignKey(name = "fk_records_reciving_account"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Account receivingAccount;
 

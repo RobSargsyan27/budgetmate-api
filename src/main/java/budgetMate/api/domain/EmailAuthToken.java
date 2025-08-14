@@ -15,11 +15,10 @@ import java.util.UUID;
 @Entity
 @Table(name = "email_auth_tokens")
 public class EmailAuthToken {
-
     @Id
     private UUID token;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(
             name = "user_id",
             nullable = false,

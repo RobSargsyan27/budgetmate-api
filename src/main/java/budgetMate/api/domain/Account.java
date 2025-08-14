@@ -41,7 +41,7 @@ public class Account {
     @Column(name = "avatar_color")
     private String avatarColor;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(
             name = "user_id",
             nullable = false,

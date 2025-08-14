@@ -23,9 +23,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_accounts",
             joinColumns = @JoinColumn(
@@ -39,30 +37,43 @@ public class User implements UserDetails {
     )
     private List<Account> accounts;
 
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "firstname")
     private String firstname;
 
+    @Column(name = "lastname")
     private String lastname;
 
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "country")
     private String country;
 
+    @Column(name = "city")
     private String city;
 
+    @Column(name = "address")
     private String address;
 
+    @Column(name = "postal_code")
     private String postalCode;
 
+    @Column(name = "avatar_color")
     private String avatarColor;
 
+    @Column(name = "receive_news_letters")
     private boolean receiveNewsLetters;
 
+    @Column(name = "is_locked")
     private boolean isLocked;
 
+    @Column(name = "is_enabled")
     private boolean isEnabled;
 
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
