@@ -1,13 +1,5 @@
 # BudgetMate
 
-Course Name: Programming 5
-
-Full Name: Robert Sargsyan 
-
-Student Id: 0165766-90
-
-Email: robert.sargsyan.student.kdg.be
-
 Domain Entities:
 
 - Account
