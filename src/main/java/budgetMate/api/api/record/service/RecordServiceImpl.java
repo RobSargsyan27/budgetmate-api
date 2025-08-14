@@ -17,7 +17,6 @@ import budgetMate.api.repository.AccountRepository;
 import budgetMate.api.repository.RecordCategoryRepository;
 import budgetMate.api.repository.specification.RecordFilterSpecification;
 import budgetMate.api.repository.RecordRepository;
-import budgetMate.api.repository.UserRepository;
 import budgetMate.api.util.FileUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
