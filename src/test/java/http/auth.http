@@ -1,0 +1,9 @@
+POST http://app.budgetmate.com/api/v2/auth/login
+Content-Type: application/json
+Authorization: Bearer 1234
+
+{
+  "email": "robertsargsyna6@gmail.com",
+  "password": "p123"
+}
+
