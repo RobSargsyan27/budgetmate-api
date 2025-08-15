@@ -12,11 +12,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnalyticsResponse {
-    private double monthlyEarnings;
+    private Double monthlyEarnings;
 
-    private double annualEarnings;
+    private Double annualEarnings;
 
-    private double monthlyExpenses;
+    private Double monthlyExpenses;
 
     public void setAnnualEarnings(BigDecimal annualEarnings) {
         this.annualEarnings = annualEarnings != null ? annualEarnings.doubleValue() : 0;

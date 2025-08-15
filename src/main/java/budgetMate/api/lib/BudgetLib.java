@@ -12,23 +12,15 @@ import java.util.List;
 
 @Component
 public class BudgetLib {
-
-    public List<BudgetResponse> buildBudgetsResponse(List<Budget> budgets){
-        return budgets.stream().map((budget) ->
-                BudgetResponse.builder()
-                        .id(budget.getId())
-                        .name(budget.getName())
-                        .amount(budget.getAmount())
-                        .userId(budget.getUser().getId())
-                        .recordCategories(budget.getRecordCategories())
-                        .build()
-                ).toList();
-    }
-
+    /**
+     * <h2>Generate budgets report.</h2>
+     * @param budgetsList {List<Budget>}
+     * @return {File}
+     */
     public File generateBudgetsReport(List<Budget> budgetsList){
         final Gson gson = new Gson();
         final File file = new File("budgets-report.json");
-        final List<BudgetResponse> budgets = this.buildBudgetsResponse(budgetsList);
+        final List<BudgetResponse> budgets = BudgetResponse.from(budgetsList);
 
         String jsonReport = gson.toJson(budgets);
         try (FileWriter writer = new FileWriter(file)) {

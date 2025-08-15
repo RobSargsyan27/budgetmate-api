@@ -23,5 +23,5 @@ public class AddBudgetRequest {
 
     @NotNull
     @NotEmpty
-    private List<String> budgetCategories;
+    private List<String> recordCategories;
 }

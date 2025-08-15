@@ -17,6 +17,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
   "type": "CASH"
 }
 
+
 ### Get user accout.
 GET http://localhost:8089/api/v2/accounts/e03e18d2-bdbf-4f96-9b5e-cc2c6d97c80c HTTP/1.1
 Accept: application/json

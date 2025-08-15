@@ -27,13 +27,13 @@ public class AccountServiceImpl implements AccountService{
     private final UserLib userLib;
 
     /**
-     * <h2>Get accounts.</h2>
+     * <h2>Get user accounts.</h2>
      * @param request {HttpServletRequest}
      * @return {List<AccountResponse>}
      */
     @Override
     @Transactional
-    public List<AccountResponse> getAccounts(HttpServletRequest request){
+    public List<AccountResponse> getUserAccounts(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
         final List<Account> accounts = accountRepository.getUserAccounts(user);
@@ -42,14 +42,14 @@ public class AccountServiceImpl implements AccountService{
     }
 
     /**
-     * <h2>Add account.</h2>
+     * <h2>Add user account.</h2>
      * @param request {HttpServletRequest}
      * @param body {AddAccountRequest}
      * @return {AccountResponse}
      */
     @Override
     @Transactional
-    public AccountResponse addAccount(HttpServletRequest request, AddAccountRequest body){
+    public AccountResponse addUserAccount(HttpServletRequest request, AddAccountRequest body){
         final User user = userLib.fetchRequestUser(request);
 
         final Account account = new Account();
@@ -67,14 +67,14 @@ public class AccountServiceImpl implements AccountService{
     }
 
     /**
-     * <h2>Get account.</h2>
+     * <h2>Get user account.</h2>
      * @param request {HttpServletRequest}
      * @param id {UUID}
      * @return {AccountResponse}
      */
     @Override
     @Transactional
-    public AccountResponse getAccount(HttpServletRequest request, UUID id){
+    public AccountResponse getUserAccount(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
         final Account account =  accountRepository.getUserAccountById(user, id)
@@ -84,7 +84,7 @@ public class AccountServiceImpl implements AccountService{
     }
 
     /**
-     * <h2>Update account.</h2>
+     * <h2>Update user account.</h2>
      * @param request {HttpServletRequest}
      * @param id {UUID}
      * @param body {UpdateAccountRequest}
@@ -92,7 +92,7 @@ public class AccountServiceImpl implements AccountService{
      */
     @Override
     @Transactional
-    public AccountResponse updateAccount(HttpServletRequest request, UUID id, UpdateAccountRequest body){
+    public AccountResponse updateUserAccount(HttpServletRequest request, UUID id, UpdateAccountRequest body){
         final User user = userLib.fetchRequestUser(request);
 
         final Account account = accountRepository.getUserAccountById(user, id)
@@ -109,14 +109,14 @@ public class AccountServiceImpl implements AccountService{
     }
 
     /**
-     * <h2>Delete account.</h2>
+     * <h2>Delete user account.</h2>
      * @param request {HttpServletRequest}
      * @param id {UUID}
      * @return {Void}
      */
     @Override
     @Transactional
-    public Void deleteAccount(HttpServletRequest request, UUID id){
+    public Void deleteUserAccount(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
         accountRepository.deleteUserAccountAssociation(user.getId(), id);

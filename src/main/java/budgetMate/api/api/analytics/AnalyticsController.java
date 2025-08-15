@@ -7,10 +7,7 @@ import budgetMate.api.util.HttpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,36 +17,36 @@ public class AnalyticsController {
     private final HttpUtil httpUtil;
 
     @GetMapping("/dashboard")
-    public ResponseEntity<AnalyticsResponse> getDashboardAnalytics(HttpServletRequest request){
-        return httpUtil.handleGet(analyticsService.getDashboardAnalytics(request));
-    }
-
-    @GetMapping("/overview/{startDate}/{endDate}")
-    public ResponseEntity<AnalyticsResponse> getUserRecordsOverview(
-            @PathVariable String startDate,
-            @PathVariable String endDate,
-            HttpServletRequest request
-    ){
-        return httpUtil.handleGet(analyticsService.getUserRecordsOverview(startDate, endDate, request));
-    }
-
-    @GetMapping("overview-line/{startDate}/{endDate}/{recordType}")
-    public ResponseEntity<ChartResponse> getUserRecordsOverviewLineChart(
-            @PathVariable String startDate,
-            @PathVariable String endDate,
-            @PathVariable String recordType,
-            HttpServletRequest request
-    ){
-        return httpUtil.handleGet(analyticsService.getUserRecordsOverviewLineChart(startDate, endDate, recordType, request));
+    public ResponseEntity<AnalyticsResponse> getUserDashboardAnalytics(HttpServletRequest request){
+        return httpUtil.handleGet(analyticsService.getUserDashboardAnalytics(request));
     }
 
     @GetMapping("/dashboard/categories-pie")
-    public ResponseEntity<ChartResponse> getDashboardCategoriesPieChart(HttpServletRequest request){
-        return httpUtil.handleGet(analyticsService.getDashboardCategoriesPieChart(request));
+    public ResponseEntity<ChartResponse> getUserDashboardCategoriesPieChart(HttpServletRequest request){
+        return httpUtil.handleGet(analyticsService.getUserDashboardCategoriesPieChart(request));
     }
 
     @GetMapping("/dashboard/expenses-line-chart")
-    public ResponseEntity<ChartResponse> getDashboardExpensesLineChart(HttpServletRequest request){
-        return httpUtil.handleGet(analyticsService.getDashboardExpensesLineChart(request));
+    public ResponseEntity<ChartResponse> getUserDashboardExpensesLineChart(HttpServletRequest request){
+        return httpUtil.handleGet(analyticsService.getUserDashboardExpensesLineChart(request));
+    }
+
+    @GetMapping("/overview")
+    public ResponseEntity<AnalyticsResponse> getUserRecordsOverview(
+            @RequestParam String startDate,
+            @RequestParam String endDate,
+            HttpServletRequest request
+    ){
+        return httpUtil.handleGet(analyticsService.getUserRecordsOverview(request, startDate, endDate));
+    }
+
+    @GetMapping("/overview-line")
+    public ResponseEntity<ChartResponse> getUserRecordsOverviewLineChart(
+            @RequestParam String startDate,
+            @RequestParam String endDate,
+            @RequestParam String recordType,
+            HttpServletRequest request
+    ){
+        return httpUtil.handleGet(analyticsService.getUserRecordsOverviewLineChart(request, startDate, endDate, recordType));
     }
 }

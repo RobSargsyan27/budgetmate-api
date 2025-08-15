@@ -39,65 +39,34 @@ public class BudgetServiceImpl implements BudgetService {
     private final BudgetLib budgetLib;
     private final FileUtil fileUtil;
 
-    public BudgetResponse getBudget(HttpServletRequest request, UUID id){
-        final User user = userLib.fetchRequestUser(request);
-
-        final Budget budget = budgetRepository.getUserBudgetById(user, id)
-                .orElseThrow(() -> new IllegalArgumentException("Budget not found!"));
-
-        return BudgetResponse.from(budget);
-    }
-
+    /**
+     * <h2>Get user budgets.</h2>
+     * @param request {HttpServletRequest}
+     * @return {List<BudgetResponse>}
+     */
+    @Override
+    @Transactional
     public List<BudgetResponse> getUserBudgets(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
-        final List<Budget> budgets = budgetRepository.getBudgetsByUser(user);
+        final List<Budget> budgets = budgetRepository.getUserBudgets(user);
 
         return BudgetResponse.from(budgets);
     }
 
-    public List<BudgetsCurrentBalanceResponse> getUserBudgetsCurrentBalance(HttpServletRequest request){
-        final User user = userLib.fetchRequestUser(request);
-
-        final List<Budget> budgets = budgetRepository.getBudgetsByUser(user);
-
-        final Map<UUID, Double> currentBalances = budgets.stream()
-                .collect(Collectors.toMap(Budget::getId,
-                        budget -> {
-                            BigDecimal spendOverTime = recordRepository
-                                    .findSumOfUserRecordsAmountsByCategories(user, budget.getRecordCategories());
-                            return (spendOverTime == null)
-                                    ? budget.getAmount()
-                                    : budget.getAmount() - spendOverTime.doubleValue();
-                        }
-                ));
-
-        return BudgetsCurrentBalanceResponse.from(currentBalances);
-    }
-
+    /**
+     * <h2>Add user budget.</h2>
+     * @param request {HttpServletRequest}
+     * @param body {AddBudgetRequest}
+     * @return {BudgetResponse}
+     */
     @Override
-    public byte[] getBudgetsReport(HttpServletRequest request) {
-        final User user = userLib.fetchRequestUser(request);
-        final List<Budget> budgets = budgetRepository.getBudgetsByUser(user);
-
-        final File file = budgetLib.generateBudgetsReport(budgets);
-
-        try{
-            byte[] result =  Files.readAllBytes(file.toPath());
-            fileUtil.fileCleanUp(file);
-            return result;
-        }catch (IOException exception){
-            throw new RuntimeException(exception);
-        }
-    }
-
-    public BudgetResponse addBudget(HttpServletRequest request, AddBudgetRequest body){
+    @Transactional
+    public BudgetResponse addUserBudget(HttpServletRequest request, AddBudgetRequest body){
         final User user = userLib.fetchRequestUser(request);
 
-        final List<RecordCategory> recordCategories = body.getBudgetCategories().stream()
-                .map((recordCategoryName) ->
-                        recordCategoryRepository.getRecordCategoryByName(recordCategoryName).getLast())
-                .toList();
+        final List<RecordCategory> recordCategories =
+                recordCategoryRepository.getRecordCategoryByNames(body.getRecordCategories());
 
         final Budget budget = Budget.builder()
                 .user(user)
@@ -110,8 +79,81 @@ public class BudgetServiceImpl implements BudgetService {
         return BudgetResponse.from(budget);
     }
 
+    /**
+     * <h2>Get budget.</h2>
+     * @param request {HttpServletRequest}
+     * @param id {UUID}
+     * @return {BudgetResponse}
+     */
+    @Override
     @Transactional
-    public BudgetResponse updateBudget(HttpServletRequest request, UpdateBudgetRequest body, UUID id){
+    public BudgetResponse getUserBudget(HttpServletRequest request, UUID id){
+        final User user = userLib.fetchRequestUser(request);
+
+        final Budget budget = budgetRepository.getUserBudgetById(user, id)
+                .orElseThrow(() -> new IllegalStateException("Budget not found!"));
+
+        return BudgetResponse.from(budget);
+    }
+
+    /**
+     * <h2>Get user budget current balance.</h2>
+     * @param request {HttpServletRequest}
+     * @return {List<BudgetsCurrentBalanceResponse>}
+     */
+    @Override
+    @Transactional
+    public List<BudgetsCurrentBalanceResponse> getUserBudgetsCurrentBalance(HttpServletRequest request){
+        final User user = userLib.fetchRequestUser(request);
+
+        final List<Budget> budgets = budgetRepository.getUserBudgets(user);
+
+        final Map<UUID, Double> currentBalances = budgets.stream()
+                .collect(Collectors.toMap(Budget::getId,
+                        budget -> {
+                            BigDecimal spendOverTime = recordRepository
+                                    .getUserRecordsSumByCategories(user, budget.getRecordCategories());
+                            return spendOverTime == null
+                                    ? budget.getAmount()
+                                    : budget.getAmount() - spendOverTime.doubleValue();
+                        }
+                ));
+
+        return BudgetsCurrentBalanceResponse.from(currentBalances);
+    }
+
+    /**
+     * <h2>Get user budgets report.</h2>
+     * @param request {HttpServletRequest}
+     * @return {byte[]}
+     */
+    @Override
+    @Transactional
+    public byte[] getUserBudgetsReport(HttpServletRequest request) {
+        final User user = userLib.fetchRequestUser(request);
+        final List<Budget> budgets = budgetRepository.getUserBudgets(user);
+
+        final File file = budgetLib.generateBudgetsReport(budgets);
+
+        try {
+            byte[] result = Files.readAllBytes(file.toPath());
+            fileUtil.fileCleanUp(file);
+            return result;
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    /**
+     * <h2>Update user budget.</h2>
+     * @param request {HttpServletRequest}
+     * @param body {UpdateBudgetRequest}
+     * @param id {UUID}
+     * @return {BudgetResponse}
+     */
+    @Override
+    @Transactional
+    public BudgetResponse updateUserBudget(HttpServletRequest request, UpdateBudgetRequest body, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
         final Budget budget = budgetRepository.getUserBudgetById(user, id)
@@ -119,14 +161,9 @@ public class BudgetServiceImpl implements BudgetService {
 
         budget.setName(body.getName());
         budget.setAmount(body.getAmount());
-
         if(body.getRecordCategories() != null && !body.getRecordCategories().isEmpty()){
-            List<RecordCategory> recordCategories = body.getRecordCategories()
-                    .stream()
-                    .map((recordCategoryName) ->
-                            recordCategoryRepository.getRecordCategoryByName(recordCategoryName).getLast())
-                    .toList();
-
+            List<RecordCategory> recordCategories =
+                    recordCategoryRepository.getRecordCategoryByNames(body.getRecordCategories());
             budget.getRecordCategories().clear();
             budget.getRecordCategories().addAll(recordCategories);
         }
@@ -136,10 +173,18 @@ public class BudgetServiceImpl implements BudgetService {
         return BudgetResponse.from(updatedBudget);
     }
 
+    /**
+     * <h2>Delete user budget.</h2>
+     * @param request {HttpServletRequest}
+     * @param id {UUID}
+     * @return {Void}
+     */
+    @Override
     @Transactional
-    public Integer deleteBudget(HttpServletRequest request, UUID id){
+    public Void deleteUserBudget(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
-        return budgetRepository.deleteUserBudgetById(user, id);
+        budgetRepository.deleteUserBudgetById(user, id);
+        return null;
     }
 }

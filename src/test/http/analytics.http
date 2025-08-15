@@ -1,0 +1,28 @@
+### Get user dashboard analytics.
+GET http://localhost:8089/api/v2/analytics/dashboard HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE
+
+
+### Get user dashbaord category pie chart.
+GET http://localhost:8089/api/v2/analytics/dashboard/categories-pie HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE
+
+
+### Get user dashboard expenses line chart.
+GET http://localhost:8089/api/v2/analytics/dashboard/expenses-line-chart HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE
+
+
+### Get user records overview.
+GET http://localhost:8089/api/v2/analytics/overview?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE
+
+
+### Get user records overview line chart.
+GET http://localhost:8089/api/v2/analytics/overview-line?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z&recordType=expense HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE

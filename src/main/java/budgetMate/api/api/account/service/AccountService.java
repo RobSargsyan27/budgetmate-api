@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AccountService {
-    List<AccountResponse> getAccounts(HttpServletRequest request);
+    List<AccountResponse> getUserAccounts(HttpServletRequest request);
 
-    AccountResponse getAccount(HttpServletRequest request, UUID id);
+    AccountResponse getUserAccount(HttpServletRequest request, UUID id);
 
-    AccountResponse addAccount(HttpServletRequest request, AddAccountRequest body);
+    AccountResponse addUserAccount(HttpServletRequest request, AddAccountRequest body);
 
-    AccountResponse updateAccount(HttpServletRequest request,  UUID id, UpdateAccountRequest body);
+    AccountResponse updateUserAccount(HttpServletRequest request,  UUID id, UpdateAccountRequest body);
 
-    Void deleteAccount(HttpServletRequest request, UUID id);
+    Void deleteUserAccount(HttpServletRequest request, UUID id);
 }

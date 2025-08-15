@@ -12,15 +12,15 @@ import java.util.UUID;
 public interface BudgetService {
     List<BudgetResponse> getUserBudgets(HttpServletRequest request);
 
+    BudgetResponse addUserBudget(HttpServletRequest request, AddBudgetRequest body);
+
     List<BudgetsCurrentBalanceResponse> getUserBudgetsCurrentBalance(HttpServletRequest request);
 
-    byte[] getBudgetsReport(HttpServletRequest request);
+    byte[] getUserBudgetsReport(HttpServletRequest request);
 
-    BudgetResponse getBudget(HttpServletRequest request, UUID id);
+    BudgetResponse getUserBudget(HttpServletRequest request, UUID id);
 
-    BudgetResponse addBudget(HttpServletRequest request, AddBudgetRequest body);
+    BudgetResponse updateUserBudget(HttpServletRequest request, UpdateBudgetRequest body, UUID id);
 
-    BudgetResponse updateBudget(HttpServletRequest request, UpdateBudgetRequest body, UUID id);
-
-    Integer deleteBudget(HttpServletRequest request, UUID id);
+    Void deleteUserBudget(HttpServletRequest request, UUID id);
 }

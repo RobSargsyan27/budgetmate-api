@@ -20,54 +20,53 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/budget")
+@RequestMapping("/api/v2/budgets")
 public class BudgetController {
     private final BudgetService budgetService;
     private final HttpUtil httpUtil;
 
     @GetMapping("")
-    public ResponseEntity<List<BudgetResponse>> getBudgets(HttpServletRequest request){
+    public ResponseEntity<List<BudgetResponse>> getUserBudgets(HttpServletRequest request){
         return httpUtil.handleGet(budgetService.getUserBudgets(request));
     }
 
     @PostMapping("")
-    public ResponseEntity<BudgetResponse> addBudget(
+    public ResponseEntity<BudgetResponse> addUserBudget(
             HttpServletRequest request,
             @RequestBody @Valid AddBudgetRequest body)
     {
-        return httpUtil.handleAdd(budgetService.addBudget(request, body));
+        return httpUtil.handleAdd(budgetService.addUserBudget(request, body));
     }
 
     @GetMapping("/current-balance")
-    public ResponseEntity<List<BudgetsCurrentBalanceResponse>> getBudgetsCurrentBalance(HttpServletRequest request){
+    public ResponseEntity<List<BudgetsCurrentBalanceResponse>> getUserBudgetsCurrentBalance(HttpServletRequest request){
         return httpUtil.handleGet(budgetService.getUserBudgetsCurrentBalance(request));
     }
 
-    @PostMapping("/report")
-    public ResponseEntity<byte[]> getBudgetsReport(HttpServletRequest request){
+    @GetMapping("/report")
+    public ResponseEntity<byte[]> getUserBudgetsReport(HttpServletRequest request){
         final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=budgets-report.json");
 
-        return httpUtil.handleGet(budgetService.getBudgetsReport(request), headers);
+        return httpUtil.handleGet(budgetService.getUserBudgetsReport(request), headers);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BudgetResponse> getBudget(HttpServletRequest request, @PathVariable UUID id){
-        return httpUtil.handleGet(budgetService.getBudget(request, id));
+    public ResponseEntity<BudgetResponse> getUserBudget(HttpServletRequest request, @PathVariable UUID id){
+        return httpUtil.handleGet(budgetService.getUserBudget(request, id));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<BudgetResponse> updateBudget(
+    public ResponseEntity<BudgetResponse> updateUserBudget(
             HttpServletRequest request,
-            @RequestBody @Valid UpdateBudgetRequest body,
-            @PathVariable UUID id)
+            @PathVariable UUID id,
+            @RequestBody @Valid UpdateBudgetRequest body)
     {
-        return httpUtil.handleUpdate(budgetService.updateBudget(request, body, id));
+        return httpUtil.handleUpdate(budgetService.updateUserBudget(request, body, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBudget(HttpServletRequest request, @PathVariable UUID id){
-        budgetService.deleteBudget(request, id);
-        return httpUtil.handleDelete();
+    public ResponseEntity<Void> deleteUserBudget(HttpServletRequest request, @PathVariable UUID id){
+        return httpUtil.handleUpdate(budgetService.deleteUserBudget(request, id));
     }
 }

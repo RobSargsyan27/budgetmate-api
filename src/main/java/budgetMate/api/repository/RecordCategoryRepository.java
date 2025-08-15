@@ -13,6 +13,6 @@ public interface RecordCategoryRepository extends JpaRepository<RecordCategory, 
     @Query("SELECT rc FROM RecordCategory rc")
     List<RecordCategory> getAllRecordCategories();
 
-    @Query("SELECT rc FROM RecordCategory rc WHERE upper(rc.name) = upper(:name) ")
-    List<RecordCategory> getRecordCategoryByName(String name);
+    @Query("SELECT rc FROM RecordCategory rc WHERE rc.name IN :names")
+    List<RecordCategory> getRecordCategoryByNames(List<String> names);
 }

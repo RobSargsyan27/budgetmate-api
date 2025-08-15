@@ -1,0 +1,54 @@
+### Get user budgets.
+GET http://localhost:8089/api/v2/budgets HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE
+
+
+### Add user budget.
+POST http://localhost:8089/api/v2/budgets HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE
+
+{
+  "name": "Budget-Test",
+  "amount": 17000,
+  "recordCategories": ["Rent", "Insurance"]
+}
+
+
+### Get user budgets current balance.
+GET http://localhost:8089/api/v2/budgets/current-balance HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE
+
+
+### Get user budgets report.
+GET http://localhost:8089/api/v2/budgets/report HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE
+
+
+### Get user budget.
+GET http://localhost:8089/api/v2/budgets/e20a1b4f-6f9b-4772-90fd-c2d0ab96822f HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3NzEzLCJleHAiOjE3NTUzMDg1MTN9.urabhbb_ntBa2XKV8fj5Rgcg7BHwkI2yERye_N_URb0
+
+
+### Update user budget.
+PATCH http://localhost:8089/api/v2/budgets/e20a1b4f-6f9b-4772-90fd-c2d0ab96822f HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE
+
+{
+  "name": "Budget-Test-2",
+  "amount": 17500,
+  "recordCategories": ["Grocery"]
+}
+
+
+### Delete user budget.
+DELETE http://localhost:8089/api/v2/budgets/e20a1b4f-6f9b-4772-90fd-c2d0ab96822f HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE

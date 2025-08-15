@@ -60,7 +60,7 @@ public class RecordServiceImpl implements RecordService {
     public List<RecordResponse> getUserRecords(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
-        final List<Record> records = recordRepository.getRecordsByUser(user);
+        final List<Record> records = recordRepository.getUserRecords(user);
 
         return RecordResponse.from(records);
     }
@@ -151,7 +151,7 @@ public class RecordServiceImpl implements RecordService {
         final LocalDateTime paymentTime = body.getPaymentTime() == null ? LocalDateTime.now() : body.getPaymentTime();
         final Account receivingAccount = accountRepository.getUserAccountById(user, body.getReceivingAccountId())
                 .orElseThrow(() -> new IllegalStateException("Receiving account not found!"));
-        final RecordCategory recordCategory = recordCategoryRepository.getRecordCategoryByName(body.getCategory())
+        final RecordCategory recordCategory = recordCategoryRepository.getRecordCategoryByNames(List.of(body.getCategory()))
                 .getFirst();
 
         final Record record = Record.builder()
@@ -178,7 +178,7 @@ public class RecordServiceImpl implements RecordService {
         final LocalDateTime paymentTime = body.getPaymentTime() == null ? LocalDateTime.now() : body.getPaymentTime();
         final Account withdrawalAccount = accountRepository.getUserAccountById(user, body.getWithdrawalAccountId())
                 .orElseThrow(() -> new IllegalStateException("Withdrawal account not found!"));
-        final RecordCategory recordCategory = recordCategoryRepository.getRecordCategoryByName(body.getCategory())
+        final RecordCategory recordCategory = recordCategoryRepository.getRecordCategoryByNames(List.of(body.getCategory()))
                 .getFirst();
 
         if(withdrawalAccount.getCurrentBalance() - body.getAmount() < 0){
@@ -248,7 +248,7 @@ public class RecordServiceImpl implements RecordService {
 
         if(body.getCategory() != null){
             final RecordCategory recordCategory = recordCategoryRepository
-                    .getRecordCategoryByName(body.getCategory()).getFirst();
+                    .getRecordCategoryByNames(List.of(body.getCategory())).getFirst();
             record.setCategory(recordCategory);
         }
 

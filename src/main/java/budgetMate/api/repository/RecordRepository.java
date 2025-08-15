@@ -23,32 +23,24 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, JpaSpecif
     Optional<Record> getUserRecordById(User user, UUID id);
 
     @Query("SELECT r FROM Record r WHERE r.user = :user")
-    List<Record> getRecordsByUser(User user);
+    List<Record> getUserRecords(User user);
 
     @Query("SELECT SUM(r.amount) FROM Record r WHERE r.category IN :categories AND r.user = :user")
-    BigDecimal findSumOfUserRecordsAmountsByCategories(User user, List<RecordCategory> categories);
-
-    @Modifying
-    @Query("DELETE FROM Record r WHERE r.id = :id")
-    int deleteRecordById(UUID id);
-
-    @Modifying
-    @Query("DELETE FROM Record r WHERE r.receivingAccount.id = :accountId OR r.withdrawalAccount.id = :accountId")
-    void deleteAccountRecords(UUID accountId);
+    BigDecimal getUserRecordsSumByCategories(User user, List<RecordCategory> categories);
 
     @Query("SELECT SUM(r.amount) FROM Record r " +
             "WHERE r.type = :type AND " +
             "r.paymentTime >= :startOfInterval AND " +
             "r.paymentTime < :endOfInterval AND " +
             "r.user = :user")
-    BigDecimal userIntervalAnalytics(User user, RecordType type, LocalDateTime startOfInterval, LocalDateTime endOfInterval);
+    BigDecimal getUserRecordsIntervalSum(User user, RecordType type, LocalDateTime startOfInterval, LocalDateTime endOfInterval);
 
     @Query("SELECT r.category, SUM(r.amount) AS totalAmount " +
             "FROM Record r " +
             "WHERE r.user = :user AND r.type = :type AND r.paymentTime >= :startOfMonth AND r.paymentTime < :startOfNextMonth " +
             "GROUP BY r.category " +
             "ORDER BY totalAmount DESC")
-    List<Object[]> findCurrentMonthTopCategoriesByType(
+    List<Object[]> getUserCurrentMonthTopCategoriesByType(
             User user, RecordType type, LocalDateTime startOfMonth, LocalDateTime startOfNextMonth, Pageable pageable
     );
 
@@ -57,7 +49,15 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, JpaSpecif
             "AND r.type = :type " +
             "AND r.paymentTime BETWEEN :startOfMonth AND :startOfNextMonth " +
             "GROUP BY r.paymentTime ORDER BY r.paymentTime DESC")
-    List<Object[]> findExpenseGroupedByDate(
+    List<Object[]> getUserExpenseRecordsIntervalSum(
             User user, RecordType type, LocalDateTime startOfMonth, LocalDateTime startOfNextMonth
     );
+
+    @Modifying
+    @Query("DELETE FROM Record r WHERE r.id = :id")
+    int deleteRecordById(UUID id);
+
+    @Modifying
+    @Query("DELETE FROM Record r WHERE r.receivingAccount.id = :accountId OR r.withdrawalAccount.id = :accountId")
+    void deleteAccountRecords(UUID accountId);
 }

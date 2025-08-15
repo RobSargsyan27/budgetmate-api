@@ -22,33 +22,33 @@ public class AccountController {
     private final HttpUtil httpUtil;
 
     @GetMapping("")
-    public ResponseEntity<List<AccountResponse>> getAccounts(HttpServletRequest request){
-        return httpUtil.handleGet(accountService.getAccounts(request));
+    public ResponseEntity<List<AccountResponse>> getUserAccounts(HttpServletRequest request){
+        return httpUtil.handleGet(accountService.getUserAccounts(request));
     }
 
     @PostMapping("")
-    public ResponseEntity<AccountResponse> addAccount(
+    public ResponseEntity<AccountResponse> addUserAccount(
             HttpServletRequest request,
             @RequestBody @Valid AddAccountRequest body)
     {
-        return httpUtil.handleAdd(accountService.addAccount(request, body));
+        return httpUtil.handleAdd(accountService.addUserAccount(request, body));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountResponse> getAccount(@PathVariable UUID id, HttpServletRequest request){
-        return httpUtil.handleGet(accountService.getAccount(request, id));
+    public ResponseEntity<AccountResponse> getUserAccount(@PathVariable UUID id, HttpServletRequest request){
+        return httpUtil.handleGet(accountService.getUserAccount(request, id));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AccountResponse> updateAccount(
+    public ResponseEntity<AccountResponse> updateUserAccount(
             HttpServletRequest request,
             @RequestBody @Valid UpdateAccountRequest body,
             @PathVariable UUID id) {
-        return httpUtil.handleUpdate(accountService.updateAccount(request, id, body));
+        return httpUtil.handleUpdate(accountService.updateUserAccount(request, id, body));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccount(HttpServletRequest request, @PathVariable UUID id){
-        return httpUtil.handleUpdate(accountService.deleteAccount(request, id));
+    public ResponseEntity<Void> deleteUserAccount(HttpServletRequest request, @PathVariable UUID id){
+        return httpUtil.handleUpdate(accountService.deleteUserAccount(request, id));
     }
 }

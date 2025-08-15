@@ -5,15 +5,15 @@ import budgetMate.api.api.analytics.response.ChartResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface AnalyticsService {
-    AnalyticsResponse getDashboardAnalytics(HttpServletRequest request);
+    AnalyticsResponse getUserDashboardAnalytics(HttpServletRequest request);
 
-    ChartResponse getDashboardCategoriesPieChart(HttpServletRequest request);
+    ChartResponse getUserDashboardCategoriesPieChart(HttpServletRequest request);
 
-    ChartResponse getDashboardExpensesLineChart(HttpServletRequest request);
+    ChartResponse getUserDashboardExpensesLineChart(HttpServletRequest request);
 
-    AnalyticsResponse getUserRecordsOverview(String startDate, String endDate, HttpServletRequest request);
+    AnalyticsResponse getUserRecordsOverview(HttpServletRequest request, String startDate, String endDate);
 
     ChartResponse getUserRecordsOverviewLineChart(
-            String startDate, String endDate, String recordType, HttpServletRequest request
+            HttpServletRequest request, String startDate, String endDate, String recordType
     );
 }

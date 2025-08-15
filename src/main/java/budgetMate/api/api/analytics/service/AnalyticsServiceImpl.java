@@ -5,10 +5,10 @@ import budgetMate.api.api.analytics.response.ChartResponse;
 import budgetMate.api.domain.RecordCategory;
 import budgetMate.api.domain.User;
 import budgetMate.api.domain.enums.RecordType;
-import budgetMate.api.lib.AnalyticsLib;
 import budgetMate.api.lib.UserLib;
 import budgetMate.api.repository.RecordRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -27,10 +27,15 @@ import java.util.*;
 public class AnalyticsServiceImpl implements AnalyticsService {
     private final RecordRepository recordRepository;
     private final UserLib userLib;
-    private final AnalyticsLib analyticsLib;
 
+    /**
+     * <h2>Get user dashboard analytics.</h2>
+     * @param request {HttpServletRequest}
+     * @return {AnalyticsResponse}
+     */
     @Override
-    public AnalyticsResponse getDashboardAnalytics(HttpServletRequest request){
+    @Transactional
+    public AnalyticsResponse getUserDashboardAnalytics(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
         Year currentYear = Year.now();
@@ -41,11 +46,11 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         LocalDateTime startOfNextYear = currentYear.plusYears(1).atDay(1).atStartOfDay();
 
         final BigDecimal monthlyEarnings = recordRepository
-                .userIntervalAnalytics(user, RecordType.INCOME, startOfMonth, startOfNextMonth);
+                .getUserRecordsIntervalSum(user, RecordType.INCOME, startOfMonth, startOfNextMonth);
         final BigDecimal monthlyExpenses = recordRepository
-                .userIntervalAnalytics(user, RecordType.EXPENSE, startOfMonth, startOfNextMonth);
+                .getUserRecordsIntervalSum(user, RecordType.EXPENSE, startOfMonth, startOfNextMonth);
         final BigDecimal annualEarnings = recordRepository
-                .userIntervalAnalytics(user, RecordType.INCOME, startOfYear, startOfNextYear);
+                .getUserRecordsIntervalSum(user, RecordType.INCOME, startOfYear, startOfNextYear);
 
         final AnalyticsResponse analyticsResponse = new AnalyticsResponse();
         analyticsResponse.setAnnualEarnings(annualEarnings);
@@ -55,8 +60,14 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         return analyticsResponse;
     }
 
+    /**
+     * <h2>Get user dashboard categories pie chart.</h2>
+     * @param request {HttpServletRequest}
+     * @return {ChartResponse}
+     */
     @Override
-    public ChartResponse getDashboardCategoriesPieChart(HttpServletRequest request){
+    @Transactional
+    public ChartResponse getUserDashboardCategoriesPieChart(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
         YearMonth lastMonth = YearMonth.now().minusMonths(1);
@@ -65,7 +76,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         Pageable pageable = PageRequest.of(0, 5);
 
         final List<Object[]> categoriesPieChartData = recordRepository
-                .findCurrentMonthTopCategoriesByType(user, RecordType.EXPENSE, startOfMonth, startOfNextMonth, pageable);
+                .getUserCurrentMonthTopCategoriesByType(user, RecordType.EXPENSE, startOfMonth, startOfNextMonth, pageable);
 
         final List<String> categories = categoriesPieChartData.stream()
                 .map((item) -> ((RecordCategory) item[0]).getName())
@@ -81,29 +92,43 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                 .build();
     }
 
+    /**
+     * <h2>Get user dashboard expenses line chart.</h2>
+     * @param request {HttpServletRequest}
+     * @return {ChartResponse}
+     */
     @Override
-    public ChartResponse getDashboardExpensesLineChart(HttpServletRequest request) {
+    @Transactional
+    public ChartResponse getUserDashboardExpensesLineChart(HttpServletRequest request) {
         final User user = userLib.fetchRequestUser(request);
 
         LocalDateTime startDate = LocalDateTime.now().minusMonths(1);
         LocalDateTime endDate = LocalDateTime.now();
 
-        final List<Object[]> expensesLineChartData = recordRepository
-                .findExpenseGroupedByDate(user, RecordType.EXPENSE, startDate, endDate);
+        final List<Object[]> lineChartData = recordRepository
+                .getUserExpenseRecordsIntervalSum(user, RecordType.EXPENSE, startDate, endDate);
 
-        return analyticsLib.prepareLineChartResponse(expensesLineChartData);
+        return ChartResponse.from(lineChartData);
     }
 
+    /**
+     * <h2>Get user records overview.</h2>
+     * @param request {HttpServletRequest}
+     * @param startDate {String}
+     * @param endDate {String}
+     * @return {AnalyticsResponse}
+     */
     @Override
-    public AnalyticsResponse getUserRecordsOverview(String startDate, String endDate, HttpServletRequest request){
+    @Transactional
+    public AnalyticsResponse getUserRecordsOverview(HttpServletRequest request, String startDate, String endDate){
         LocalDateTime _startDate = LocalDateTime.parse(startDate.substring(0, startDate.length() - 1));
         LocalDateTime _endDate = LocalDateTime.parse(endDate.substring(0, startDate.length() - 1));
         User user = userLib.fetchRequestUser(request);
 
         final BigDecimal monthlyEarnings = recordRepository
-                .userIntervalAnalytics(user, RecordType.INCOME, _startDate, _endDate);
+                .getUserRecordsIntervalSum(user, RecordType.INCOME, _startDate, _endDate);
         final BigDecimal monthlyExpenses = recordRepository
-                .userIntervalAnalytics(user, RecordType.EXPENSE, _startDate, _endDate);
+                .getUserRecordsIntervalSum(user, RecordType.EXPENSE, _startDate, _endDate);
 
         AnalyticsResponse analyticsResponse = new AnalyticsResponse();
         analyticsResponse.setMonthlyExpenses(monthlyExpenses);
@@ -112,20 +137,27 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         return analyticsResponse;
     }
 
+    /**
+     * <h2>Get user records overview line chart.</h2>
+     * @param request {HttpServletRequest}
+     * @param startDate {String}
+     * @param endDate {String}
+     * @param recordType {String}
+     * @return {ChartResponse}
+     */
     @Override
+    @Transactional
     public ChartResponse getUserRecordsOverviewLineChart(
-            String startDate, String endDate, String recordType, HttpServletRequest request
+            HttpServletRequest request, String startDate, String endDate, String recordType
     ){
         LocalDateTime _startDate = LocalDateTime.parse(startDate.substring(0, startDate.length() - 1));
         LocalDateTime _endDate = LocalDateTime.parse(endDate.substring(0, startDate.length() - 1));
         RecordType _recordType = RecordType.fromString(recordType.toUpperCase());
         User user = userLib.fetchRequestUser(request);
 
-        final List<Object[]> expensesLineChartData = recordRepository
-                .findExpenseGroupedByDate(user, _recordType, _startDate, _endDate);
+        final List<Object[]> lineChartData = recordRepository
+                .getUserExpenseRecordsIntervalSum(user, _recordType, _startDate, _endDate);
 
-        return analyticsLib.prepareLineChartResponse(expensesLineChartData);
+        return ChartResponse.from(lineChartData);
     }
-
-
 }
