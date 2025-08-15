@@ -77,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
      * @param token {String}
      */
     @Transactional
-    public Void confirmRegister(String email, String token) {
+    public void confirmRegister(String email, String token) {
         final UUID _token = UUID.fromString(token);
 
         EmailAuthToken authToken = emailAuthTokenRepository.getUserEmailAuthToken(_token, email)
@@ -89,7 +89,6 @@ public class AuthServiceImpl implements AuthService {
 
         this.emailAuthTokenRepository.setEmailAuthTokenAsChecked(_token);
         this.userRepository.enableUser(email);
-        return null;
     }
 
     /**

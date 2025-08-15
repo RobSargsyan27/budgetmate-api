@@ -10,7 +10,7 @@ import java.util.Map;
 public interface AuthService {
     Void register(RegistrationRequest request) throws IllegalStateException;
 
-    Void confirmRegister(String email, String token);
+    void confirmRegister(String email, String token);
 
     UserAuthenticationResponse login(UserAuthenticationRequest request);
 
