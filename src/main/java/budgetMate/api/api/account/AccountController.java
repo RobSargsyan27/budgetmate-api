@@ -1,15 +1,14 @@
 package budgetMate.api.api.account;
 
-
 import budgetMate.api.api.account.request.AddAccountRequest;
 import budgetMate.api.api.account.request.AddExistingAccountRequest;
 import budgetMate.api.api.account.request.UpdateAccountRequest;
 import budgetMate.api.api.account.response.AccountResponse;
 import budgetMate.api.api.account.service.AccountService;
+import budgetMate.api.util.HttpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +20,11 @@ import java.util.UUID;
 @RequestMapping("/api/v2/account")
 public class AccountController {
     private final AccountService accountService;
+    private final HttpUtil httpUtil;
 
     @GetMapping("")
     public ResponseEntity<List<AccountResponse>> getAccounts(HttpServletRequest request){
-        return ResponseEntity.ok(accountService.getAccounts(request));
+        return httpUtil.handleGet(accountService.getAccounts(request));
     }
 
     @PostMapping("")
@@ -32,21 +32,21 @@ public class AccountController {
             HttpServletRequest request,
             @RequestBody @Valid AddAccountRequest body)
     {
-        return ResponseEntity.ok(accountService.addAccount(request, body));
+        return httpUtil.handleAdd(accountService.addAccount(request, body));
     }
 
     @PostMapping("/existing")
-    public HttpStatus sendAddExistingAccountRequest(
+    public ResponseEntity<Void> addExistingAccountRequest(
             HttpServletRequest request,
             @RequestBody @Valid AddExistingAccountRequest body)
     {
-        accountService.sendAddExistingAccountRequest(request, body);
-        return HttpStatus.ACCEPTED;
+
+        return httpUtil.handleAdd(accountService.sendAddExistingAccountRequest(request, body));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AccountResponse> getAccount(@PathVariable UUID id, HttpServletRequest request){
-        return ResponseEntity.ok(accountService.getAccount(id, request));
+        return httpUtil.handleGet(accountService.getAccount(id, request));
     }
 
     @PatchMapping("/{id}")
@@ -54,21 +54,19 @@ public class AccountController {
             HttpServletRequest request,
             @RequestBody @Valid UpdateAccountRequest body,
             @PathVariable UUID id) {
-        return ResponseEntity.ok(accountService.updateAccount(request, body, id));
+        return httpUtil.handleUpdate(accountService.updateAccount(request, body, id));
     }
 
     @DeleteMapping("/{id}")
-    public HttpStatus deleteAccount(HttpServletRequest request, @PathVariable UUID id){
-        accountService.deleteAccount(request, id);
-        return HttpStatus.ACCEPTED;
+    public ResponseEntity<Void> deleteAccount(HttpServletRequest request, @PathVariable UUID id){
+        return httpUtil.handleDelete(accountService.deleteAccount(request, id));
     }
 
     @PostMapping("/{id}/{status}")
-    public HttpStatus updateAccountRequestStatus(
+    public ResponseEntity<Void> updateAccountRequestStatus(
             HttpServletRequest request,
             @PathVariable UUID id,
             @PathVariable Boolean status){
-        accountService.updateAccountRequestStatus(request, id, status);
-        return HttpStatus.ACCEPTED;
+        return httpUtil.handleUpdate(accountService.updateAccountRequestStatus(request, id, status));
     }
 }

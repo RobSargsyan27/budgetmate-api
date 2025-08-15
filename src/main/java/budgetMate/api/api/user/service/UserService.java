@@ -12,7 +12,7 @@ public interface UserService {
 
     UserResponse updateUser(HttpServletRequest request, UpdateUserRequest body);
 
-    void deleteUser(HttpServletRequest request);
+    Void deleteUser(HttpServletRequest request);
 
     List<AccountAdditionResponse> getNotifications(HttpServletRequest request);
 }

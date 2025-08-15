@@ -84,7 +84,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     @Transactional
-    public void deleteAccount(HttpServletRequest request, UUID id){
+    public Void deleteAccount(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
         accountRepository.deleteUserAccountAssociation(user.getId(), id);
@@ -94,9 +94,11 @@ public class AccountServiceImpl implements AccountService{
         if(associationCount == 0){
             accountRepository.deleteAccountById(id);
         }
+
+        return null;
     }
 
-    public void sendAddExistingAccountRequest(HttpServletRequest request, AddExistingAccountRequest body){
+    public Void sendAddExistingAccountRequest(HttpServletRequest request, AddExistingAccountRequest body){
         final User user = userLib.fetchRequestUser(request);
         final String accountOwnerUsername = body.getOwnerUsername();
         final String accountName = body.getAccountName();
@@ -111,10 +113,11 @@ public class AccountServiceImpl implements AccountService{
                 .build();
 
         accountAdditionRequestRepository.save(accountAdditionRequest);
+        return null;
     }
 
     @Transactional
-    public void updateAccountRequestStatus(HttpServletRequest request, UUID requestId, Boolean status){
+    public Void updateAccountRequestStatus(HttpServletRequest request, UUID requestId, Boolean status){
         final User user = userLib.fetchRequestUser(request);
 
         try{
@@ -139,5 +142,6 @@ public class AccountServiceImpl implements AccountService{
         } finally {
             accountAdditionRequestRepository.updateAccountAdditionRequest(requestId, user, status);
         }
+        return null;
     }
 }

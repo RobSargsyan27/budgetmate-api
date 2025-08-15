@@ -3,6 +3,7 @@ package budgetMate.api.api.analytics;
 import budgetMate.api.api.analytics.response.AnalyticsResponse;
 import budgetMate.api.api.analytics.response.ChartResponse;
 import budgetMate.api.api.analytics.service.AnalyticsService;
+import budgetMate.api.util.HttpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v2/analytics")
 public class AnalyticsController {
     private final AnalyticsService analyticsService;
+    private final HttpUtil httpUtil;
 
     @GetMapping("/dashboard")
     public ResponseEntity<AnalyticsResponse> getDashboardAnalytics(HttpServletRequest request){
-        return ResponseEntity.ok(analyticsService.getDashboardAnalytics(request));
+        return httpUtil.handleGet(analyticsService.getDashboardAnalytics(request));
     }
 
     @GetMapping("/overview/{startDate}/{endDate}")
@@ -28,7 +30,7 @@ public class AnalyticsController {
             @PathVariable String endDate,
             HttpServletRequest request
     ){
-        return ResponseEntity.ok(analyticsService.getUserRecordsOverview(startDate, endDate, request));
+        return httpUtil.handleGet(analyticsService.getUserRecordsOverview(startDate, endDate, request));
     }
 
     @GetMapping("overview-line/{startDate}/{endDate}/{recordType}")
@@ -38,16 +40,16 @@ public class AnalyticsController {
             @PathVariable String recordType,
             HttpServletRequest request
     ){
-        return ResponseEntity.ok(analyticsService.getUserRecordsOverviewLineChart(startDate, endDate, recordType, request));
+        return httpUtil.handleGet(analyticsService.getUserRecordsOverviewLineChart(startDate, endDate, recordType, request));
     }
 
     @GetMapping("/dashboard/categories-pie")
     public ResponseEntity<ChartResponse> getDashboardCategoriesPieChart(HttpServletRequest request){
-        return ResponseEntity.ok(analyticsService.getDashboardCategoriesPieChart(request));
+        return httpUtil.handleGet(analyticsService.getDashboardCategoriesPieChart(request));
     }
 
     @GetMapping("/dashboard/expenses-line-chart")
     public ResponseEntity<ChartResponse> getDashboardExpensesLineChart(HttpServletRequest request){
-        return ResponseEntity.ok(analyticsService.getDashboardExpensesLineChart(request));
+        return httpUtil.handleGet(analyticsService.getDashboardExpensesLineChart(request));
     }
 }

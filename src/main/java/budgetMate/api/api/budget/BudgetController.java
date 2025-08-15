@@ -5,6 +5,7 @@ import budgetMate.api.api.budget.request.UpdateBudgetRequest;
 import budgetMate.api.api.budget.response.BudgetResponse;
 import budgetMate.api.api.budget.response.BudgetsCurrentBalanceResponse;
 import budgetMate.api.api.budget.service.BudgetService;
+import budgetMate.api.util.HttpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -24,10 +27,11 @@ import java.util.UUID;
 @RequestMapping("/api/v2/budget")
 public class BudgetController {
     private final BudgetService budgetService;
+    private final HttpUtil httpUtil;
 
     @GetMapping("")
     public ResponseEntity<List<BudgetResponse>> getBudgets(HttpServletRequest request){
-        return ResponseEntity.ok(budgetService.getUserBudgets(request));
+        return httpUtil.handleGet(budgetService.getUserBudgets(request));
     }
 
     @PostMapping("")
@@ -35,25 +39,25 @@ public class BudgetController {
             HttpServletRequest request,
             @RequestBody @Valid AddBudgetRequest body)
     {
-        return ResponseEntity.ok(budgetService.addBudget(request, body));
+        return httpUtil.handleAdd(budgetService.addBudget(request, body));
     }
 
     @GetMapping("/current-balance")
     public ResponseEntity<List<BudgetsCurrentBalanceResponse>> getBudgetsCurrentBalance(HttpServletRequest request){
-        return ResponseEntity.ok(budgetService.getUserBudgetsCurrentBalance(request));
+        return httpUtil.handleGet(budgetService.getUserBudgetsCurrentBalance(request));
     }
 
     @PostMapping("/report")
     public ResponseEntity<byte[]> getBudgetsReport(HttpServletRequest request){
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=budgets-report.json")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(budgetService.getBudgetsReport(request));
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=budgets-report.json");
+
+        return httpUtil.handleGet(budgetService.getBudgetsReport(request), headers);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BudgetResponse> getBudget(HttpServletRequest request, @PathVariable UUID id){
-        return ResponseEntity.ok(budgetService.getBudget(request, id));
+        return httpUtil.handleGet(budgetService.getBudget(request, id));
     }
 
     @PatchMapping("/{id}")
@@ -62,12 +66,11 @@ public class BudgetController {
             @RequestBody @Valid UpdateBudgetRequest body,
             @PathVariable UUID id)
     {
-        return ResponseEntity.ok(budgetService.updateBudget(request, body, id));
+        return httpUtil.handleUpdate(budgetService.updateBudget(request, body, id));
     }
 
     @DeleteMapping("/{id}")
-    public HttpStatus deleteBudget(HttpServletRequest request, @PathVariable UUID id){
-        budgetService.deleteBudget(request, id);
-        return HttpStatus.ACCEPTED;
+    public ResponseEntity<Void> deleteBudget(HttpServletRequest request, @PathVariable UUID id){
+        return httpUtil.handleDelete(budgetService.deleteBudget(request, id));
     }
 }

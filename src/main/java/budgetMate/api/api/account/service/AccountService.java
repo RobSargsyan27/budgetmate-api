@@ -19,9 +19,9 @@ public interface AccountService {
 
     AccountResponse updateAccount(HttpServletRequest request, UpdateAccountRequest body, UUID id);
 
-    void deleteAccount(HttpServletRequest request, UUID id);
+    Void deleteAccount(HttpServletRequest request, UUID id);
 
-    void sendAddExistingAccountRequest(HttpServletRequest request, AddExistingAccountRequest body);
+    Void sendAddExistingAccountRequest(HttpServletRequest request, AddExistingAccountRequest body);
 
-    void updateAccountRequestStatus(HttpServletRequest request, UUID requestId, Boolean status);
+    Void updateAccountRequestStatus(HttpServletRequest request, UUID requestId, Boolean status);
 }

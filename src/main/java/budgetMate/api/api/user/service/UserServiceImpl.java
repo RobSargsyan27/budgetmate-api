@@ -49,10 +49,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(HttpServletRequest request) {
+    public Void deleteUser(HttpServletRequest request) {
         final User user = userLib.fetchRequestUser(request);
 
         userRepository.deleteById(user.getId());
+
+        return null;
     }
 
     @Override

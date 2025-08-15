@@ -5,6 +5,7 @@ import budgetMate.api.api.auth.request.UserAuthenticationRequest;
 import budgetMate.api.api.auth.request.RegistrationRequest;
 import budgetMate.api.api.auth.response.UserAuthenticationResponse;
 import budgetMate.api.api.auth.service.AuthService;
+import budgetMate.api.util.HttpUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +22,11 @@ import java.util.Map;
 @RequestMapping("/api/v2/auth")
 public class AuthController {
     private final AuthService registrationService;
+    private final HttpUtil httpUtil;
 
     @PostMapping("/register")
-    public HttpStatus register(@RequestBody @Valid RegistrationRequest request) {
-        this.registrationService.register(request);
-        return HttpStatus.ACCEPTED;
+    public ResponseEntity<Void> register(@RequestBody @Valid RegistrationRequest request) {
+        return httpUtil.handleAdd(registrationService.register(request));
     }
 
     @GetMapping("/register/confirm/{email}/{token}")
@@ -36,11 +37,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<UserAuthenticationResponse> login(@RequestBody UserAuthenticationRequest request) {
-        return ResponseEntity.ok(this.registrationService.login(request));
+       return httpUtil.handleAdd(this.registrationService.login(request));
     }
 
     @PostMapping("/validate-token")
     public ResponseEntity<Map<String, Boolean>> validateToken(@RequestBody TokenAuthenticationRequest request){
-        return ResponseEntity.ok(this.registrationService.validateToken(request));
+        return httpUtil.handleAdd(this.registrationService.validateToken(request));
     }
 }

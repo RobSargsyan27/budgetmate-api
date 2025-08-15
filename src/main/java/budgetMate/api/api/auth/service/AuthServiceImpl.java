@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
      * @throws IllegalStateException - If user with given email is already registered.
      */
     @Transactional
-    public void register(RegistrationRequest request) {
+    public Void register(RegistrationRequest request) {
         User user = userRepository.findUserByUsername(request.getEmail()).orElse(null);
         if (user != null && user.isEnabled()) {
             throw new IllegalStateException("User is already registered!");
@@ -68,6 +68,7 @@ public class AuthServiceImpl implements AuthService {
         emailAuthTokenRepository.save(authToken);
 
         emailProducer.sendTemplateEmail(user, authToken);
+        return null;
     }
 
     /**
@@ -76,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
      * @param token {String}
      */
     @Transactional
-    public void confirmRegister(String email, String token) {
+    public Void confirmRegister(String email, String token) {
         final UUID _token = UUID.fromString(token);
 
         EmailAuthToken authToken = emailAuthTokenRepository.getUserEmailAuthToken(_token, email)
@@ -88,6 +89,7 @@ public class AuthServiceImpl implements AuthService {
 
         this.emailAuthTokenRepository.setEmailAuthTokenAsChecked(_token);
         this.userRepository.enableUser(email);
+        return null;
     }
 
     /**
