@@ -69,4 +69,10 @@ public class Account {
     public void setAvatarColor(String avatarColor) {
         this.avatarColor = (avatarColor == null ? "#581845" : avatarColor);
     }
+
+    public void setCurrentBalance(Double currentBalance){
+        if(currentBalance != null && currentBalance != 0 ){
+            this.currentBalance = currentBalance;
+        }
+    }
 }

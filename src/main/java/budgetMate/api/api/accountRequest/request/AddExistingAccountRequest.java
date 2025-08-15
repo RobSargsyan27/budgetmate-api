@@ -1,4 +1,4 @@
-package budgetMate.api.api.account.request;
+package budgetMate.api.api.accountRequest.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

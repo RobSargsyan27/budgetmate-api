@@ -106,6 +106,7 @@ public class RecordController {
             HttpServletRequest request,
             @PathVariable UUID id)
     {
-        return httpUtil.handleDelete(recordService.deleteRecord(request, id));
+        recordService.deleteRecord(request, id);
+        return httpUtil.handleDelete();
     }
 }

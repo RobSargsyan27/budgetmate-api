@@ -1,0 +1,41 @@
+### Get user accounts.
+GET http://localhost:8089/api/v2/accounts HTTP/1.1
+Accept: application/json;
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1MjgyMzMzLCJleHAiOjE3NTUyOTMxMzN9.-2PQHr3Wo0VZjCu-wIbsTRgIUSD8Cfl1PLu0oF1uUcg
+
+
+### Add user account.
+POST http://localhost:8089/api/v2/accounts HTTP/1.1
+Accept: application/json;
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1MjgyMzMzLCJleHAiOjE3NTUyOTMxMzN9.-2PQHr3Wo0VZjCu-wIbsTRgIUSD8Cfl1PLu0oF1uUcg
+
+{
+  "name": "Account-Test",
+  "currency": "USD",
+  "currentBalance": 27070,
+  "type": "CASH"
+}
+
+### Get user accout.
+GET http://localhost:8089/api/v2/accounts/e03e18d2-bdbf-4f96-9b5e-cc2c6d97c80c HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1MjgyMzMzLCJleHAiOjE3NTUyOTMxMzN9.-2PQHr3Wo0VZjCu-wIbsTRgIUSD8Cfl1PLu0oF1uUcg
+
+
+### Update user account.
+PATCH http://localhost:8089/api/v2/accounts/e03e18d2-bdbf-4f96-9b5e-cc2c6d97c80c HTTP/1.1
+Accept: application/json
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1MjgyMzMzLCJleHAiOjE3NTUyOTMxMzN9.-2PQHr3Wo0VZjCu-wIbsTRgIUSD8Cfl1PLu0oF1uUcg
+
+{
+  "type": "CREDIT_CARD",
+  "currentBalance": 27000
+}
+
+
+### Delete user account.
+DELETE http://localhost:8089/api/v2/accounts/8534376b-2c82-4711-9882-8f434526681c HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1MjgyMzMzLCJleHAiOjE3NTUyOTMxMzN9.-2PQHr3Wo0VZjCu-wIbsTRgIUSD8Cfl1PLu0oF1uUcg

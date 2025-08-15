@@ -19,7 +19,7 @@ public class AddAccountRequest {
 
     private Currency currency;
 
-    private double currentBalance;
+    private Double currentBalance;
 
     @NotNull
     private AccountType type;

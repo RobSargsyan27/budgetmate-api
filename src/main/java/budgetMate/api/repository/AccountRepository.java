@@ -7,11 +7,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID>{
+
+    @Query("SELECT ac FROM Account ac WHERE ac.createdBy = :user")
+    List<Account> getUserAccounts(User user);
 
     @Query("SELECT ac FROM Account ac WHERE ac.id = :id AND ac.createdBy = :user")
     Optional<Account> getUserAccountById(User user, UUID id);
@@ -24,11 +28,15 @@ public interface AccountRepository extends JpaRepository<Account, UUID>{
     void updateAccountCurrentBalance(UUID id, double amount);
 
     @Modifying
+    @Query(value = "INSERT INTO user_accounts (user_id, account_id) VALUES (:userId, :accountId)", nativeQuery = true)
+    void addUserAccountAssociation(UUID userId, UUID accountId);
+
+    @Modifying
     @Query(value = "DELETE FROM user_accounts WHERE user_id = :userId AND account_id = :accountId", nativeQuery = true)
     void deleteUserAccountAssociation(UUID userId, UUID accountId);
 
     @Query(value = "SELECT COUNT(*) FROM user_accounts WHERE account_id = :id", nativeQuery = true)
-    int countUsersByAccountId(UUID id);
+    int countUserAccountAssociations(UUID id);
 
     @Modifying
     @Query(value = "DELETE FROM Account a WHERE a.id = :id")

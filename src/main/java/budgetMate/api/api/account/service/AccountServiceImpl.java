@@ -4,49 +4,50 @@ import java.util.List;
 import java.util.UUID;
 
 import budgetMate.api.api.account.request.AddAccountRequest;
-import budgetMate.api.api.account.request.AddExistingAccountRequest;
 import budgetMate.api.api.account.request.UpdateAccountRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import budgetMate.api.api.account.response.AccountResponse;
 import budgetMate.api.domain.Account;
-import budgetMate.api.domain.AccountAdditionRequest;
 import budgetMate.api.domain.User;
 import budgetMate.api.lib.UserLib;
-import budgetMate.api.repository.AccountAdditionRequestRepository;
 import budgetMate.api.repository.AccountRepository;
 import budgetMate.api.repository.RecordRepository;
-import budgetMate.api.repository.UserRepository;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService{
-    private final UserRepository userRepository;
     private final AccountRepository accountRepository;
-    private final AccountAdditionRequestRepository accountAdditionRequestRepository;
     private final RecordRepository recordRepository;
     private final UserLib userLib;
 
+    /**
+     * <h2>Get accounts.</h2>
+     * @param request {HttpServletRequest}
+     * @return {List<AccountResponse>}
+     */
+    @Override
+    @Transactional
     public List<AccountResponse> getAccounts(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
-        return AccountResponse.from(user.getAccounts());
+        final List<Account> accounts = accountRepository.getUserAccounts(user);
+
+        return AccountResponse.from(accounts);
     }
 
-    public AccountResponse getAccount(UUID id, HttpServletRequest request){
-        final User user = userLib.fetchRequestUser(request);
-        final Account account =  accountRepository.getUserAccountById(user, id)
-                .orElseThrow(() -> new IllegalStateException("Account not found!"));
-
-        return AccountResponse.from(account);
-    }
-
+    /**
+     * <h2>Add account.</h2>
+     * @param request {HttpServletRequest}
+     * @param body {AddAccountRequest}
+     * @return {AccountResponse}
+     */
+    @Override
     @Transactional
     public AccountResponse addAccount(HttpServletRequest request, AddAccountRequest body){
         final User user = userLib.fetchRequestUser(request);
@@ -59,14 +60,39 @@ public class AccountServiceImpl implements AccountService{
         account.setAvatarColor(body.getAvatarColor());
         account.setCreatedBy(user);
 
-        user.addAccount(account);
-        final User updatedUser = userRepository.save(user);
+        final Account addedAccount = accountRepository.save(account);
+        accountRepository.addUserAccountAssociation(user.getId(), addedAccount.getId());
 
-        return AccountResponse.from(updatedUser.getAccounts().getLast());
+        return AccountResponse.from(addedAccount);
     }
 
+    /**
+     * <h2>Get account.</h2>
+     * @param request {HttpServletRequest}
+     * @param id {UUID}
+     * @return {AccountResponse}
+     */
+    @Override
     @Transactional
-    public AccountResponse updateAccount(HttpServletRequest request, UpdateAccountRequest body, UUID id){
+    public AccountResponse getAccount(HttpServletRequest request, UUID id){
+        final User user = userLib.fetchRequestUser(request);
+
+        final Account account =  accountRepository.getUserAccountById(user, id)
+                .orElseThrow(() -> new IllegalStateException("Account not found!"));
+
+        return AccountResponse.from(account);
+    }
+
+    /**
+     * <h2>Update account.</h2>
+     * @param request {HttpServletRequest}
+     * @param id {UUID}
+     * @param body {UpdateAccountRequest}
+     * @return {AccountResponse}
+     */
+    @Override
+    @Transactional
+    public AccountResponse updateAccount(HttpServletRequest request, UUID id, UpdateAccountRequest body){
         final User user = userLib.fetchRequestUser(request);
 
         final Account account = accountRepository.getUserAccountById(user, id)
@@ -82,6 +108,12 @@ public class AccountServiceImpl implements AccountService{
         return AccountResponse.from(updatedAccount);
     }
 
+    /**
+     * <h2>Delete account.</h2>
+     * @param request {HttpServletRequest}
+     * @param id {UUID}
+     * @return {Void}
+     */
     @Override
     @Transactional
     public Void deleteAccount(HttpServletRequest request, UUID id){
@@ -90,58 +122,11 @@ public class AccountServiceImpl implements AccountService{
         accountRepository.deleteUserAccountAssociation(user.getId(), id);
         recordRepository.deleteAccountRecords(id);
 
-        int associationCount = accountRepository.countUsersByAccountId(id);
+        final int associationCount = accountRepository.countUserAccountAssociations(id);
         if(associationCount == 0){
             accountRepository.deleteAccountById(id);
         }
 
-        return null;
-    }
-
-    public Void sendAddExistingAccountRequest(HttpServletRequest request, AddExistingAccountRequest body){
-        final User user = userLib.fetchRequestUser(request);
-        final String accountOwnerUsername = body.getOwnerUsername();
-        final String accountName = body.getAccountName();
-
-        final User accountOwner = userRepository.findUserByUsername(accountOwnerUsername)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-
-        final AccountAdditionRequest accountAdditionRequest = AccountAdditionRequest.builder()
-                .ownerUser(accountOwner)
-                .requestedUser(user)
-                .accountName(accountName)
-                .build();
-
-        accountAdditionRequestRepository.save(accountAdditionRequest);
-        return null;
-    }
-
-    @Transactional
-    public Void updateAccountRequestStatus(HttpServletRequest request, UUID requestId, Boolean status){
-        final User user = userLib.fetchRequestUser(request);
-
-        try{
-            accountAdditionRequestRepository.updateAccountAdditionRequest(requestId, user, status);
-
-            if(status){
-                final AccountAdditionRequest accountAdditionRequest = accountAdditionRequestRepository
-                        .getAccountAdditionRequestById(requestId)
-                        .orElseThrow(() -> new IllegalArgumentException("Account addition request is not found!"));
-
-                final Account account = accountRepository
-                        .getUserAccount(accountAdditionRequest.getOwnerUser().getId(), accountAdditionRequest.getAccountName())
-                        .orElseThrow(() -> new IllegalArgumentException("Account is not found!"));
-
-                final User requestedUser = userRepository
-                        .findUserById(accountAdditionRequest.getRequestedUser().getId())
-                        .orElseThrow(() -> new IllegalArgumentException("User is not found!"));
-
-                requestedUser.addAccount(account);
-                userRepository.save(requestedUser);
-            }
-        } finally {
-            accountAdditionRequestRepository.updateAccountAdditionRequest(requestId, user, status);
-        }
         return null;
     }
 }

@@ -37,7 +37,8 @@ public class UserController {
 
     @DeleteMapping("")
     public ResponseEntity<Void> deleteUser(HttpServletRequest request){
-        return httpUtil.handleDelete(userService.deleteUser(request));
+        userService.deleteUser(request);
+        return httpUtil.handleDelete();
     }
 
     @GetMapping("/notifications")

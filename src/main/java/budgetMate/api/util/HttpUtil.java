@@ -72,14 +72,11 @@ public class HttpUtil {
 
     /**
      * <h2>Public</h2>
-     * @param object {Object}
      * @return {ResponseEntity<Object>}
      * <p>Handle delete.</p>
      */
-    public ResponseEntity<Void> handleDelete(Object object){
-        return object == null
-                ? ResponseEntity.notFound().headers(this.buildBaseHeaders()).build()
-                : ResponseEntity.noContent().headers(this.buildBaseHeaders()).build();
+    public ResponseEntity<Void> handleDelete(){
+        return ResponseEntity.noContent().headers(this.buildBaseHeaders()).build();
     }
 
     /**

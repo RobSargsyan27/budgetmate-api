@@ -67,6 +67,7 @@ public class BudgetController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBudget(HttpServletRequest request, @PathVariable UUID id){
-        return httpUtil.handleDelete(budgetService.deleteBudget(request, id));
+        budgetService.deleteBudget(request, id);
+        return httpUtil.handleDelete();
     }
 }

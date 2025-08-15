@@ -1,7 +1,6 @@
 package budgetMate.api.api.account;
 
 import budgetMate.api.api.account.request.AddAccountRequest;
-import budgetMate.api.api.account.request.AddExistingAccountRequest;
 import budgetMate.api.api.account.request.UpdateAccountRequest;
 import budgetMate.api.api.account.response.AccountResponse;
 import budgetMate.api.api.account.service.AccountService;
@@ -17,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/account")
+@RequestMapping("/api/v2/accounts")
 public class AccountController {
     private final AccountService accountService;
     private final HttpUtil httpUtil;
@@ -35,18 +34,9 @@ public class AccountController {
         return httpUtil.handleAdd(accountService.addAccount(request, body));
     }
 
-    @PostMapping("/existing")
-    public ResponseEntity<Void> addExistingAccountRequest(
-            HttpServletRequest request,
-            @RequestBody @Valid AddExistingAccountRequest body)
-    {
-
-        return httpUtil.handleAdd(accountService.sendAddExistingAccountRequest(request, body));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<AccountResponse> getAccount(@PathVariable UUID id, HttpServletRequest request){
-        return httpUtil.handleGet(accountService.getAccount(id, request));
+        return httpUtil.handleGet(accountService.getAccount(request, id));
     }
 
     @PatchMapping("/{id}")
@@ -54,19 +44,11 @@ public class AccountController {
             HttpServletRequest request,
             @RequestBody @Valid UpdateAccountRequest body,
             @PathVariable UUID id) {
-        return httpUtil.handleUpdate(accountService.updateAccount(request, body, id));
+        return httpUtil.handleUpdate(accountService.updateAccount(request, id, body));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccount(HttpServletRequest request, @PathVariable UUID id){
-        return httpUtil.handleDelete(accountService.deleteAccount(request, id));
-    }
-
-    @PostMapping("/{id}/{status}")
-    public ResponseEntity<Void> updateAccountRequestStatus(
-            HttpServletRequest request,
-            @PathVariable UUID id,
-            @PathVariable Boolean status){
-        return httpUtil.handleUpdate(accountService.updateAccountRequestStatus(request, id, status));
+        return httpUtil.handleUpdate(accountService.deleteAccount(request, id));
     }
 }
