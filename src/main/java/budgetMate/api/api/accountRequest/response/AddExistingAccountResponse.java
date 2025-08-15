@@ -1,6 +1,5 @@
 package budgetMate.api.api.accountRequest.response;
 
-import budgetMate.api.api.account.response.AccountAdditionResponse;
 import budgetMate.api.domain.AccountAdditionRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
