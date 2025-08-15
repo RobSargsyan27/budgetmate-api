@@ -11,13 +11,19 @@ import java.time.LocalDateTime;
 @Component
 public class RecordFilterSpecification {
     public Specification<Record> buildRecordSpecification(
-            User user, RecordType recordType, LocalDateTime paymentTimeGreaterThan, LocalDateTime paymentTimeLessThan,
-            Double amountGreaterThan, Double amountLessThan) {
+            User user, RecordType recordType, String paymentTimeGreaterThan, String paymentTimeLessThan,
+            Double amountGreaterThan, Double amountLessThan)
+    {
+        final LocalDateTime _paymentTimeGreaterThan = paymentTimeGreaterThan == null
+                ? null : LocalDateTime.parse(paymentTimeGreaterThan.substring(0, paymentTimeGreaterThan.length() - 1));
+        final LocalDateTime _paymentTimeLessThan = paymentTimeLessThan == null
+                ? null : LocalDateTime.parse(paymentTimeLessThan.substring(0, paymentTimeLessThan.length() - 1));
+
         return Specification
                 .where(RecordFilterSpecification.hasUser(user))
                 .and(RecordFilterSpecification.hasRecordType(recordType))
-                .and(RecordFilterSpecification.hasPaymentTimeGreaterThan(paymentTimeGreaterThan))
-                .and(RecordFilterSpecification.hasPaymentTimeLessThan(paymentTimeLessThan))
+                .and(RecordFilterSpecification.hasPaymentTimeGreaterThan(_paymentTimeGreaterThan))
+                .and(RecordFilterSpecification.hasPaymentTimeLessThan(_paymentTimeLessThan))
                 .and(RecordFilterSpecification.hasAmountGreaterThan(amountGreaterThan))
                 .and(RecordFilterSpecification.hasAmountLessThan(amountLessThan));
     }

@@ -1,6 +1,6 @@
 package budgetMate.api.lib;
 
-import budgetMate.api.api.record.response.RecordReportResponse;
+import budgetMate.api.api.records.response.RecordReportResponse;
 import budgetMate.api.domain.Record;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Component;

@@ -54,8 +54,8 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, JpaSpecif
     );
 
     @Modifying
-    @Query("DELETE FROM Record r WHERE r.id = :id")
-    int deleteRecordById(UUID id);
+    @Query("DELETE FROM Record r WHERE r.id = :id AND r.user = :user")
+    void deleteUserRecordById(User user, UUID id);
 
     @Modifying
     @Query("DELETE FROM Record r WHERE r.receivingAccount.id = :accountId OR r.withdrawalAccount.id = :accountId")
