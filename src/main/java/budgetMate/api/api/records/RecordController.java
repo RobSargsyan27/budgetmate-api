@@ -32,7 +32,7 @@ public class RecordController {
     @PostMapping("/count")
     public ResponseEntity<Long> countUserRecords(
             HttpServletRequest request,
-            @RequestBody CountRecordsRequest body)
+            @RequestBody SearchRecordsRequest body)
     {
         return httpUtil.handleGet(recordService.countUserRecords(request, body));
     }

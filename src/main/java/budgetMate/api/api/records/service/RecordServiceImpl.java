@@ -1,6 +1,5 @@
 package budgetMate.api.api.records.service;
 
-import budgetMate.api.api.records.request.CountRecordsRequest;
 import budgetMate.api.api.records.request.SearchRecordsRequest;
 import budgetMate.api.api.records.request.AddRecordRequest;
 import budgetMate.api.api.records.request.UpdateRecordRequest;
@@ -54,17 +53,10 @@ public class RecordServiceImpl implements RecordService {
     @Transactional
     public List<RecordResponse> searchUserRecords(HttpServletRequest request, SearchRecordsRequest body){
         final User user = userLib.fetchRequestUser(request);
-
-        final RecordType recordType = RecordType.fromString(body.getRecordType());
-        final String paymentTimeGreaterThan = body.getPaymentTimeGreaterThan();
-        final String paymentTimeLessThan = body.getPaymentTimeLessThan();
-        final Double amountGreaterThan = body.getAmountGreaterThan();
-        final Double amountLessThan = body.getAmountLessThan();
         final Integer limit = body.getLimit();
         final Integer offset = body.getOffset();
 
-        Specification<Record> specification = recordFilterSpecification.buildRecordSpecification(
-                user, recordType, paymentTimeGreaterThan, paymentTimeLessThan, amountGreaterThan, amountLessThan);
+        Specification<Record> specification = recordFilterSpecification.buildRecordSpecification(user, body);
         Pageable pageable = PageRequest.of((offset / limit), limit, Sort.by("paymentTime").descending());
 
         final List<Record> filteredRecords = recordRepository.findAll(specification, pageable).stream().toList();
@@ -75,22 +67,15 @@ public class RecordServiceImpl implements RecordService {
     /**
      * <h2>Count user records.</h2>
      * @param request {HttpServletRequest}
-     * @param body {CountRecordsRequest}
+     * @param body {SearchRecordsRequest}
      * @return {Long}
      */
     @Override
     @Transactional
-    public Long countUserRecords(HttpServletRequest request, CountRecordsRequest body){
+    public Long countUserRecords(HttpServletRequest request, SearchRecordsRequest body){
         final User user = userLib.fetchRequestUser(request);
 
-        final RecordType recordType = RecordType.fromString(body.getRecordType());
-        final String paymentTimeGreaterThan = body.getPaymentTimeGreaterThan();
-        final String paymentTimeLessThan = body.getPaymentTimeLessThan();
-        final Double amountGreaterThan = body.getAmountGreaterThan();
-        final Double amountLessThan = body.getAmountLessThan();
-
-        Specification<Record> specification = recordFilterSpecification.buildRecordSpecification(
-                user, recordType, paymentTimeGreaterThan, paymentTimeLessThan, amountGreaterThan, amountLessThan);
+        Specification<Record> specification = recordFilterSpecification.buildRecordSpecification(user, body);
 
         return recordRepository.count(specification);
     }
@@ -148,16 +133,9 @@ public class RecordServiceImpl implements RecordService {
     public byte[] getUserRecordsReport(HttpServletRequest request, SearchRecordsRequest body) {
         final User user = userLib.fetchRequestUser(request);
 
-        final RecordType recordType = RecordType.fromString(body.getRecordType());
-        final String paymentTimeGreaterThan = body.getPaymentTimeGreaterThan();
-        final String paymentTimeLessThan = body.getPaymentTimeLessThan();
-        final Double amountGreaterThan = body.getAmountGreaterThan();
-        final Double amountLessThan = body.getAmountLessThan();
-
-        Specification<Record> specification = recordFilterSpecification.buildRecordSpecification(
-                user, recordType, paymentTimeGreaterThan, paymentTimeLessThan, amountGreaterThan, amountLessThan);
-
+        Specification<Record> specification = recordFilterSpecification.buildRecordSpecification(user, body);
         final List<Record> records = recordRepository.findAll(specification);
+
         final File file = recordLib.generateRecordsReport(records);
 
         try {

@@ -1,6 +1,5 @@
 package budgetMate.api.api.records.service;
 
-import budgetMate.api.api.records.request.CountRecordsRequest;
 import budgetMate.api.api.records.request.SearchRecordsRequest;
 import budgetMate.api.api.records.request.AddRecordRequest;
 import budgetMate.api.api.records.request.UpdateRecordRequest;
@@ -13,7 +12,7 @@ import java.util.UUID;
 public interface RecordService {
     List<RecordResponse> searchUserRecords(HttpServletRequest request, SearchRecordsRequest body);
 
-    Long countUserRecords(HttpServletRequest request, CountRecordsRequest body);
+    Long countUserRecords(HttpServletRequest request, SearchRecordsRequest body);
 
     List<RecordResponse> getUserRecords(HttpServletRequest request);
 
