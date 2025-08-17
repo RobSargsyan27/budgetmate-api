@@ -19,7 +19,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 ### Get user records overview.
 GET http://localhost:8089/api/v2/analytics/overview?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1Mjk3MTQ3LCJleHAiOjE3NTUzMDc5NDd9.RV9I4EvFO8IWcFUB0nF-GzUaUQXg9PABSdzk9xu91JE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
 
 
 ### Get user records overview line chart.

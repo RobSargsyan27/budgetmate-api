@@ -21,6 +21,10 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, JpaSpecif
 
     @Override
     @EntityGraph(attributePaths = {"user", "category", "withdrawalAccount", "receivingAccount"})
+    List<Record> findAll(Specification<Record> specification);
+
+    @Override
+    @EntityGraph(attributePaths = {"user", "category", "withdrawalAccount", "receivingAccount"})
     Page<Record> findAll(Specification<Record> specification, Pageable pageable);
 
     @Query("SELECT r FROM Record r " +
