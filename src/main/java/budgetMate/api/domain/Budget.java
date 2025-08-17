@@ -38,6 +38,7 @@ public class Budget {
     private User user;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinTable(
             name = "budget_record_categories",
             joinColumns = @JoinColumn(name = "budget_id"),

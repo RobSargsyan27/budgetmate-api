@@ -1,5 +1,5 @@
 ### Search user records.
-POST http://localhost:8089/api/v2/records/search
+POST http://localhost:8089/api/v2/records/search HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
@@ -16,7 +16,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 
 
 ### Count user records.
-POST http://localhost:8089/api/v2/records/count
+POST http://localhost:8089/api/v2/records/count HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
@@ -31,13 +31,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 
 
 ### Get user records.
-GET http://localhost:8089/api/v2/records
+GET http://localhost:8089/api/v2/records HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
 
 
 ### Add user record.
-POST http://localhost:8089/api/v2/records
+POST http://localhost:8089/api/v2/records HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
@@ -53,7 +53,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 
 
 ### Get user records report.
-POST http://localhost:8089/api/v2/records/report
+POST http://localhost:8089/api/v2/records/report HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
@@ -68,13 +68,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 
 
 ### Get user record.
-GET http://localhost:8089/api/v2/records/b0913de4-2737-46c6-9a4a-015e95be119c
+GET http://localhost:8089/api/v2/records/b0913de4-2737-46c6-9a4a-015e95be119c HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
 
 
 ### Update user record.
-PATCH http://localhost:8089/api/v2/records/b0913de4-2737-46c6-9a4a-015e95be119c
+PATCH http://localhost:8089/api/v2/records/b0913de4-2737-46c6-9a4a-015e95be119c HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
@@ -87,6 +87,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 
 
 ### Delete user record.
-DELETE http://localhost:8089/api/v2/records/b0913de4-2737-46c6-9a4a-015e95be119c
+DELETE http://localhost:8089/api/v2/records/b0913de4-2737-46c6-9a4a-015e95be119c HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM

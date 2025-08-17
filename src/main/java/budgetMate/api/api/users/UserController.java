@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/user")
+@RequestMapping("/api/v2/users")
 public class UserController {
     private final UserService userService;
     private final HttpUtil httpUtil;
@@ -37,12 +37,11 @@ public class UserController {
 
     @DeleteMapping("")
     public ResponseEntity<Void> deleteUser(HttpServletRequest request){
-        userService.deleteUser(request);
-        return httpUtil.handleDelete();
+        return httpUtil.handleUpdate(userService.deleteUser(request));
     }
 
     @GetMapping("/notifications")
-    public ResponseEntity<List<AccountAdditionResponse>> getNotifications(HttpServletRequest request){
-        return httpUtil.handleGet(userService.getNotifications(request));
+    public ResponseEntity<List<AccountAdditionResponse>> getUserNotifications(HttpServletRequest request){
+        return httpUtil.handleGet(userService.getUserNotifications(request));
     }
 }

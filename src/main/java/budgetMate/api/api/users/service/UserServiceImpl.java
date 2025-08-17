@@ -24,14 +24,27 @@ public class UserServiceImpl implements UserService {
     private final AccountAdditionRequestRepository accountAdditionRequestRepository;
     private final UserLib userLib;
 
+    /**
+     * <h2>Get user.</h2>
+     * @param request {HttpServletRequest}
+     * @return {UserResponse}
+     */
     @Override
+    @Transactional
     public UserResponse getUser(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
         return UserResponse.from(user);
     }
 
+    /**
+     * <h2>Update user.</h2>
+     * @param request {HttpServletRequest}
+     * @param body {UpdateUserRequest}
+     * @return {UserResponse}
+     */
     @Override
+    @Transactional
     public UserResponse updateUser(HttpServletRequest request, UpdateUserRequest body){
         final User user = userLib.fetchRequestUser(request);
 
@@ -47,6 +60,11 @@ public class UserServiceImpl implements UserService {
         return UserResponse.from(updatedUser);
     }
 
+    /**
+     * <h2>Delete user.</h2>
+     * @param request {HttpServletRequest}
+     * @return {Void}
+     */
     @Override
     @Transactional
     public Void deleteUser(HttpServletRequest request) {
@@ -57,8 +75,14 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /**
+     * <h2>Get user notifications.</h2>
+     * @param request {HttpServletRequest}
+     * @return {List<AccountAdditionResponse>}
+     */
     @Override
-    public List<AccountAdditionResponse> getNotifications(HttpServletRequest request){
+    @Transactional
+    public List<AccountAdditionResponse> getUserNotifications(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
         final List<AccountAdditionRequest> requests = accountAdditionRequestRepository.findUnapprovedRequestsByOwnerUser(user);

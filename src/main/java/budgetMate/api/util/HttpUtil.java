@@ -71,15 +71,6 @@ public class HttpUtil {
     }
 
     /**
-     * <h2>Public</h2>
-     * @return {ResponseEntity<Object>}
-     * <p>Handle delete.</p>
-     */
-    public ResponseEntity<Void> handleDelete(){
-        return ResponseEntity.noContent().headers(this.buildBaseHeaders()).build();
-    }
-
-    /**
      * <h2>Private</h2>
      * @return {HttpHeaders}
      * <p>Build headers.</p>

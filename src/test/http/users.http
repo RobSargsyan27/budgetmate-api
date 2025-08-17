@@ -1,0 +1,30 @@
+### Get user.
+GET http://localhost:8089/api/v2/users HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+
+
+### Update user.
+PATCH http://localhost:8089/api/v2/users HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+
+{
+  "firstname": "T-firstname",
+  "lastname": "T-lastname",
+  "country": "USA",
+  "city": "Los Angeles"
+}
+
+
+### Delete user.
+DELETE http://localhost:8089/api/v2/users HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+
+
+### Get user notifications.
+GET http://localhost:8089/api/v2/users/notifications HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM

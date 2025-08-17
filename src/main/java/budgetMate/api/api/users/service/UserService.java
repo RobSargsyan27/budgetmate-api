@@ -14,5 +14,5 @@ public interface UserService {
 
     Void deleteUser(HttpServletRequest request);
 
-    List<AccountAdditionResponse> getNotifications(HttpServletRequest request);
+    List<AccountAdditionResponse> getUserNotifications(HttpServletRequest request);
 }
