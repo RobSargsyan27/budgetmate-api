@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import budgetMate.api.api.accounts.request.AddAccountRequest;
 import budgetMate.api.api.accounts.request.UpdateAccountRequest;
+import budgetMate.api.lib.FetchLib;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class AccountServiceImpl implements AccountService{
     private final AccountRepository accountRepository;
     private final RecordRepository recordRepository;
     private final UserLib userLib;
+    private final FetchLib fetchLib;
 
     /**
      * <h2>Get user accounts.</h2>
@@ -77,8 +79,7 @@ public class AccountServiceImpl implements AccountService{
     public AccountResponse getUserAccount(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
-        final Account account =  accountRepository.getUserAccountById(user, id)
-                .orElseThrow(() -> new IllegalStateException("Account not found!"));
+        final Account account = fetchLib.fetchResource(accountRepository.getUserAccountById(user, id), "Account");
 
         return AccountResponse.from(account);
     }
@@ -95,8 +96,7 @@ public class AccountServiceImpl implements AccountService{
     public AccountResponse updateUserAccount(HttpServletRequest request, UUID id, UpdateAccountRequest body){
         final User user = userLib.fetchRequestUser(request);
 
-        final Account account = accountRepository.getUserAccountById(user, id)
-                .orElseThrow(() -> new IllegalStateException("Account is not found!"));
+        final Account account = fetchLib.fetchResource(accountRepository.getUserAccountById(user, id), "Account");
 
         account.setName(body.getName());
         account.setType(body.getType());

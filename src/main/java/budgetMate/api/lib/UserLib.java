@@ -5,7 +5,6 @@ import budgetMate.api.repository.UserRepository;
 import budgetMate.api.security.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,13 +12,18 @@ import org.springframework.stereotype.Component;
 public class UserLib {
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final FetchLib fetchLib;
 
+    /**
+     * <h2>Fetch request </h2>
+     * @param request {HttpServletRequest}
+     * @return {User}
+     */
     public User fetchRequestUser(HttpServletRequest request){
         final String token = request.getHeader("Authorization");
         final String _token = token.substring(7);
         final String email = jwtService.extractUsername(_token);
 
-        return userRepository.findUserByUsername(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+        return fetchLib.fetchResource(userRepository.findUserByUsername(email), "User");
     }
 }

@@ -8,6 +8,7 @@ import budgetMate.api.domain.Budget;
 import budgetMate.api.domain.RecordCategory;
 import budgetMate.api.domain.User;
 import budgetMate.api.lib.BudgetLib;
+import budgetMate.api.lib.FetchLib;
 import budgetMate.api.lib.UserLib;
 import budgetMate.api.repository.BudgetRepository;
 import budgetMate.api.repository.RecordCategoryRepository;
@@ -36,6 +37,7 @@ public class BudgetServiceImpl implements BudgetService {
     private final UserLib userLib;
     private final BudgetLib budgetLib;
     private final FileUtil fileUtil;
+    private final FetchLib fetchLib;
 
     /**
      * <h2>Get user budgets.</h2>
@@ -88,8 +90,7 @@ public class BudgetServiceImpl implements BudgetService {
     public BudgetResponse getUserBudget(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
-        final Budget budget = budgetRepository.getUserBudgetById(user, id)
-                .orElseThrow(() -> new IllegalStateException("Budget not found!"));
+        final Budget budget = fetchLib.fetchResource(budgetRepository.getUserBudgetById(user, id), "Budget");
 
         return BudgetResponse.from(budget);
     }
@@ -154,8 +155,7 @@ public class BudgetServiceImpl implements BudgetService {
     public BudgetResponse updateUserBudget(HttpServletRequest request, UpdateBudgetRequest body, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
-        final Budget budget = budgetRepository.getUserBudgetById(user, id)
-                .orElseThrow(() -> new IllegalStateException("Budget is not found."));
+        final Budget budget = fetchLib.fetchResource(budgetRepository.getUserBudgetById(user, id), "Budget");
 
         budget.setName(body.getName());
         budget.setAmount(body.getAmount());

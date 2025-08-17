@@ -1,16 +1,92 @@
 ### Search user records.
+POST http://localhost:8089/api/v2/records/search
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+
+{
+  "recordType": "INCOME",
+  "amountGreaterThan": 100,
+  "amountLessThan": 50000,
+  "paymentTimeLessThan": "2025-08-01T00:00:00.000Z",
+  "paymentTimeGreaterThan": "2024-08-01T00:00:00.000Z",
+  "limit": 100,
+  "offset": 0
+}
+
 
 ### Count user records.
+POST http://localhost:8089/api/v2/records/count
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+
+{
+  "recordType": "INCOME",
+  "amountGreaterThan": 100,
+  "amountLessThan": 50000,
+  "paymentTimeLessThan": "2025-08-01T00:00:00.000Z",
+  "paymentTimeGreaterThan": "2024-08-01T00:00:00.000Z"
+}
+
 
 ### Get user records.
+GET http://localhost:8089/api/v2/records
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+
 
 ### Add user record.
+POST http://localhost:8089/api/v2/records
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+
+{
+  "amount": 5000,
+  "paymentTime": "2025-07-02T00:00:00.000Z",
+  "category": "Rent",
+  "type": "EXPENSE",
+  "note": "August home rent.",
+  "withdrawalAccountId": "d4b4e407-63f5-7646-efe7-548f0ef37a48"
+}
+
 
 ### Get user records report.
+POST http://localhost:8089/api/v2/records/report
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+
+{
+  "recordType": "INCOME",
+  "amountGreaterThan": 100,
+  "amountLessThan": 50000,
+  "paymentTimeLessThan": "2025-08-01T00:00:00.000Z",
+  "paymentTimeGreaterThan": "2024-08-01T00:00:00.000Z"
+}
+
 
 ### Get user record.
+GET http://localhost:8089/api/v2/records/b0913de4-2737-46c6-9a4a-015e95be119c
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+
 
 ### Update user record.
+PATCH http://localhost:8089/api/v2/records/b0913de4-2737-46c6-9a4a-015e95be119c
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+
+{
+  "paymentTime": "2025-07-27T00:00:00.000Z",
+  "category": "Investment",
+  "note": "August investments."
+}
+
 
 ### Delete user record.
-
+DELETE http://localhost:8089/api/v2/records/b0913de4-2737-46c6-9a4a-015e95be119c
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM

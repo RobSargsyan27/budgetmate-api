@@ -1,5 +1,6 @@
 package budgetMate.api.api.records.request;
 
+import budgetMate.api.domain.enums.RecordType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,7 +9,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class SearchRecordsRequest {
-    private String recordType;
+    private RecordType recordType;
 
     private Double amountGreaterThan;
 

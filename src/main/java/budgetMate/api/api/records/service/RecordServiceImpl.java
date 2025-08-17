@@ -4,11 +4,11 @@ import budgetMate.api.api.records.request.SearchRecordsRequest;
 import budgetMate.api.api.records.request.AddRecordRequest;
 import budgetMate.api.api.records.request.UpdateRecordRequest;
 import budgetMate.api.api.records.response.RecordResponse;
-import budgetMate.api.domain.Account;
 import budgetMate.api.domain.Record;
 import budgetMate.api.domain.RecordCategory;
 import budgetMate.api.domain.User;
 import budgetMate.api.domain.enums.RecordType;
+import budgetMate.api.lib.FetchLib;
 import budgetMate.api.lib.RecordLib;
 import budgetMate.api.lib.UserLib;
 import budgetMate.api.repository.AccountRepository;
@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,6 +41,7 @@ public class RecordServiceImpl implements RecordService {
     private final UserLib userLib;
     private final RecordLib recordLib;
     private final FileUtil fileUtil;
+    private final FetchLib fetchLib;
 
     /**
      * <h2>Search user records.</h2>
@@ -95,29 +95,32 @@ public class RecordServiceImpl implements RecordService {
         return RecordResponse.from(records);
     }
 
+    /**
+     * <h2>Add user record.</h2>
+     * @param request {HttpServletRequest}
+     * @param body {AddRecordRequest}
+     * @return {RecordResponse}
+     */
     @Override
     @Transactional
     public RecordResponse addUserRecord(HttpServletRequest request, AddRecordRequest body) {
         final User user = userLib.fetchRequestUser(request);
 
-        final LocalDateTime paymentTime = body.getPaymentTime() == null ? LocalDateTime.now() : body.getPaymentTime();
-        final Account receivingAccount = accountRepository.getUserAccountById(user, body.getReceivingAccountId())
-                .orElseThrow(() -> new IllegalStateException("Receiving account not found!"));
-        final RecordCategory recordCategory = recordCategoryRepository.getRecordCategoryByNames(List.of(body.getCategory()))
-                .getFirst();
+        final Record record = recordLib.buildRecord(user, body);
 
-        final Record record = Record.builder()
-                .amount(body.getAmount())
-                .user(user)
-                .paymentTime(paymentTime)
-                .category(recordCategory)
-                .type(RecordType.INCOME)
-                .note(body.getNote())
-                .currency(receivingAccount.getCurrency())
-                .receivingAccount(receivingAccount)
-                .build();
+        switch (record.getType()){
+            case INCOME:
+                accountRepository.updateAccountCurrentBalance(body.getReceivingAccountId(), body.getAmount());
+                break;
+            case EXPENSE:
+                accountRepository.updateAccountCurrentBalance(body.getWithdrawalAccountId(), -body.getAmount());
+                break;
+            case TRANSFER:
+                accountRepository.updateAccountCurrentBalance(body.getWithdrawalAccountId(), -body.getAmount());
+                accountRepository.updateAccountCurrentBalance(body.getReceivingAccountId(), body.getAmount());
+        }
+
         recordRepository.save(record);
-        accountRepository.updateAccountCurrentBalance(body.getReceivingAccountId(), body.getAmount());
 
         return RecordResponse.from(record);
     }
@@ -158,8 +161,7 @@ public class RecordServiceImpl implements RecordService {
     public RecordResponse getUserRecord(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
-        final Record record = recordRepository.getUserRecordById(user, id).
-                orElseThrow(() -> new IllegalStateException("Record is not found!"));
+        final Record record = fetchLib.fetchResource(recordRepository.getUserRecordById(user, id), "Record");
 
         return RecordResponse.from(record);
     }
@@ -176,14 +178,12 @@ public class RecordServiceImpl implements RecordService {
     public RecordResponse updateUserRecord(HttpServletRequest request, UUID id, UpdateRecordRequest body){
         final User user = userLib.fetchRequestUser(request);
 
-        final Record record = recordRepository.getUserRecordById(user, id)
-                .orElseThrow(() -> new IllegalStateException("Record is not found!"));
+        final Record record = fetchLib.fetchResource(recordRepository.getUserRecordById(user, id), "Record");
 
         record.setNote(body.getNote());
         record.setPaymentTime(body.getPaymentTime());
         if(body.getCategory() != null){
-            final RecordCategory recordCategory = recordCategoryRepository.getRecordCategoryByName(body.getCategory())
-                    .orElseThrow(() -> new IllegalStateException("Record category is not found!"));
+            final RecordCategory recordCategory = fetchLib.fetchResource(recordCategoryRepository.getRecordCategoryByName(body.getCategory()), "Record Category");
             record.setCategory(recordCategory);
         }
 
@@ -203,8 +203,7 @@ public class RecordServiceImpl implements RecordService {
     public Void deleteUserRecord(HttpServletRequest request, UUID id) {
         final User user = userLib.fetchRequestUser(request);
 
-        final Record record = recordRepository.getUserRecordById(user, id)
-                .orElseThrow(() -> new IllegalStateException("Record is not found!"));
+        final Record record = fetchLib.fetchResource(recordRepository.getUserRecordById(user, id), "Record");
 
         switch (record.getType()){
             case RecordType.INCOME:

@@ -18,7 +18,7 @@ public class RecordFilterSpecification {
      * @return {Specification<Record>}
      */
     public Specification<Record> buildRecordSpecification(User user, SearchRecordsRequest body) {
-        final RecordType recordType = RecordType.fromString(body.getRecordType());
+        final RecordType recordType = body.getRecordType();
         final Double amountGreaterThan = body.getAmountGreaterThan();
         final Double amountLessThan = body.getAmountLessThan();
         final LocalDateTime paymentTimeGreaterThan = body.getPaymentTimeGreaterThan() == null

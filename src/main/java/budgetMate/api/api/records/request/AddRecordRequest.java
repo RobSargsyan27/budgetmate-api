@@ -1,5 +1,6 @@
 package budgetMate.api.api.records.request;
 
+import budgetMate.api.domain.enums.RecordType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
@@ -16,13 +17,17 @@ public class AddRecordRequest {
     @Positive
     private double amount;
 
-    private LocalDateTime paymentTime;
-
     @NotNull
     private String category;
 
+    @NotNull
+    private RecordType type;
+
+    private LocalDateTime paymentTime;
+
     private String note;
 
-    @NotNull
     private UUID receivingAccountId;
+
+    private UUID withdrawalAccountId;
 }

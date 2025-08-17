@@ -50,7 +50,7 @@ public class RecordController {
         return httpUtil.handleAdd(recordService.addUserRecord(request, body));
     }
 
-    @GetMapping("/report")
+    @PostMapping("/report")
     public ResponseEntity<byte[]> getUserRecordsReport(
             HttpServletRequest request,
             @RequestBody @Valid SearchRecordsRequest body)
