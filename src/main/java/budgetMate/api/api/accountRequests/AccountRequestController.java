@@ -4,7 +4,6 @@ import budgetMate.api.api.accountRequests.request.AddUserAccountRequest;
 import budgetMate.api.api.accountRequests.request.UpdateUserAccountRequest;
 import budgetMate.api.api.accountRequests.response.AccountRequestResponse;
 import budgetMate.api.api.accountRequests.service.AccountRequestService;
-import budgetMate.api.domain.AccountAdditionRequest;
 import budgetMate.api.util.HttpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

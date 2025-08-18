@@ -2,7 +2,6 @@ package budgetMate.api.api.accountRequests.service;
 
 import budgetMate.api.api.accountRequests.request.*;
 import budgetMate.api.api.accountRequests.response.AccountRequestResponse;
-import budgetMate.api.domain.AccountAdditionRequest;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.UUID;
