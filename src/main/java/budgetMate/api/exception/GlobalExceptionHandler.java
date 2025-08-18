@@ -1,8 +1,6 @@
 package budgetMate.api.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,13 +38,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<Map<String, String>> handleIllegalStateException(IllegalStateException exception){
         log.error("IllegalStateException: {}", exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", exception.getLocalizedMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", exception.getLocalizedMessage()));
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleUsernameNotFoundException(UsernameNotFoundException exception){
         log.error("UsernameNotFoundException: {}", exception.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", exception.getMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", exception.getMessage()));
     }
 
     @ExceptionHandler(BadCredentialsException.class)

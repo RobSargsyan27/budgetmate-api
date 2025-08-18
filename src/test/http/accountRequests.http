@@ -1,16 +1,22 @@
 ### Add user account request.
+# Expected response status => HTTP/1.1 201
+# Expected response content type => Content-Type: application/json
+# Expected response body => {{ "id", "ownerUsername", "requestedUsername", "accountName" }}
 POST http://localhost:8089/api/v1/account-requests HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2JlcnRzYXJnc3lhbjI3QGdtYWlsLmNvbSIsImlhdCI6MTc1NTUxMzMyMiwiZXhwIjoxNzU1NTI0MTIyfQ.wUO5KnHlIvsOF2vwg4NEZ6Uu6UXqlOxkR_CzOoxZfEE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NDIyLCJleHAiOjE3NTU1MzUyMjJ9.o-TeLG0IquTQ9xZ7wPP1jn1kH2TRcQJtlTVWRHlClvA
 
 {
   "accountName": "General Account",
-  "ownerUsername": "user@budgetmate.com"
+  "ownerUsername": "user1@budgetmate.com"
 }
 
 
 ### Update user account request.
+# Expected response status => HTTP/1.1 200
+# Expected response content type => Content-Type: application/json
+# Expected response body => {{ "id", "ownerUsername", "requestedUsername", "accountName" }}
 PATCH http://localhost:8089/api/v1/account-requests/257b0760-24ce-46a1-ace0-b442657790ce HTTP/1.1
 Accept: application/json
 Content-Type: application/json

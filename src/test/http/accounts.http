@@ -1,14 +1,20 @@
 ### Get user accounts.
+# Expected response status => HTTP/1.1 200
+# Expected response content type => Content-Type: application/json
+# Expected response body => {Array<{"id", "name", "currency", "currentBalance", "type", "avatarColor"}>}
 GET http://localhost:8089/api/v2/accounts HTTP/1.1
 Accept: application/json;
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2JlcnRzYXJnc3lhbjI3QGdtYWlsLmNvbSIsImlhdCI6MTc1NTUwOTQ1OSwiZXhwIjoxNzU1NTIwMjU5fQ.xGC4OEpgjdVowddtZ4NRUtMQ8eahLBhI_F-za_eR9Gc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
 
 
 ### Add user account.
+# Expected response status => HTTP/1.1 201
+# Expected response content type => Content-Type: application/json
+# Expected response body => {{"id", "name", "currency", "currentBalance", "type", "avatarColor"}}
 POST http://localhost:8089/api/v2/accounts HTTP/1.1
 Accept: application/json;
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1MjgyMzMzLCJleHAiOjE3NTUyOTMxMzN9.-2PQHr3Wo0VZjCu-wIbsTRgIUSD8Cfl1PLu0oF1uUcg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
 
 {
   "name": "Account-Test",
@@ -19,16 +25,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 
 
 ### Get user accout.
-GET http://localhost:8089/api/v2/accounts/e03e18d2-bdbf-4f96-9b5e-cc2c6d97c80c HTTP/1.1
+# Expected response status => HTTP/1.1 200
+# Expected response content type => Content-Type: application/json
+# Expected response body => {{"id", "name", "currency", "currentBalance", "type", "avatarColor"}}
+GET http://localhost:8089/api/v2/accounts/33d114b6-75f9-4832-9730-ffadab2f54ef HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1MjgyMzMzLCJleHAiOjE3NTUyOTMxMzN9.-2PQHr3Wo0VZjCu-wIbsTRgIUSD8Cfl1PLu0oF1uUcg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
 
 
 ### Update user account.
-PATCH http://localhost:8089/api/v2/accounts/e03e18d2-bdbf-4f96-9b5e-cc2c6d97c80c HTTP/1.1
+# Expected response status => HTTP/1.1 200
+# Expected response content type => Content-Type: application/json
+# Expected response body => {{"id", "name", "currency", "currentBalance", "type", "avatarColor"}}
+PATCH http://localhost:8089/api/v2/accounts/33d114b6-75f9-4832-9730-ffadab2f54ef HTTP/1.1
 Accept: application/json
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1MjgyMzMzLCJleHAiOjE3NTUyOTMxMzN9.-2PQHr3Wo0VZjCu-wIbsTRgIUSD8Cfl1PLu0oF1uUcg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
 
 {
   "type": "CREDIT_CARD",
@@ -37,6 +49,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 
 
 ### Delete user account.
-DELETE http://localhost:8089/api/v2/accounts/8534376b-2c82-4711-9882-8f434526681c HTTP/1.1
+# Expected response status => HTTP/1.1 204
+# Expected response content type => Content-Type: application/json
+# Expected response body => Empty
+DELETE http://localhost:8089/api/v2/accounts/33d114b6-75f9-4832-9730-ffadab2f54ef HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1MjgyMzMzLCJleHAiOjE3NTUyOTMxMzN9.-2PQHr3Wo0VZjCu-wIbsTRgIUSD8Cfl1PLu0oF1uUcg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
