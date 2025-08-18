@@ -4,16 +4,16 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "firstname": "Robert",
-  "lastname": "Sargsyan",
-  "email": "robertsargsyan27@gmail.com",
-  "password": "rob",
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "user@budgetmate.com",
+  "password": "user123",
   "receiveNewsLetters": false
 }
 
 
 ### Confirm user registraton.
-POST http://localhost:8089/api/v2/auth/register/confirm?email=robertsargsyan27@gmail.com&token=ee19c218-ef4e-4a00-baf7-1533a5563b2c HTTP/1.1
+POST http://localhost:8089/api/v2/auth/register/confirm?email=robertsargsyan27@gmail.com&token=3a8ced98-5c41-4b87-bd96-f96e5ec04e75 HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 
@@ -24,8 +24,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "robertsargsyan27@gmail.com",
-  "password": "rob"
+  "email": "user@budgetmate.com",
+  "password": "user123"
 }
 
 

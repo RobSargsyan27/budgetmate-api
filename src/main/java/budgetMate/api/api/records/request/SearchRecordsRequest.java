@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Getter
 @ToString
 @EqualsAndHashCode
@@ -15,9 +17,9 @@ public class SearchRecordsRequest {
 
     private Double amountLessThan;
 
-    private String paymentTimeGreaterThan;
+    private LocalDateTime paymentTimeGreaterThan;
 
-    private String paymentTimeLessThan;
+    private LocalDateTime paymentTimeLessThan;
 
     private Integer limit;
 

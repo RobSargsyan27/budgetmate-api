@@ -45,19 +45,14 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         LocalDateTime startOfYear = currentYear.atDay(1).atStartOfDay();
         LocalDateTime startOfNextYear = currentYear.plusYears(1).atDay(1).atStartOfDay();
 
+        final BigDecimal annualEarnings = recordRepository
+                .getUserRecordsIntervalSum(user, RecordType.INCOME, startOfYear, startOfNextYear);
         final BigDecimal monthlyEarnings = recordRepository
                 .getUserRecordsIntervalSum(user, RecordType.INCOME, startOfMonth, startOfNextMonth);
         final BigDecimal monthlyExpenses = recordRepository
                 .getUserRecordsIntervalSum(user, RecordType.EXPENSE, startOfMonth, startOfNextMonth);
-        final BigDecimal annualEarnings = recordRepository
-                .getUserRecordsIntervalSum(user, RecordType.INCOME, startOfYear, startOfNextYear);
 
-        final AnalyticsResponse analyticsResponse = new AnalyticsResponse();
-        analyticsResponse.setAnnualEarnings(annualEarnings);
-        analyticsResponse.setMonthlyEarnings(monthlyEarnings);
-        analyticsResponse.setMonthlyExpenses(monthlyExpenses);
-
-        return analyticsResponse;
+        return AnalyticsResponse.from(annualEarnings, monthlyEarnings, monthlyExpenses);
     }
 
     /**
@@ -86,10 +81,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                 .map((item) -> (Double) item[1])
                 .toList();
 
-        return ChartResponse.builder()
-                .labels(categories)
-                .data(totalAmounts)
-                .build();
+        return ChartResponse.from(categories, totalAmounts);
     }
 
     /**
@@ -130,11 +122,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         final BigDecimal monthlyExpenses = recordRepository
                 .getUserRecordsIntervalSum(user, RecordType.EXPENSE, _startDate, _endDate);
 
-        AnalyticsResponse analyticsResponse = new AnalyticsResponse();
-        analyticsResponse.setMonthlyExpenses(monthlyExpenses);
-        analyticsResponse.setMonthlyEarnings(monthlyEarnings);
-
-        return analyticsResponse;
+        return AnalyticsResponse.from(monthlyEarnings, monthlyExpenses);
     }
 
     /**

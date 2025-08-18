@@ -21,10 +21,8 @@ public class RecordFilterSpecification {
         final RecordType recordType = body.getRecordType();
         final Double amountGreaterThan = body.getAmountGreaterThan();
         final Double amountLessThan = body.getAmountLessThan();
-        final LocalDateTime paymentTimeGreaterThan = body.getPaymentTimeGreaterThan() == null
-                ? null : LocalDateTime.parse(body.getPaymentTimeGreaterThan().substring(0, body.getPaymentTimeGreaterThan().length() - 1));
-        final LocalDateTime paymentTimeLessThan = body.getPaymentTimeLessThan() == null
-                ? null : LocalDateTime.parse(body.getPaymentTimeLessThan().substring(0, body.getPaymentTimeLessThan().length() - 1));
+        final LocalDateTime paymentTimeGreaterThan = body.getPaymentTimeGreaterThan();
+        final LocalDateTime paymentTimeLessThan = body.getPaymentTimeLessThan();
 
         return Specification
                 .where(RecordFilterSpecification.hasUser(user))

@@ -11,14 +11,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 public class ChartResponse {
     private List<String> labels;
 
     private List<Double> data;
 
+    /**
+     * <h2>Parse to ChartResponse.</h2>
+     * @param chartData {List<Object[]>}
+     * @return {ChartResponse}
+     */
     public static ChartResponse from(List<Object[]> chartData){
         final Map<LocalDateTime, Double> groupedData = new HashMap<>();
 
@@ -45,5 +50,18 @@ public class ChartResponse {
                 .toList();
 
         return ChartResponse.builder().labels(labels).data(data).build();
+    }
+
+    /**
+     * <h2>Parse to ChartResponse.</h2>
+     * @param labels {List<String>}
+     * @param data {List<Double>}
+     * @return {ChartResponse}
+     */
+    public static ChartResponse from(List<String> labels, List<Double> data){
+        return ChartResponse.builder()
+                .labels(labels)
+                .data(data)
+                .build();
     }
 }

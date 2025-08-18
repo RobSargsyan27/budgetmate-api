@@ -1,6 +1,8 @@
 package budgetMate.api.api.users.service;
 
-import budgetMate.api.api.accounts.response.AccountAdditionResponse;
+import budgetMate.api.api.accountAdditionRequests.mapper.AccountAdditionResponseMapper;
+import budgetMate.api.api.accountAdditionRequests.response.AccountAdditionResponse;
+import budgetMate.api.api.users.mapper.UserResponseMapper;
 import budgetMate.api.api.users.request.UpdateUserRequest;
 import budgetMate.api.api.users.response.UserResponse;
 import budgetMate.api.domain.AccountAdditionRequest;
@@ -23,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final AccountAdditionRequestRepository accountAdditionRequestRepository;
     private final UserLib userLib;
+    private final AccountAdditionResponseMapper accountAdditionResponseMapper;
+    private final UserResponseMapper userResponseMapper;
 
     /**
      * <h2>Get user.</h2>
@@ -34,7 +38,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse getUser(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
-        return UserResponse.from(user);
+        return userResponseMapper.toDto(user);
     }
 
     /**
@@ -57,7 +61,7 @@ public class UserServiceImpl implements UserService {
         user.setAvatarColor(body.getAvatarColor());
         final User updatedUser = userRepository.save(user);
 
-        return UserResponse.from(updatedUser);
+        return userResponseMapper.toDto(updatedUser);
     }
 
     /**
@@ -87,6 +91,6 @@ public class UserServiceImpl implements UserService {
 
         final List<AccountAdditionRequest> requests = accountAdditionRequestRepository.findUnapprovedRequestsByOwnerUser(user);
 
-        return AccountAdditionResponse.from(requests);
+        return accountAdditionResponseMapper.toDtoList(requests);
     }
 }

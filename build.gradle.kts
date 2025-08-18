@@ -36,6 +36,8 @@ dependencies {
 	implementation("org.webjars.npm:fortawesome__fontawesome-free:5.15.3")
 	implementation("com.google.code.gson:gson:2.8.9")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+	implementation("org.mapstruct:mapstruct:1.6.3")
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 }
 
 tasks.test {

@@ -1,4 +1,4 @@
-package budgetMate.api.api.accountRequests.request;
+package budgetMate.api.api.accountAdditionRequests.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class AddUserAccountRequest {
+public class AddAccountAdditionRequest {
     @NotEmpty
     private String ownerUsername;
 

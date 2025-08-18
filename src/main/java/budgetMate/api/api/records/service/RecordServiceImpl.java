@@ -1,5 +1,6 @@
 package budgetMate.api.api.records.service;
 
+import budgetMate.api.api.records.mapper.RecordResponseMapper;
 import budgetMate.api.api.records.request.SearchRecordsRequest;
 import budgetMate.api.api.records.request.AddRecordRequest;
 import budgetMate.api.api.records.request.UpdateRecordRequest;
@@ -8,7 +9,7 @@ import budgetMate.api.domain.Record;
 import budgetMate.api.domain.RecordCategory;
 import budgetMate.api.domain.User;
 import budgetMate.api.domain.enums.RecordType;
-import budgetMate.api.lib.FetchLib;
+import budgetMate.api.util.FetchUtil;
 import budgetMate.api.lib.RecordLib;
 import budgetMate.api.lib.UserLib;
 import budgetMate.api.repository.AccountRepository;
@@ -40,8 +41,9 @@ public class RecordServiceImpl implements RecordService {
     private final RecordCategoryRepository recordCategoryRepository;
     private final UserLib userLib;
     private final RecordLib recordLib;
+    private final FetchUtil fetchUtil;
     private final FileUtil fileUtil;
-    private final FetchLib fetchLib;
+    private final RecordResponseMapper recordResponseMapper;
 
     /**
      * <h2>Search user records.</h2>
@@ -61,7 +63,7 @@ public class RecordServiceImpl implements RecordService {
 
         final List<Record> filteredRecords = recordRepository.findAll(specification, pageable).stream().toList();
 
-        return RecordResponse.from(filteredRecords);
+        return recordResponseMapper.toDtoList(filteredRecords);
     }
 
     /**
@@ -92,7 +94,7 @@ public class RecordServiceImpl implements RecordService {
 
         final List<Record> records = recordRepository.getUserRecords(user);
 
-        return RecordResponse.from(records);
+        return recordResponseMapper.toDtoList(records);
     }
 
     /**
@@ -122,7 +124,7 @@ public class RecordServiceImpl implements RecordService {
 
         recordRepository.save(record);
 
-        return RecordResponse.from(record);
+        return recordResponseMapper.toDto(record);
     }
 
     /**
@@ -161,9 +163,9 @@ public class RecordServiceImpl implements RecordService {
     public RecordResponse getUserRecord(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
-        final Record record = fetchLib.fetchResource(recordRepository.getUserRecordById(user, id), "Record");
+        final Record record = fetchUtil.fetchResource(recordRepository.getUserRecordById(user, id), "Record");
 
-        return RecordResponse.from(record);
+        return recordResponseMapper.toDto(record);
     }
 
     /**
@@ -178,18 +180,18 @@ public class RecordServiceImpl implements RecordService {
     public RecordResponse updateUserRecord(HttpServletRequest request, UUID id, UpdateRecordRequest body){
         final User user = userLib.fetchRequestUser(request);
 
-        final Record record = fetchLib.fetchResource(recordRepository.getUserRecordById(user, id), "Record");
+        final Record record = fetchUtil.fetchResource(recordRepository.getUserRecordById(user, id), "Record");
 
         record.setNote(body.getNote());
         record.setPaymentTime(body.getPaymentTime());
         if(body.getCategory() != null){
-            final RecordCategory recordCategory = fetchLib.fetchResource(recordCategoryRepository.getRecordCategoryByName(body.getCategory()), "Record Category");
+            final RecordCategory recordCategory = fetchUtil.fetchResource(recordCategoryRepository.getRecordCategoryByName(body.getCategory()), "Record Category");
             record.setCategory(recordCategory);
         }
 
         final Record updatedRecord = recordRepository.save(record);
 
-        return RecordResponse.from(updatedRecord);
+        return recordResponseMapper.toDto(updatedRecord);
     }
 
     /**
@@ -203,7 +205,7 @@ public class RecordServiceImpl implements RecordService {
     public Void deleteUserRecord(HttpServletRequest request, UUID id) {
         final User user = userLib.fetchRequestUser(request);
 
-        final Record record = fetchLib.fetchResource(recordRepository.getUserRecordById(user, id), "Record");
+        final Record record = fetchUtil.fetchResource(recordRepository.getUserRecordById(user, id), "Record");
 
         switch (record.getType()){
             case RecordType.INCOME:

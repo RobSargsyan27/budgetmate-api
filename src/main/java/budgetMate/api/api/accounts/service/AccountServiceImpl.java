@@ -3,9 +3,10 @@ package budgetMate.api.api.accounts.service;
 import java.util.List;
 import java.util.UUID;
 
+import budgetMate.api.api.accounts.mapper.AccountResponseMapper;
 import budgetMate.api.api.accounts.request.AddAccountRequest;
 import budgetMate.api.api.accounts.request.UpdateAccountRequest;
-import budgetMate.api.lib.FetchLib;
+import budgetMate.api.util.FetchUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,8 @@ public class AccountServiceImpl implements AccountService{
     private final AccountRepository accountRepository;
     private final RecordRepository recordRepository;
     private final UserLib userLib;
-    private final FetchLib fetchLib;
+    private final FetchUtil fetchUtil;
+    private final AccountResponseMapper accountResponseMapper;
 
     /**
      * <h2>Get user accounts.</h2>
@@ -40,7 +42,7 @@ public class AccountServiceImpl implements AccountService{
 
         final List<Account> accounts = accountRepository.getUserAccounts(user.getId());
 
-        return AccountResponse.from(accounts);
+        return accountResponseMapper.toDtoList(accounts);
     }
 
     /**
@@ -65,7 +67,7 @@ public class AccountServiceImpl implements AccountService{
         final Account addedAccount = accountRepository.save(account);
         accountRepository.addUserAccountAssociation(user.getId(), addedAccount.getId());
 
-        return AccountResponse.from(addedAccount);
+        return accountResponseMapper.toDto(addedAccount);
     }
 
     /**
@@ -79,9 +81,9 @@ public class AccountServiceImpl implements AccountService{
     public AccountResponse getUserAccount(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
-        final Account account = fetchLib.fetchResource(accountRepository.getUserAccountById(user, id), "Account");
+        final Account account = fetchUtil.fetchResource(accountRepository.getUserAccountById(user, id), "Account");
 
-        return AccountResponse.from(account);
+        return accountResponseMapper.toDto(account);
     }
 
     /**
@@ -96,7 +98,7 @@ public class AccountServiceImpl implements AccountService{
     public AccountResponse updateUserAccount(HttpServletRequest request, UUID id, UpdateAccountRequest body){
         final User user = userLib.fetchRequestUser(request);
 
-        final Account account = fetchLib.fetchResource(accountRepository.getUserAccountById(user, id), "Account");
+        final Account account = fetchUtil.fetchResource(accountRepository.getUserAccountById(user, id), "Account");
 
         account.setName(body.getName());
         account.setType(body.getType());
@@ -105,7 +107,7 @@ public class AccountServiceImpl implements AccountService{
 
         final Account updatedAccount = accountRepository.save(account);
 
-        return AccountResponse.from(updatedAccount);
+        return accountResponseMapper.toDto(updatedAccount);
     }
 
     /**

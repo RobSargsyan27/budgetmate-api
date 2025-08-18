@@ -1,5 +1,6 @@
 package budgetMate.api.api.budgets.service;
 
+import budgetMate.api.api.budgets.mapper.BudgetResponseMapper;
 import budgetMate.api.api.budgets.request.AddBudgetRequest;
 import budgetMate.api.api.budgets.request.UpdateBudgetRequest;
 import budgetMate.api.api.budgets.response.BudgetResponse;
@@ -8,7 +9,7 @@ import budgetMate.api.domain.Budget;
 import budgetMate.api.domain.RecordCategory;
 import budgetMate.api.domain.User;
 import budgetMate.api.lib.BudgetLib;
-import budgetMate.api.lib.FetchLib;
+import budgetMate.api.util.FetchUtil;
 import budgetMate.api.lib.UserLib;
 import budgetMate.api.repository.BudgetRepository;
 import budgetMate.api.repository.RecordCategoryRepository;
@@ -36,8 +37,9 @@ public class BudgetServiceImpl implements BudgetService {
     private final RecordRepository recordRepository;
     private final UserLib userLib;
     private final BudgetLib budgetLib;
+    private final FetchUtil fetchUtil;
     private final FileUtil fileUtil;
-    private final FetchLib fetchLib;
+    private final BudgetResponseMapper budgetResponseMapper;
 
     /**
      * <h2>Get user budgets.</h2>
@@ -51,7 +53,7 @@ public class BudgetServiceImpl implements BudgetService {
 
         final List<Budget> budgets = budgetRepository.getUserBudgets(user);
 
-        return BudgetResponse.from(budgets);
+        return budgetResponseMapper.toDtoList(budgets);
     }
 
     /**
@@ -76,7 +78,7 @@ public class BudgetServiceImpl implements BudgetService {
                 .build();
         budgetRepository.save(budget);
 
-        return BudgetResponse.from(budget);
+        return budgetResponseMapper.toDto(budget);
     }
 
     /**
@@ -90,9 +92,9 @@ public class BudgetServiceImpl implements BudgetService {
     public BudgetResponse getUserBudget(HttpServletRequest request, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
-        final Budget budget = fetchLib.fetchResource(budgetRepository.getUserBudgetById(user, id), "Budget");
+        final Budget budget = fetchUtil.fetchResource(budgetRepository.getUserBudgetById(user, id), "Budget");
 
-        return BudgetResponse.from(budget);
+        return budgetResponseMapper.toDto(budget);
     }
 
     /**
@@ -155,7 +157,7 @@ public class BudgetServiceImpl implements BudgetService {
     public BudgetResponse updateUserBudget(HttpServletRequest request, UpdateBudgetRequest body, UUID id){
         final User user = userLib.fetchRequestUser(request);
 
-        final Budget budget = fetchLib.fetchResource(budgetRepository.getUserBudgetById(user, id), "Budget");
+        final Budget budget = fetchUtil.fetchResource(budgetRepository.getUserBudgetById(user, id), "Budget");
 
         budget.setName(body.getName());
         budget.setAmount(body.getAmount());
@@ -168,7 +170,7 @@ public class BudgetServiceImpl implements BudgetService {
 
         final Budget updatedBudget = budgetRepository.save(budget);
 
-        return BudgetResponse.from(updatedBudget);
+        return budgetResponseMapper.toDto(updatedBudget);
     }
 
     /**

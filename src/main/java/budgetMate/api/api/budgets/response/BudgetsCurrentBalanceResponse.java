@@ -16,6 +16,12 @@ public class BudgetsCurrentBalanceResponse {
 
     private Double currentBalance;
 
+    /**
+     * <h2>Parse to BudgetsCurrentBalanceResponse.</h2>
+     * @param id {UUID}
+     * @param currentBalance {Double}
+     * @return {BudgetsCurrentBalanceResponse}
+     */
     public static BudgetsCurrentBalanceResponse from(UUID id, Double currentBalance){
         return BudgetsCurrentBalanceResponse.builder()
                 .id(id)
@@ -23,6 +29,11 @@ public class BudgetsCurrentBalanceResponse {
                 .build();
     }
 
+    /**
+     * <h2>Parse to BudgetsCurrentBalanceResponse list.</h2>
+     * @param currentBalances {Map<UUID, Double>}
+     * @return {List<BudgetsCurrentBalanceResponse>}
+     */
     public static List<BudgetsCurrentBalanceResponse> from(Map<UUID, Double> currentBalances){
         return currentBalances.isEmpty()
                 ? List.of()

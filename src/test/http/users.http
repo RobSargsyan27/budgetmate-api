@@ -27,4 +27,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 ### Get user notifications.
 GET http://localhost:8089/api/v2/users/notifications HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTEzMzcwLCJleHAiOjE3NTU1MjQxNzB9.eT9JDzKEEQs1k3pmWiNzAvqohrsTgMmt-bELPP763NI

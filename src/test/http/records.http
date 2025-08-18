@@ -2,10 +2,10 @@
 POST http://localhost:8089/api/v2/records/search HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTE5NTg3LCJleHAiOjE3NTU1MzAzODd9.uaaiPpuvBeClTx8MS1UO0N0GwA6tDmAr38eU6QRgI4w
 
 {
-  "recordType": "INCOME",
+  "recordType": "EXPENSE",
   "amountGreaterThan": 100,
   "amountLessThan": 50000,
   "paymentTimeLessThan": "2025-08-01T00:00:00.000Z",
@@ -19,7 +19,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 POST http://localhost:8089/api/v2/records/count HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTE5NTg3LCJleHAiOjE3NTU1MzAzODd9.uaaiPpuvBeClTx8MS1UO0N0GwA6tDmAr38eU6QRgI4w
 
 {
   "recordType": "INCOME",
@@ -56,7 +56,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 POST http://localhost:8089/api/v2/records/report HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTE5NTg3LCJleHAiOjE3NTU1MzAzODd9.uaaiPpuvBeClTx8MS1UO0N0GwA6tDmAr38eU6QRgI4w
 
 {
   "recordType": "INCOME",

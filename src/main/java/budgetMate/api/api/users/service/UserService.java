@@ -1,6 +1,6 @@
 package budgetMate.api.api.users.service;
 
-import budgetMate.api.api.accounts.response.AccountAdditionResponse;
+import budgetMate.api.api.accountAdditionRequests.response.AccountAdditionResponse;
 import budgetMate.api.api.users.request.UpdateUserRequest;
 import budgetMate.api.api.users.response.UserResponse;
 import jakarta.servlet.http.HttpServletRequest;

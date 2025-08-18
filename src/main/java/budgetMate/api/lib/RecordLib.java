@@ -1,5 +1,6 @@
 package budgetMate.api.lib;
 
+import budgetMate.api.api.records.mapper.RecordReportResponseMapper;
 import budgetMate.api.api.records.request.AddRecordRequest;
 import budgetMate.api.api.records.response.RecordReportResponse;
 import budgetMate.api.domain.Account;
@@ -9,6 +10,7 @@ import budgetMate.api.domain.User;
 import budgetMate.api.domain.enums.RecordType;
 import budgetMate.api.repository.AccountRepository;
 import budgetMate.api.repository.RecordCategoryRepository;
+import budgetMate.api.util.FetchUtil;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,9 +24,10 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class RecordLib {
-    private final FetchLib fetchLib;
+    private final FetchUtil fetchUtil;
     private final RecordCategoryRepository recordCategoryRepository;
     private final AccountRepository accountRepository;
+    private final RecordReportResponseMapper recordReportResponseMapper;
 
     /**
      * <h2>Generate records report.</h2>
@@ -35,7 +38,7 @@ public class RecordLib {
         Gson gson = new Gson();
         File file = new File("records-report.json");
 
-        List<RecordReportResponse> reportRecords = RecordReportResponse.from(records);
+        List<RecordReportResponse> reportRecords = recordReportResponseMapper.toDtoList(records);
         String jsonReport = gson.toJson(reportRecords);
 
         try (FileWriter writer = new FileWriter(file)) {
@@ -71,10 +74,10 @@ public class RecordLib {
      */
     private Record buildIncomeRecord(User user, AddRecordRequest body){
         final LocalDateTime paymentTime = body.getPaymentTime() == null ? LocalDateTime.now() : body.getPaymentTime();
-        final RecordCategory recordCategory = fetchLib.fetchResource(
+        final RecordCategory recordCategory = fetchUtil.fetchResource(
                 recordCategoryRepository.getRecordCategoryByName(body.getCategory()),
                 "Record Category");
-        final Account receivingAccount = fetchLib.fetchResource(
+        final Account receivingAccount = fetchUtil.fetchResource(
                 accountRepository.getUserAccountById(user, body.getReceivingAccountId()),
                 "Receiving account not found!");
 
@@ -98,10 +101,10 @@ public class RecordLib {
      */
     private Record buildExpenseRecord(User user, AddRecordRequest body){
         final LocalDateTime paymentTime = body.getPaymentTime() == null ? LocalDateTime.now() : body.getPaymentTime();
-        final RecordCategory recordCategory = fetchLib.fetchResource(
+        final RecordCategory recordCategory = fetchUtil.fetchResource(
                 recordCategoryRepository.getRecordCategoryByName(body.getCategory()),
                 "Record Category");
-        final Account withdrawalAccount = fetchLib.fetchResource(
+        final Account withdrawalAccount = fetchUtil.fetchResource(
                 accountRepository.getUserAccountById(user, body.getWithdrawalAccountId()),
                 "Withdrawal account");
 
@@ -129,10 +132,10 @@ public class RecordLib {
      */
     private Record buildTransferRecord(User user, AddRecordRequest body){
         final LocalDateTime paymentTime = body.getPaymentTime() == null ? LocalDateTime.now() : body.getPaymentTime();
-        final Account withdrawalAccount = fetchLib.fetchResource(
+        final Account withdrawalAccount = fetchUtil.fetchResource(
                 accountRepository.getUserAccountById(user, body.getWithdrawalAccountId()),
                 "Withdrawal account not found!");
-        final Account receivingAccount = fetchLib.fetchResource(
+        final Account receivingAccount = fetchUtil.fetchResource(
                 accountRepository.getUserAccountById(user, body.getReceivingAccountId()),
                 "Receiving account not found!");
 

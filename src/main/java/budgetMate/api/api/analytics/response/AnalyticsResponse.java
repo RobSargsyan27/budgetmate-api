@@ -1,13 +1,11 @@
 package budgetMate.api.api.analytics.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,5 +26,35 @@ public class AnalyticsResponse {
 
     public void setMonthlyExpenses(BigDecimal monthlyExpenses) {
         this.monthlyExpenses = monthlyExpenses != null ? monthlyExpenses.doubleValue() : 0;
+    }
+
+    /**
+     * <h2>Parse to AnalyticsResponse.</h2>
+     * @param annualEarnings {BigDecimal}
+     * @param monthlyEarnings {BigDecimal}
+     * @param monthlyExpenses {BigDecimal}
+     * @return {AnalyticsResponse}
+     */
+    public static AnalyticsResponse from(BigDecimal annualEarnings, BigDecimal monthlyEarnings, BigDecimal monthlyExpenses){
+        final AnalyticsResponse response = new AnalyticsResponse();
+        response.setAnnualEarnings(annualEarnings);
+        response.setMonthlyEarnings(monthlyEarnings);
+        response.setMonthlyExpenses(monthlyExpenses);
+
+        return response;
+    }
+
+    /**
+     * <h2>Parse to AnalyticsResponse.</h2>
+     * @param monthlyEarnings {BigDecimal}
+     * @param monthlyExpenses {BigDecimal}
+     * @return {AnalyticsResponse}
+     */
+    public static AnalyticsResponse from(BigDecimal monthlyEarnings, BigDecimal monthlyExpenses){
+        final AnalyticsResponse response = new AnalyticsResponse();
+        response.setMonthlyEarnings(monthlyEarnings);
+        response.setMonthlyExpenses(monthlyExpenses);
+
+        return response;
     }
 }

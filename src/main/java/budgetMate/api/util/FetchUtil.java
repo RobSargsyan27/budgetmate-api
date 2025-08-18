@@ -1,11 +1,11 @@
-package budgetMate.api.lib;
+package budgetMate.api.util;
 
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class FetchLib {
+public class FetchUtil {
     /**
      * <h2>Fetch resource</h2>
      * @param object {Optional<T>}

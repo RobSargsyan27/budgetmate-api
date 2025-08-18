@@ -1,4 +1,4 @@
-package budgetMate.api.api.accountRequests.request;
+package budgetMate.api.api.accountAdditionRequests.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class UpdateUserAccountRequest {
+public class UpdateAccountAdditionRequest {
     @NotNull
     private Boolean status;
 }
