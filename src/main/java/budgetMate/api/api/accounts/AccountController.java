@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/accounts")
+@RequestMapping("/api/v3/accounts")
 public class AccountController {
     private final AccountService accountService;
     private final HttpUtil httpUtil;

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/records")
+@RequestMapping("/api/v3/records")
 public class RecordController {
     private final RecordService recordService;
     private final HttpUtil httpUtil;

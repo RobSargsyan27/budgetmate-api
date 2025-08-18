@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/analytics")
+@RequestMapping("/api/v3/analytics")
 public class AnalyticsController {
     private final AnalyticsService analyticsService;
     private final HttpUtil httpUtil;

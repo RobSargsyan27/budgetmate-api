@@ -26,7 +26,7 @@ You can share your accounts with other users. Even though your balance will alwa
 
 The application is divided into two main service [budgetmate-v2-api](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/spring-backend) and [budgetmate-v2-app](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/Client). 
 
-The API service contains Rest APIs. The APIs are completely stateless, meaning that it uses JWT token to authenticate users. You can find quickly check the APIs markdown file here or open a documentation using this [link](http://app.budgetmate.com/swagger-ui/index.html). (Please note that the application should be run in order to open OpenAPI documentation). Our persistence layer which uses PostgreSQL follows all ACID principles.
+The API service contains Rest APIs. The APIs are completely stateless, meaning that it uses JWT token to authenticate users. You can find quickly check the APIs markdown file here or open a documentation using this [link](http://localhost:80/swagger-ui/index.html). (Please note that the application should be run in order to open OpenAPI documentation). Our persistence layer which uses PostgreSQL follows all ACID principles.
 
 The APP service contains the codebase for the application’s frontend. We currently use plain JS, CSS and HTML to support user interaction and the user interface in general but in the future we will migrate to React framework. 
 
@@ -85,13 +85,13 @@ You access the main application through `login` button on the top navbar of the 
 
 ---
 
-# Week 2
+# Week 2 & 3
 
-## Available Endpoints
+## Available Endpoints (See More in [OpenAPI](http://localhost:80/swagger-ui/index.html))
 
 ### Account Addition Requests Endpoints
 
-```json
+```
 ### Add user account request.
 # Expected response status => HTTP/1.1 201
 # Expected response content type => Content-Type: application/json
@@ -123,7 +123,7 @@ Authorization: Bearer {{token}}
 
 ### Accounts Endpoints
 
-```json
+```
 ### Get user accounts.
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
@@ -182,7 +182,7 @@ Authorization: Bearer {{token}}
 
 ### Analytics Endpoints
 
-```json
+```
 ### Get user dashboard analytics.
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
@@ -226,7 +226,7 @@ Authorization: Bearer {{token}}
 
 ### Authentication Endpoints
 
-```json
+```
 ### Register user.
 # Expected response status => HTTP/1.1 204
 # Expected response content type => Content-Type: application/json
@@ -279,7 +279,7 @@ Content-Type: application/json
 
 ### Budgets Endpoints
 
-```json
+```
 ### Get user budgets.
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
@@ -354,7 +354,7 @@ Authorization: Bearer {{token}}
 
 ### Record Categories Endpoints
 
-```json
+```
 ### Get record categories.
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
@@ -366,7 +366,7 @@ Authorization: Bearer {{token}}
 
 ### Records Endpoints
 
-```json
+```
 ### Search user records.
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
@@ -481,7 +481,7 @@ Authorization: Bearer {{token}}
 
 ### Users Endpoints
 
-```json
+```
 ### Get user.
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
@@ -542,3 +542,9 @@ Authorization: Bearer {{token}}
 | 2 | Your endpoints should be called from JavaScript in a meaningful way. | ✅ |
 | 2 | Add a .http file to your project in which you write HTTP request messages for each endpoint and possible response status code. | ✅ |
 | 2 | Update [`README.md`](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/spring-backend/-/blob/main/README.md?ref_type=heads) file - add Week 2 required documentation. | ✅ |
+| 3 | Implement two more REST endpoints with different verbs so that these four verbs are implemented: GET, POST, PATCH, and DELETE. | ✅ |
+| 3 | Use the validation framework to implement basic checks on the input. At least two constraints are acceptable, as long as you can easily trigger a 400 status code. | ✅ |
+| 3 | Add MapStruct as a dependency and use it for your Web API backend code (you don't have to update your MVC code). Use MapStruct for trivial mappings and implement custom mapping logic for more complex mappings. | ✅ |
+| 3 | You should call your endpoints from JavaScript in a meaningful way. | ✅ |
+| 3 | Edit your .http file by adding request messages for each endpoint and each possible response status code (including 400, which is usually handled by Spring). | ⚠️ |
+| 3 | Update [`README.md`](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/spring-backend/-/blob/main/README.md?ref_type=heads) file - add Week 3 required documentation. | ✅ |

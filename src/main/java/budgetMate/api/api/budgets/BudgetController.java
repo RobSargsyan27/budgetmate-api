@@ -20,7 +20,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/budgets")
+@RequestMapping("/api/v3/budgets")
 public class BudgetController {
     private final BudgetService budgetService;
     private final HttpUtil httpUtil;

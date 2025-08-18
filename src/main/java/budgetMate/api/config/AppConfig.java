@@ -39,7 +39,7 @@ public class AppConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI().info(new Info()
                 .title("BudgetMate API")
-                .version("2.0.0")
+                .version("3.0.0")
                 .description("BudgetMate is a application which helps you manage you finances."));
     }
 }
