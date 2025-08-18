@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @Data
 @AllArgsConstructor
-public class AddExistingAccountResponse {
+public class AccountRequestResponse {
     private UUID id;
 
     private String ownerUsername;
@@ -20,8 +20,8 @@ public class AddExistingAccountResponse {
 
     private String accountName;
 
-    public static AddExistingAccountResponse from(AccountAdditionRequest request){
-        return AddExistingAccountResponse.builder()
+    public static AccountRequestResponse from(AccountAdditionRequest request){
+        return AccountRequestResponse.builder()
                 .id(request.getId())
                 .ownerUsername(request.getOwnerUser().getUsername())
                 .requestedUsername(request.getRequestedUser().getUsername())
@@ -29,7 +29,7 @@ public class AddExistingAccountResponse {
                 .build();
     }
 
-    public static List<AddExistingAccountResponse> from(List<AccountAdditionRequest> requests){
-        return requests.isEmpty() ? List.of() : requests.stream().map(AddExistingAccountResponse::from).toList();
+    public static List<AccountRequestResponse> from(List<AccountAdditionRequest> requests){
+        return requests.isEmpty() ? List.of() : requests.stream().map(AccountRequestResponse::from).toList();
     }
 }

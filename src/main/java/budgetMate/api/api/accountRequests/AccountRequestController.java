@@ -1,8 +1,10 @@
 package budgetMate.api.api.accountRequests;
 
-import budgetMate.api.api.accountRequests.request.AddExistingAccountRequest;
-import budgetMate.api.api.accountRequests.request.UpdateExistingAccountRequest;
+import budgetMate.api.api.accountRequests.request.AddUserAccountRequest;
+import budgetMate.api.api.accountRequests.request.UpdateUserAccountRequest;
+import budgetMate.api.api.accountRequests.response.AccountRequestResponse;
 import budgetMate.api.api.accountRequests.service.AccountRequestService;
+import budgetMate.api.domain.AccountAdditionRequest;
 import budgetMate.api.util.HttpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -20,18 +22,19 @@ public class AccountRequestController {
     private final HttpUtil httpUtil;
 
     @PostMapping("")
-    public ResponseEntity<Void> addAccountRequest(
+    public ResponseEntity<AccountRequestResponse> addUserAccountRequest(
             HttpServletRequest request,
-            @RequestBody @Valid AddExistingAccountRequest body){
-        return httpUtil.handleAdd(accountRequestService.addExistingAccountRequest(request, body));
+            @RequestBody @Valid AddUserAccountRequest body)
+    {
+        return httpUtil.handleAdd(accountRequestService.addUserAccountRequest(request, body));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateAccountRequest(
+    public ResponseEntity<AccountRequestResponse> updateUserAccountRequest(
             HttpServletRequest request,
             @PathVariable UUID id,
-            @RequestBody @Valid UpdateExistingAccountRequest body)
+            @RequestBody @Valid UpdateUserAccountRequest body)
     {
-        return httpUtil.handleUpdate(accountRequestService.updateExistingAccountRequest(request, id, body));
+        return httpUtil.handleUpdate(accountRequestService.updateUserAccountRequest(request, id, body));
     }
 }

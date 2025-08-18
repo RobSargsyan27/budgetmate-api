@@ -14,8 +14,10 @@ import java.util.UUID;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID>{
 
-    @Query("SELECT ac FROM Account ac WHERE ac.createdBy = :user")
-    List<Account> getUserAccounts(User user);
+    @Query(value = "SELECT a.* FROM user_accounts ua " +
+            "JOIN accounts a ON ua.account_id = a.id " +
+            "WHERE ua.user_id = :userId", nativeQuery = true)
+    List<Account> getUserAccounts(UUID userId);
 
     @Query("SELECT ac FROM Account ac WHERE ac.id = :id AND ac.createdBy = :user")
     Optional<Account> getUserAccountById(User user, UUID id);

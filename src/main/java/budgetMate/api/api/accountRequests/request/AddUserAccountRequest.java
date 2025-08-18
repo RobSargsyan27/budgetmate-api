@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class AddExistingAccountRequest {
+public class AddUserAccountRequest {
     @NotEmpty
     private String ownerUsername;
 

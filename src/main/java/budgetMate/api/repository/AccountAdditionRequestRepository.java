@@ -13,7 +13,10 @@ import java.util.UUID;
 
 @Repository
 public interface AccountAdditionRequestRepository extends JpaRepository<AccountAdditionRequest, UUID> {
-    @Query("SELECT r FROM AccountAdditionRequest r where r.id = :id")
+    @Query("SELECT ar FROM AccountAdditionRequest ar " +
+            "LEFT JOIN FETCH ar.ownerUser u " +
+            "LEFT JOIN FETCH ar.requestedUser ru " +
+            "WHERE ar.id = :id")
     Optional<AccountAdditionRequest> getAccountAdditionRequestById(UUID id);
 
     @Query("SELECT r FROM AccountAdditionRequest r WHERE r.ownerUser = :ownerUser AND r.isRequestChecked = FALSE")
@@ -21,5 +24,5 @@ public interface AccountAdditionRequestRepository extends JpaRepository<AccountA
 
     @Modifying
     @Query("UPDATE AccountAdditionRequest r SET r.isRequestApproved = :status, r.isRequestChecked = TRUE WHERE r.id = :id AND r.ownerUser = :user")
-    void updateAccountAdditionRequest(UUID id, User user, boolean status);
+    void updateAccountAdditionRequest(User user, UUID id, boolean status);
 }

@@ -1,9 +1,39 @@
+### Register user.
+POST http://localhost:8089/api/v2/auth/register HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "firstname": "Robert",
+  "lastname": "Sargsyan",
+  "email": "robertsargsyan27@gmail.com",
+  "password": "rob",
+  "receiveNewsLetters": false
+}
+
+
+### Confirm user registraton.
+POST http://localhost:8089/api/v2/auth/register/confirm?email=robertsargsyan27@gmail.com&token=ee19c218-ef4e-4a00-baf7-1533a5563b2c HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+
 ### Login user.
 POST http://localhost:8089/api/v2/auth/login HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "user@budgetmate.com",
-  "password": "user123"
+  "email": "robertsargsyan27@gmail.com",
+  "password": "rob"
+}
+
+
+### Validate user token.
+POST http://localhost:8089/api/v2/auth/validate-token HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2JlcnRzYXJnc3lhbjI3QGdtYWlsLmNvbSIsImlhdCI6MTc1NTUwOTQ1OSwiZXhwIjoxNzU1NTIwMjU5fQ.xGC4OEpgjdVowddtZ4NRUtMQ8eahLBhI_F-za_eR9Gc"
 }

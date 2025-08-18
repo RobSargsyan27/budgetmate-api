@@ -1,0 +1,21 @@
+### Add user account request.
+POST http://localhost:8089/api/v1/account-requests HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2JlcnRzYXJnc3lhbjI3QGdtYWlsLmNvbSIsImlhdCI6MTc1NTUxMDAzOSwiZXhwIjoxNzU1NTIwODM5fQ.Z62w2VF4cnWPN6fCo2ezZ4eD-aMifInIO5GyakwSar0
+
+{
+  "accountName": "General Account",
+  "ownerUsername": "user@budgetmate.com"
+}
+
+
+### Update user account request.
+PATCH http://localhost:8089/api/v1/account-requests/7d58cc0d-6987-44d3-921d-18a9293731f7 HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTA5NTA2LCJleHAiOjE3NTU1MjAzMDZ9.GASCS0QaHLVjGmUcCG9YrxsPrC8O0ujlsy3cKSEnh6g
+
+{
+  "status": true
+}

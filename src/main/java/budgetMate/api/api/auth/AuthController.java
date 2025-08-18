@@ -28,19 +28,18 @@ public class AuthController {
         return httpUtil.handleAdd(registrationService.register(request));
     }
 
-    @GetMapping("/register/confirm/{email}/{token}")
-    public RedirectView confirmRegister(@PathVariable String email, @PathVariable String token){
-        this.registrationService.confirmRegister(email, token);
-        return new RedirectView("/login");
+    @PostMapping("/register/confirm")
+    public ResponseEntity<Void> confirmRegister(@RequestParam String email, @RequestParam String token){
+        return httpUtil.handleUpdate(registrationService.confirmRegister(email, token));
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserAuthenticationResponse> login(@RequestBody UserAuthenticationRequest request) {
-       return httpUtil.handleAdd(this.registrationService.login(request));
+       return httpUtil.handleAdd(registrationService.login(request));
     }
 
     @PostMapping("/validate-token")
     public ResponseEntity<Map<String, Boolean>> validateToken(@RequestBody TokenAuthenticationRequest request){
-        return httpUtil.handleAdd(this.registrationService.validateToken(request));
+        return httpUtil.handleAdd(registrationService.validateToken(request));
     }
 }

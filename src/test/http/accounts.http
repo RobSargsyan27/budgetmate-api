@@ -1,7 +1,7 @@
 ### Get user accounts.
 GET http://localhost:8089/api/v2/accounts HTTP/1.1
 Accept: application/json;
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NDY0OTcyLCJleHAiOjE3NTU0NzU3NzJ9.MC5_LP1RFtytqgF7gEeVp4tAaSbO7mdJ499NtrcMfEM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb2JlcnRzYXJnc3lhbjI3QGdtYWlsLmNvbSIsImlhdCI6MTc1NTUwOTQ1OSwiZXhwIjoxNzU1NTIwMjU5fQ.xGC4OEpgjdVowddtZ4NRUtMQ8eahLBhI_F-za_eR9Gc
 
 
 ### Add user account.

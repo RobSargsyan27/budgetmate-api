@@ -1,6 +1,7 @@
 package budgetMate.api.api.accountRequests.service;
 
 import budgetMate.api.api.accountRequests.request.*;
+import budgetMate.api.api.accountRequests.response.AccountRequestResponse;
 import budgetMate.api.domain.Account;
 import budgetMate.api.domain.AccountAdditionRequest;
 import budgetMate.api.domain.User;
@@ -10,6 +11,7 @@ import budgetMate.api.repository.AccountAdditionRequestRepository;
 import budgetMate.api.repository.AccountRepository;
 import budgetMate.api.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,16 @@ public class AccountRequestServiceImpl implements AccountRequestService {
     private final AccountAdditionRequestRepository accountAdditionRequestRepository;
     private final FetchLib fetchLib;
 
-    public Void addExistingAccountRequest(HttpServletRequest request, AddExistingAccountRequest body){
+    /**
+     * <h2>Add user account request.</h2>
+     *
+     * @param request {HttpServletRequest}
+     * @param body    {AddUserAccountRequest}
+     * @return {AccountRequestResponse}
+     */
+    @Override
+    @Transactional
+    public AccountRequestResponse addUserAccountRequest(HttpServletRequest request, AddUserAccountRequest body) {
         final User user = userLib.fetchRequestUser(request);
         final String accountOwnerUsername = body.getOwnerUsername();
         final String accountName = body.getAccountName();
@@ -37,38 +48,36 @@ public class AccountRequestServiceImpl implements AccountRequestService {
                 .accountName(accountName)
                 .build();
 
-        accountAdditionRequestRepository.save(accountAdditionRequest);
-        return null;
+        return AccountRequestResponse.from(accountAdditionRequestRepository.save(accountAdditionRequest));
     }
 
-    public Void updateExistingAccountRequest(
-            HttpServletRequest request, UUID requestId, UpdateExistingAccountRequest body
-    ){
+    /**
+     * <h2>Update user account request.</h2>
+     *
+     * @param request   {HttpServletRequest}
+     * @param requestId {UUID}
+     * @param body      {UpdateUserAccountRequest}
+     * @return {AccountRequestResponse}
+     */
+    @Override
+    @Transactional
+    public AccountRequestResponse updateUserAccountRequest(HttpServletRequest request, UUID requestId, UpdateUserAccountRequest body) {
         final User user = userLib.fetchRequestUser(request);
         final Boolean status = body.getStatus();
 
-        try{
-            accountAdditionRequestRepository.updateAccountAdditionRequest(requestId, user, status);
+        accountAdditionRequestRepository.updateAccountAdditionRequest(user, requestId, status);
+        final AccountAdditionRequest accountAdditionRequest = fetchLib.fetchResource(
+                accountAdditionRequestRepository.getAccountAdditionRequestById(requestId),
+                "Account Addition Request");
 
-            if(status){
-                final AccountAdditionRequest accountAdditionRequest = fetchLib.fetchResource(
-                                accountAdditionRequestRepository.getAccountAdditionRequestById(requestId),
-                                "Account Addition Request");
+        if (status) {
+            final Account account = fetchLib.fetchResource(accountRepository.getUserAccount(
+                            accountAdditionRequest.getOwnerUser().getId(), accountAdditionRequest.getAccountName()),
+                    "Account");
 
-                final Account account = fetchLib.fetchResource(accountRepository.getUserAccount(
-                        accountAdditionRequest.getOwnerUser().getId(), accountAdditionRequest.getAccountName()),
-                        "Account");
-
-                final User requestedUser = fetchLib.fetchResource(
-                        userRepository.findUserById(accountAdditionRequest.getRequestedUser().getId()),
-                        "User");
-
-                requestedUser.addAccount(account);
-                userRepository.save(requestedUser);
-            }
-        } finally {
-            accountAdditionRequestRepository.updateAccountAdditionRequest(requestId, user, status);
+            accountRepository.addUserAccountAssociation(accountAdditionRequest.getRequestedUser().getId(), account.getId());
         }
-        return null;
+
+        return AccountRequestResponse.from(accountAdditionRequest);
     }
 }

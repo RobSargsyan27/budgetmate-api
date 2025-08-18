@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class UpdateExistingAccountRequest {
+public class UpdateUserAccountRequest {
     @NotNull
     private Boolean status;
 }

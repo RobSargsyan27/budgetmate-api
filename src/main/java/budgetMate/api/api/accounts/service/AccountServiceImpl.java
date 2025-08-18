@@ -38,7 +38,7 @@ public class AccountServiceImpl implements AccountService{
     public List<AccountResponse> getUserAccounts(HttpServletRequest request){
         final User user = userLib.fetchRequestUser(request);
 
-        final List<Account> accounts = accountRepository.getUserAccounts(user);
+        final List<Account> accounts = accountRepository.getUserAccounts(user.getId());
 
         return AccountResponse.from(accounts);
     }
