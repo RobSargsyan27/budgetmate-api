@@ -1,0 +1,14 @@
+### Send contact request.
+# Expected response status => HTTP/1.1 204
+# Expected response content type => Content-Type: application/json
+# Expected response body => Empty
+POST http://localhost:8089/api/v1/contact HTTP/1.1
+Accept: application/json;
+Content-Type: application/json;
+
+{
+  "firstname": "Robert",
+  "lastname": "Sargsyan",
+  "email": "robertsargsyan27@gmail.com",
+  "message": "test"
+}

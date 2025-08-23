@@ -67,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
         emailAuthTokenRepository.save(authToken);
 
-        emailProducer.sendTemplateEmail(user, authToken);
+        emailProducer.sendConfirmationEmail(user, authToken);
         return null;
     }
 

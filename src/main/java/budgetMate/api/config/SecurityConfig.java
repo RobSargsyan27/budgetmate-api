@@ -36,7 +36,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        String[] publicUrls = new String[]{"/api/v2/auth/**"};
+        String[] publicUrls = new String[]{"/api/v2/auth/**", "/api/v1/contact"};
 
         http
                 .cors(Customizer.withDefaults())
