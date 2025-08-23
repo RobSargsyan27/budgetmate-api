@@ -27,7 +27,7 @@ public class AuthController {
         return httpUtil.handleAdd(registrationService.register(request));
     }
 
-    @PostMapping("/register/confirm")
+    @GetMapping("/register/confirm")
     public ResponseEntity<Void> confirmRegister(@RequestParam String email, @RequestParam String token){
         return httpUtil.handleUpdate(registrationService.confirmRegister(email, token));
     }

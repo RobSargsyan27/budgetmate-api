@@ -22,7 +22,7 @@ public class EmailProducer {
     private static final String BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 
     public void sendTemplateEmail(User user, EmailAuthToken token) {
-        final String url = String.format("%s/api/v2/auth/register/confirm/%s/%s",
+        final String url = String.format("%s/api/v2/auth/register/confirm?email=%s&token=%s",
                 baseUrl, user.getUsername(), token.getToken());
         final String fullName = String.format("%s %s", user.getFirstname(), user.getLastname());
         final Map<String, Object> params = Map.of("username", fullName, "url", url);
