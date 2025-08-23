@@ -2,7 +2,7 @@
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "username", "firstname", "lastname", "country", "city", "address", "postalCode", "avatarColor", "role"}}
-GET http://localhost:8089/api/v2/users HTTP/1.1
+GET http://localhost:8089/api/v3/users HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
 
@@ -11,7 +11,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "username", "firstname", "lastname", "country", "city", "address", "postalCode", "avatarColor", "role"}}
-PATCH http://localhost:8089/api/v2/users HTTP/1.1
+PATCH http://localhost:8089/api/v3/users HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
@@ -28,7 +28,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response status => HTTP/1.1 204
 # Expected response content type => Content-Type: application/json
 # Expected response body => Empty
-DELETE http://localhost:8089/api/v2/users HTTP/1.1
+DELETE http://localhost:8089/api/v3/users HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
 
@@ -37,6 +37,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {Array<{ "id", "ownerUsername", "requestedUsername", "accountName" }>}
-GET http://localhost:8089/api/v2/users/notifications HTTP/1.1
+GET http://localhost:8089/api/v3/users/notifications HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI1NzExLCJleHAiOjE3NTU1MzY1MTF9.3a3ovoqaONPHICvo8SUnmXhjavQ8v0xeQPWLAYkIwZI

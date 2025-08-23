@@ -2,7 +2,7 @@
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"monthlyEarnings", "annualEarnings", "monthlyExpenses"}}
-GET http://localhost:8089/api/v2/analytics/dashboard HTTP/1.1
+GET http://localhost:8089/api/v3/analytics/dashboard HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
 
@@ -11,7 +11,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"labels", "data"}}
-GET http://localhost:8089/api/v2/analytics/dashboard/categories-pie HTTP/1.1
+GET http://localhost:8089/api/v3/analytics/dashboard/categories-pie HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
 
@@ -20,7 +20,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"labels", "data"}}
-GET http://localhost:8089/api/v2/analytics/dashboard/expenses-line-chart HTTP/1.1
+GET http://localhost:8089/api/v3/analytics/dashboard/expenses-line-chart HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
 
@@ -29,7 +29,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"monthlyEarnings", "annualEarnings", "monthlyExpenses"}}
-GET http://localhost:8089/api/v2/analytics/overview?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z HTTP/1.1
+GET http://localhost:8089/api/v3/analytics/overview?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
 
@@ -38,6 +38,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"labels", "data"}}
-GET http://localhost:8089/api/v2/analytics/overview-line?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z&recordType=expense HTTP/1.1
+GET http://localhost:8089/api/v3/analytics/overview-line?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z&recordType=expense HTTP/1.1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
