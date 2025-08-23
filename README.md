@@ -78,6 +78,12 @@ In order to locally run the application you need to follow these steps:
 3. Clone [budgetmate-v2-app](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/Client)  or simply unzip the provided zip folder in `budgetmate` folder.
 4. Download [docker-compose.yaml](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/spring-backend/-/blob/main/docker-compose.yaml?ref_type=heads) file and put it in `budgetmate` folder.
 5. Run docker-compose.yaml file using `docker compose up -d`  command from the `budgetmate`  folder.
+6. Add the below lines to you `/etc/hosts`  file.
+
+```
+127.0.0.1	app.budgetmate.com
+127.0.0.1 budgetmate.com   www.budgetmate.com
+```
 
 Once you have these steps done you will have access to the [landing](http://localhost) web-page. Have a look on the landing web-page before logging into main application, it looks quite nice 😄
 
@@ -525,12 +531,29 @@ Authorization: Bearer {{token}}
 
 ---
 
+## Week 12
+
+![Screenshot 1](./doc/img/week12-1.png)
+
+In the above picture the sidebar nav items icons are bootstrap icons, except for one which is a `fortawesome` icon. (See more [here](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/Client/-/blob/main/src/assets/js/index.js?ref_type=heads))
+
+![Screenshot 2](./doc/img/week12-2.png)
+
+The `joi` validation is used validate the above form for updating user details on profile page. The [link](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/Client/-/blob/main/src/assets/js/lib/validation.lib.js?ref_type=heads) to the `validation.lib.js` and the [link](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/Client/-/blob/main/src/assets/js/components/profile.js?ref_type=heads) to implementation. 
+
+![Screenshot 3](./doc/img/week12-3.png)
+
+There are two additional dependencies that are added one of which is the `jquery` and another is the `chart.js` . The `jquery` is used to support the sidebar dynamic functionality (see more [here](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/Client/-/blob/main/src/assets/js/components/generic.js?ref_type=heads)) and the `chart.js`  is used to support charts in the website (See more [here](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/Client/-/tree/main/src/assets/js/charts?ref_type=heads)) 
+
+---
+
 ## Project Requirements
 
 | Week | Requirement | Status |
 | --- | --- | --- |
 | 1 | Update your application so that it connects to a standalone PostgreSQL database running in a Docker container. The configuration of your docker service should be included in the root of your git repository in the form of a **`docker-compose.yml`** file. | ✅ |
-| 1 | Your application should already be configured with a code-first flow (from Programming 3). Verify that all of your database artifacts (tables, etc.) are created successfully when your app is launched. You may still have a leftover `schema.sql` file in your repository. If so, remove this file and, once again, verify that everything is working. | ✅ |
+| 1 | Your application should already be configured with a code-first flow (from 
+Programming 3). Verify that all of your database artifacts (tables, etc.) are created successfully when your app is launched. You may still have a leftover `schema.sql` file in your repository. If so, remove this file and, once again, verify that everything is working. | ✅ |
 | 1 | Rewrite your data seeding so that data is seeded from an SQL file instead of your current Java routine. Remove any Java code related to data seeding. | ✅ |
 | 1 | Refactor your many-to-many association(s) per the instructions in the course material. | ✅ |
 | 1 | Update [`README.md`](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/spring-backend/-/blob/main/README.md?ref_type=heads) file - add Week 1 required documentation. | ✅ |
@@ -548,3 +571,23 @@ Authorization: Bearer {{token}}
 | 3 | You should call your endpoints from JavaScript in a meaningful way. | ✅ |
 | 3 | Edit your .http file by adding request messages for each endpoint and each possible response status code (including 400, which is usually handled by Spring). | ⚠️ |
 | 3 | Update [`README.md`](https://gitlab.com/kdg-ti/programming-5/projects-24-25/acs202/robert.sargsyan/spring-backend/-/blob/main/README.md?ref_type=heads) file - add Week 3 required documentation. | ✅ |
+| 11 | Set up a separate project using npm, webpack, ESLint, and dprint. | ✅ |
+| 11 | All styling should be done using Sass. Use at least two features from the SCSS syntax. Write idiomatic SCSS code. | ✅ |
+| 11 | Add Bootstrap to your application and use Bootstrap components and layout features where possible. | ✅ |
+| 11 | Customize Bootstrap. Simply choosing custom colors is acceptable. | ✅ |
+| 11 | Create an HTML page with a navigation bar with at least these menu items: Search and Add. Implement 'SPA' (single-page application) functionality using your own JavaScript code: clicking a menu item should show the HTML section in question (Search or Add) and hide the other(s). | ✅ |
+| 11 | Implement a new Web API endpoint (REST) in your Spring Boot backend to retrieve records based on at least one search term. | ✅ |
+| 11 | Implement a form in your Client project to search for records. Using a fetch call, you should call the backend and process the response. | ✅ |
+| 11 | Write your fetch call using async/await syntax, so not using 'then.’ | ✅ |
+| 11 | Implement a new Web API endpoint (REST) in your Spring Boot backend to create a new record, that you cannot yet add through your REST API. | ✅ |
+| 11 | Implement a form in your Client project to add a record. Using a fetch call, you should call the backend and process the response. | ✅ |
+| 11 | In your backend, disable CSRF only for this endpoint. Add a comment to clarify that this is for the separate Client project. | ❌ |
+| 11 | Enable CORS and only allow the origin that corresponds to your Client application.  | ⚠️ |
+| 12 | Set up your embedded frontend project using npm and webpack. Follow all guidelines listed in the 13-step process. | ❌ |
+| 12 | Migrate some of your stylings from CSS to SCSS syntax. Use at least two features from the SCSS syntax. Don't just rename your CSS files, but write idiomatic SCSS code. | ✅ |
+| 12 | Customize Bootstrap using Sass. | ✅ |
+| 12 | Migrate reusable JavaScript code into separate ECMAScript modules. | ✅ |
+| 12 | Add ESLint and dprint configurations to your project and apply their suggestions. | ✅ |
+| 12 | Add Bootstrap Icons using npm. Add at least one icon to your website. | ✅ |
+| 12 | Add custom client-side form validation to at least one of your forms. Use the 'joi' or 'validator' npm package to implement this. | ✅ |
+| 12 | Add at least two JavaScript dependencies of your choice to your project in addition to the ones listed above. | ✅ |
