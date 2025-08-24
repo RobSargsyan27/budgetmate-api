@@ -50,4 +50,10 @@ public class AnalyticsController {
     ){
         return httpUtil.handleGet(analyticsService.getUserRecordsOverviewLineChart(request, startDate, endDate, recordType));
     }
+
+    @GetMapping("/overview/users")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Integer> getUsersCount(){
+        return httpUtil.handleGet(analyticsService.getUsersCount());
+    }
 }

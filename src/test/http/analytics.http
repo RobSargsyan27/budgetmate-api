@@ -61,3 +61,16 @@ Accept: application/json
 Sec-Fetch-Site: same-site;
 Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=6747b230-3bf2-416c-8246-bb966cce1298
 X-XSRF-TOKEN: nBTfjDcRzu0E_9YfvuykGMqQ9k4ln7LzYHkXPTsIF48paiYkqiPru1Uj_d0pzLR5jMGQKfzz23YXq4TeAhsuCw1rdOoYWB8c
+
+### Get users count.
+# @no-redirect
+# @no-cookie-jar
+# Admin only.
+# Expected response status => HTTP/1.1 200
+# Expected response content type => Content-Type: application/json
+# Expected response body => {number}
+GET http://localhost:8089/api/v3/analytics/overview/users HTTP/1.1
+Accept: application/json
+Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=8f31f987-2762-4947-8621-46bf726c0940
+X-XSRF-TOKEN: 9SjsZsxasivCN28SibLObUYL3fzEI0DRk5QW1ZQuI7qMG854zU7fV6pjihzvBVgku5_6VHI88MTyEXH8p6J0s6McFdm8IvpI

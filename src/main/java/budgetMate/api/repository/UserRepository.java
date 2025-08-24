@@ -17,4 +17,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Modifying
     @Query("UPDATE User u SET u.isEnabled = TRUE WHERE u.username = :username")
     void enableUser(String username);
+
+    @Query("SELECT count(*) FROM User u")
+    Integer countUsers();
 }

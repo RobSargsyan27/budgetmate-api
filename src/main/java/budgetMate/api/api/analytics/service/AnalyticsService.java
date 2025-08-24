@@ -16,4 +16,6 @@ public interface AnalyticsService {
     ChartResponse getUserRecordsOverviewLineChart(
             HttpServletRequest request, String startDate, String endDate, String recordType
     );
+
+    Integer getUsersCount();
 }

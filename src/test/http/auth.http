@@ -36,7 +36,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "user1@budgetmate.com",
+  "email": "user@budgetmate.com",
   "password": "user123"
 }
 

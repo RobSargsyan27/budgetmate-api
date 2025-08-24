@@ -7,6 +7,7 @@ import budgetMate.api.domain.User;
 import budgetMate.api.domain.enums.RecordType;
 import budgetMate.api.lib.UserLib;
 import budgetMate.api.repository.RecordRepository;
+import budgetMate.api.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import java.util.*;
 public class AnalyticsServiceImpl implements AnalyticsService {
     private final RecordRepository recordRepository;
     private final UserLib userLib;
+    private final UserRepository userRepository;
 
     /**
      * <h2>Get user dashboard analytics.</h2>
@@ -147,5 +149,15 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                 .getUserExpenseRecordsIntervalSum(user, _recordType, _startDate, _endDate);
 
         return ChartResponse.from(lineChartData);
+    }
+
+    /**
+     * <h2>Get users count.</h2>
+     * @return {Integer}
+     */
+    @Override
+    @Transactional
+    public Integer getUsersCount(){
+        return userRepository.countUsers();
     }
 }
