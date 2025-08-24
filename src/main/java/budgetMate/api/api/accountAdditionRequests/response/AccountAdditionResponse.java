@@ -1,6 +1,7 @@
 package budgetMate.api.api.accountAdditionRequests.response;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.UUID;
 
