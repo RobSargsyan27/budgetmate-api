@@ -4,6 +4,7 @@
 # Expected response body => {Array<{"id", "name", "currency", "currentBalance", "type", "avatarColor"}>}
 GET http://localhost:8089/api/v3/accounts HTTP/1.1
 Accept: application/json;
+Sec-Fetch-Site: same-site;
 
 ### Add user account.
 # Expected response status => HTTP/1.1 201
@@ -12,7 +13,7 @@ Accept: application/json;
 POST http://localhost:8089/api/v3/accounts HTTP/1.1
 Accept: application/json;
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 {
   "name": "Account-Test",
@@ -28,7 +29,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response body => {{"id", "name", "currency", "currentBalance", "type", "avatarColor"}}
 GET http://localhost:8089/api/v3/accounts/33d114b6-75f9-4832-9730-ffadab2f54ef HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 
 ### Update user account.
@@ -38,7 +39,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 PATCH http://localhost:8089/api/v3/accounts/33d114b6-75f9-4832-9730-ffadab2f54ef HTTP/1.1
 Accept: application/json
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 {
   "type": "CREDIT_CARD",
@@ -52,4 +53,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response body => Empty
 DELETE http://localhost:8089/api/v3/accounts/33d114b6-75f9-4832-9730-ffadab2f54ef HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;

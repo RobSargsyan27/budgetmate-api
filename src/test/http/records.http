@@ -5,7 +5,7 @@
 POST http://localhost:8089/api/v3/records/search HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 {
   "recordType": "EXPENSE",
@@ -25,7 +25,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 POST http://localhost:8089/api/v3/records/count HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 {
   "recordType": "INCOME",
@@ -43,7 +43,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 POST http://localhost:8089/api/v3/records/report HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 {
   "recordType": "INCOME",
@@ -60,7 +60,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response body => {Array<{"id", "amount", "userId", "category", "type", "note", "currency", "paymentTime", "withdrawalAccountName", "withdrawalAccountId", "receivingAccountName", "receivingAccountId"}>}
 GET http://localhost:8089/api/v3/records HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 
 ### Add user record.
@@ -70,7 +70,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 POST http://localhost:8089/api/v3/records HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 {
   "amount": 5000,
@@ -88,7 +88,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response body => {{"id", "amount", "userId", "category", "type", "note", "currency", "paymentTime", "withdrawalAccountName", "withdrawalAccountId", "receivingAccountName", "receivingAccountId"}}
 GET http://localhost:8089/api/v3/records/0cd12947-223c-4600-987d-5b8dfd9556b9 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 
 ### Update user record.
@@ -98,7 +98,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 PATCH http://localhost:8089/api/v3/records/0cd12947-223c-4600-987d-5b8dfd9556b9 HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 {
   "paymentTime": "2025-07-27T00:00:00.000Z",
@@ -113,4 +113,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response body => Empty
 DELETE http://localhost:8089/api/v3/records/0cd12947-223c-4600-987d-5b8dfd9556b9 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;

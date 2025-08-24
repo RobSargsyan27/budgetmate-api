@@ -1,6 +1,8 @@
 package budgetMate.api.config;
 
+import budgetMate.api.domain.User;
 import budgetMate.api.repository.UserRepository;
+import budgetMate.api.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +27,19 @@ public class AppConfig {
 
     @Bean
     public UserDetailsService userDetailsService() throws UsernameNotFoundException {
-        return email -> userRepository.findUserByUsername(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+        return email -> {
+            User user = userRepository.findUserByUsername(email)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+
+            return CustomUserDetails.builder()
+                    .id(user.getId())
+                    .username(user.getUsername())
+                    .password(user.getPassword())
+                    .isLocked(user.isLocked())
+                    .isEnabled(user.isEnabled())
+                    .role(user.getRole())
+                    .build();
+        };
     }
 
     @Bean

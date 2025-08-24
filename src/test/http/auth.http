@@ -19,7 +19,7 @@ Content-Type: application/json
 # Expected response status => HTTP/1.1 204
 # Expected response content type => Content-Type: application/json
 # Expected response body => Empty
-POST http://localhost:8089/api/v2/auth/register/confirm?email=user1@budgetmate.com&token=6cfa0601-dd70-4135-942d-7fc7f9e79dbb HTTP/1.1
+GET http://localhost:8089/api/v2/auth/register/confirm?email=user1@budgetmate.com&token=6cfa0601-dd70-4135-942d-7fc7f9e79dbb HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 

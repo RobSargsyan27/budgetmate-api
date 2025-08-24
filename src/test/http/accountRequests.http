@@ -5,7 +5,7 @@
 POST http://localhost:8089/api/v1/account-requests HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NDIyLCJleHAiOjE3NTU1MzUyMjJ9.o-TeLG0IquTQ9xZ7wPP1jn1kH2TRcQJtlTVWRHlClvA
+Sec-Fetch-Site: same-site;
 
 {
   "accountName": "General Account",
@@ -20,7 +20,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 PATCH http://localhost:8089/api/v1/account-requests/257b0760-24ce-46a1-ace0-b442657790ce HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTEzMzcwLCJleHAiOjE3NTU1MjQxNzB9.eT9JDzKEEQs1k3pmWiNzAvqohrsTgMmt-bELPP763NI
+Sec-Fetch-Site: same-site;
 
 {
   "status": true

@@ -4,7 +4,7 @@
 # Expected response body => {Array<{"id", "name", "amount", "userId", "recordCategories"}>}
 GET http://localhost:8089/api/v3/budgets HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 
 ### Add user budget.
@@ -14,7 +14,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 POST http://localhost:8089/api/v3/budgets HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 {
   "name": "Budget-Test",
@@ -29,7 +29,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response body => {Array<{"id", "currentBalance"}>}
 GET http://localhost:8089/api/v3/budgets/current-balance HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 
 ### Get user budgets report.
@@ -39,7 +39,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response body => {Array<{"id", "name", "amount", "userId", "recordCategories"}>}
 GET http://localhost:8089/api/v3/budgets/report HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 
 ### Get user budget.
@@ -48,7 +48,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response body => {{"id", "name", "amount", "userId", "recordCategories"}}
 GET http://localhost:8089/api/v3/budgets/d8652531-fb8b-49a8-8880-c73115060e9a HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 
 ### Update user budget.
@@ -58,7 +58,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 PATCH http://localhost:8089/api/v3/budgets/d8652531-fb8b-49a8-8880-c73115060e9a HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 {
   "name": "Budget-Test-2",
@@ -73,4 +73,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tI
 # Expected response body => Empty
 DELETE http://localhost:8089/api/v3/budgets/d8652531-fb8b-49a8-8880-c73115060e9a HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;

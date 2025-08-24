@@ -4,6 +4,6 @@
 # Expected response body => {Array<{"id", "name", "description"}>}
 GET http://localhost:8089/api/v1/record-categories HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0NjA0LCJleHAiOjE3NTU1MzU0MDR9.ERQ3YCp7JqQCK6ockRTU5gS7sFDqo-y_8KhNz5hjnKo
+Sec-Fetch-Site: same-site;
 
 
