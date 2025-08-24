@@ -4,8 +4,6 @@
 # Expected response body => {Array<{"id", "name", "currency", "currentBalance", "type", "avatarColor"}>}
 GET http://localhost:8089/api/v3/accounts HTTP/1.1
 Accept: application/json;
-Cookie: JSESSIONID=5C35E51EDD50A977982C64E73852C8CD
-
 
 ### Add user account.
 # Expected response status => HTTP/1.1 201

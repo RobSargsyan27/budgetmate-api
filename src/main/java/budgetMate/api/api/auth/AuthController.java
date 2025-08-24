@@ -5,6 +5,7 @@ import budgetMate.api.api.auth.request.RegistrationRequest;
 import budgetMate.api.api.auth.service.AuthService;
 import budgetMate.api.util.HttpUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +32,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody UserAuthenticationRequest request, HttpServletRequest servletRequest) {
-        registrationService.login(request);
-        servletRequest.getSession(true);
-
-       return ResponseEntity.ok().build();
+    public ResponseEntity<Void> login(
+            @RequestBody UserAuthenticationRequest request,
+            HttpServletRequest servletRequest,
+            HttpServletResponse servletResponse)
+    {
+       return httpUtil.handleAdd(registrationService.login(request, servletRequest, servletResponse));
     }
 }
