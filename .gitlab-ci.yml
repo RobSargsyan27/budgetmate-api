@@ -1,0 +1,46 @@
+image: gradle:8.7-jdk21
+
+stages:
+  - build
+  - test
+
+variables:
+  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
+  SPRING_PROFILES_ACTIVE: "test"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .gradle
+    - build
+
+build:
+  stage: build
+  script:
+    - ./gradlew assemble
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .gradle
+      - build
+    policy: push
+  artifacts:
+    paths:
+      - build/libs/*.jar
+
+test:
+  stage: test
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .gradle
+      - build
+    policy: pull
+  script:
+    - ./gradlew test
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/*.xml
+    paths:
+      - build/test-results/test/
