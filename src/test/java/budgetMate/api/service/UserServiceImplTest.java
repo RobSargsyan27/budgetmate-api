@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -60,10 +61,23 @@ class UserServiceImplTest {
     }
 
     @Test
+    void getUser_whenFetchUserThrows_propagatesException() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        RuntimeException ex = new RuntimeException("User not found");
+
+        when(userLib.fetchRequestUser(request)).thenThrow(ex);
+
+        assertThatThrownBy(() -> userService.getUser(request))
+                .isSameAs(ex);
+        verifyNoInteractions(userResponseMapper);
+    }
+
+    @Test
     void updateUser_updatesFieldsAndReturnsResponse() {
         HttpServletRequest request = mock(HttpServletRequest.class);
         User user = User.builder().id(UUID.randomUUID()).build();
         UpdateUserRequest body = mock(UpdateUserRequest.class);
+
         when(body.getFirstname()).thenReturn("NewFirst");
         when(body.getLastname()).thenReturn("NewLast");
         when(body.getCountry()).thenReturn("NewCountry");
@@ -104,6 +118,70 @@ class UserServiceImplTest {
     }
 
     @Test
+    void updateUser_withNullFields_doesNotOverwriteExistingValues() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+
+        User user = User.builder()
+                .id(UUID.randomUUID())
+                .firstname("ExistingFirst")
+                .lastname("ExistingLast")
+                .country("ExistingCountry")
+                .city("ExistingCity")
+                .address("ExistingAddress")
+                .postalCode("ExistingPostal")
+                .avatarColor("#000000")
+                .build();
+
+        UpdateUserRequest body = mock(UpdateUserRequest.class);
+        when(body.getFirstname()).thenReturn(null);
+        when(body.getLastname()).thenReturn(null);
+        when(body.getCountry()).thenReturn(null);
+        when(body.getCity()).thenReturn(null);
+        when(body.getAddress()).thenReturn(null);
+        when(body.getPostalCode()).thenReturn(null);
+        when(body.getAvatarColor()).thenReturn(null);
+
+        User savedUser = User.builder()
+                .id(user.getId())
+                .firstname("ExistingFirst")
+                .lastname("ExistingLast")
+                .country("ExistingCountry")
+                .city("ExistingCity")
+                .address("ExistingAddress")
+                .postalCode("ExistingPostal")
+                .avatarColor("#000000")
+                .build();
+
+        UserResponse response = new UserResponse(
+                savedUser.getId(), null,
+                "ExistingFirst", "ExistingLast",
+                "ExistingCountry", "ExistingCity",
+                "ExistingAddress", "ExistingPostal",
+                "#000000", null
+        );
+
+        when(userLib.fetchRequestUser(request)).thenReturn(user);
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+        when(userResponseMapper.toDto(savedUser)).thenReturn(response);
+
+        UserResponse result = userService.updateUser(request, body);
+
+        assertThat(result).isEqualTo(response);
+
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(captor.capture());
+        User updated = captor.getValue();
+
+        assertThat(updated.getFirstname()).isEqualTo("ExistingFirst");
+        assertThat(updated.getLastname()).isEqualTo("ExistingLast");
+        assertThat(updated.getCountry()).isEqualTo("ExistingCountry");
+        assertThat(updated.getCity()).isEqualTo("ExistingCity");
+        assertThat(updated.getAddress()).isEqualTo("ExistingAddress");
+        assertThat(updated.getPostalCode()).isEqualTo("ExistingPostal");
+        assertThat(updated.getAvatarColor()).isEqualTo("#000000");
+    }
+
+    @Test
     void deleteUser_deletesById() {
         HttpServletRequest request = mock(HttpServletRequest.class);
         User user = User.builder().id(UUID.randomUUID()).build();
@@ -113,6 +191,17 @@ class UserServiceImplTest {
 
         assertThat(result).isNull();
         verify(userRepository).deleteById(user.getId());
+    }
+
+    @Test
+    void deleteUser_whenFetchUserThrows_propagatesException() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        RuntimeException ex = new RuntimeException("fail");
+        when(userLib.fetchRequestUser(request)).thenThrow(ex);
+
+        assertThatThrownBy(() -> userService.deleteUser(request))
+                .isSameAs(ex);
+        verifyNoInteractions(userRepository);
     }
 
     @Test
@@ -130,6 +219,24 @@ class UserServiceImplTest {
         List<AccountAdditionResponse> result = userService.getUserNotifications(request);
 
         assertThat(result).isEqualTo(responses);
+        verify(accountAdditionRequestRepository).findUnapprovedRequestsByOwnerUser(user);
+        verify(accountAdditionResponseMapper).toDtoList(requests);
+    }
+
+    @Test
+    void getUserNotifications_whenNoRequests_returnsEmptyList() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        User user = User.builder().id(UUID.randomUUID()).build();
+        List<AccountAdditionRequest> requests = List.of();
+        List<AccountAdditionResponse> responses = List.of();
+
+        when(userLib.fetchRequestUser(request)).thenReturn(user);
+        when(accountAdditionRequestRepository.findUnapprovedRequestsByOwnerUser(user)).thenReturn(requests);
+        when(accountAdditionResponseMapper.toDtoList(requests)).thenReturn(responses);
+
+        List<AccountAdditionResponse> result = userService.getUserNotifications(request);
+
+        assertThat(result).isEmpty();
         verify(accountAdditionRequestRepository).findUnapprovedRequestsByOwnerUser(user);
         verify(accountAdditionResponseMapper).toDtoList(requests);
     }
