@@ -1,6 +1,5 @@
 package budgetMate.api.repository;
 
-import budgetMate.api.domain.Account;
 import budgetMate.api.domain.Budget;
 import budgetMate.api.domain.User;
 import budgetMate.api.domain.enums.Role;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
