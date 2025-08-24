@@ -28,7 +28,7 @@ public class SecFetchSiteFilter extends OncePerRequestFilter {
      */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())){
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod()) || !request.isSecure()){
             return true;
         }
 

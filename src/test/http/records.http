@@ -8,7 +8,8 @@ POST http://localhost:8089/api/v3/records/search HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=ec6342e4-50b6-4f68-9401-cf6223c49f8a
+X-XSRF-TOKEN: TW9QiRERP9qEQUFC09cXE9gbqWYLfcIom8o7RX13OXI6_NHAKAxmuiUjWu6pdHEg5fojde4jhF8_TfMF-KwNd09EWkYDmumh
 
 {
   "recordType": "EXPENSE",

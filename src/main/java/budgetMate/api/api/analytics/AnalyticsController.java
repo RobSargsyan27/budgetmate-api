@@ -42,7 +42,6 @@ public class AnalyticsController {
     }
 
     @GetMapping("/overview-line")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ChartResponse> getUserRecordsOverviewLineChart(
             @RequestParam String startDate,
             @RequestParam String endDate,
