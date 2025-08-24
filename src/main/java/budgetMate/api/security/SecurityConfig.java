@@ -82,6 +82,14 @@ public class SecurityConfig {
                                         response.sendRedirect(request.getContextPath() + "/login");
                                     }
                                 })
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/v2/auth/logout")
+                        .logoutSuccessHandler((req, res, auth) ->
+                                res.setStatus(HttpStatus.NO_CONTENT.value()))
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID", "XSRF-TOKEN")
                 );
 
         return http.build();

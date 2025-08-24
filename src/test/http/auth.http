@@ -49,3 +49,19 @@ Content-Type: application/json
             .split('=')[1]
     );
 %}
+
+### Logout user.
+# @no-redirect
+# @no-cookie-jar
+# Expected response status => HTTP/1.1 204
+# Expected response content type => Content-Type: application/json
+# Expected response body => Empty
+POST http://localhost:8089/api/v2/auth/logout HTTP/1.1
+Accept: application/json
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=e9314604-f3ca-4f6d-a55f-420788e056ca
+X-XSRF-TOKEN: u13fIfJId-lKKhqOxed8OWqDrv3LohyBn9EqVOSEXoLM9dDU3mTsEMZ-R91nTCntpMpIX1zng5z-l3qsq-MaY9y8O7L5w7O1
+
+> {%
+    client.global.set("spring_cookie", "");
+    client.global.set("xsrf_token", "");
+%}
