@@ -33,10 +33,6 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-	implementation("org.webjars:bootstrap:4.6.0")
-	implementation("org.webjars:jquery:3.6.0")
-	implementation("org.webjars:jquery-easing:1.4.1")
-	implementation("org.webjars.npm:fortawesome__fontawesome-free:5.15.3")
 	implementation("com.google.code.gson:gson:2.8.9")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
 	implementation("org.mapstruct:mapstruct:1.6.3")
@@ -44,5 +40,13 @@ dependencies {
 }
 
 tasks.test {
+	systemProperty("spring.profiles.active", "test")
 	useJUnitPlatform()
+	testLogging {
+		events("passed", "skipped", "failed", "standardOut", "standardError")
+		exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+		showCauses = true
+		showExceptions = true
+		showStackTraces = true
+	}
 }

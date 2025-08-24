@@ -24,7 +24,7 @@ test:
     POSTGRES_USER: 'spring'
     POSTGRES_PASSWORD: 'spring'
     CI_DB_HOST_PORT: 'postgres:5432'
-  script: ./gradlew check
+  script: ./gradlew clean check
   artifacts:
     when: always
     reports:

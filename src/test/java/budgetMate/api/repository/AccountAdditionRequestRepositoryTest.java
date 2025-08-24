@@ -3,8 +3,6 @@ package budgetMate.api.repository;
 import budgetMate.api.domain.Account;
 import budgetMate.api.domain.AccountAdditionRequest;
 import budgetMate.api.domain.User;
-import budgetMate.api.domain.enums.AccountType;
-import budgetMate.api.domain.enums.Currency;
 import budgetMate.api.domain.enums.Role;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
