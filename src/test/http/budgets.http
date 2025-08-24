@@ -7,7 +7,8 @@
 GET http://localhost:8089/api/v3/budgets HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 
 ### Add user budget.
@@ -20,7 +21,8 @@ POST http://localhost:8089/api/v3/budgets HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 {
   "name": "Budget-Test",
@@ -38,7 +40,8 @@ Cookie: JSESSIONID={{spring_cookie}}
 GET http://localhost:8089/api/v3/budgets/current-balance HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 
 ### Get user budgets report.
@@ -51,7 +54,8 @@ Cookie: JSESSIONID={{spring_cookie}}
 GET http://localhost:8089/api/v3/budgets/report HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 
 ### Get user budget.
@@ -63,7 +67,8 @@ Cookie: JSESSIONID={{spring_cookie}}
 GET http://localhost:8089/api/v3/budgets/d8652531-fb8b-49a8-8880-c73115060e9a HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 
 ### Update user budget.
@@ -76,7 +81,8 @@ PATCH http://localhost:8089/api/v3/budgets/d8652531-fb8b-49a8-8880-c73115060e9a 
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 {
   "name": "Budget-Test-2",
@@ -94,4 +100,5 @@ Cookie: JSESSIONID={{spring_cookie}}
 DELETE http://localhost:8089/api/v3/budgets/d8652531-fb8b-49a8-8880-c73115060e9a HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1

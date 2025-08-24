@@ -119,7 +119,8 @@ PATCH http://localhost:8089/api/v3/records/0cd12947-223c-4600-987d-5b8dfd9556b9 
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 {
   "paymentTime": "2025-07-27T00:00:00.000Z",
@@ -137,4 +138,5 @@ Cookie: JSESSIONID={{spring_cookie}}
 DELETE http://localhost:8089/api/v3/records/0cd12947-223c-4600-987d-5b8dfd9556b9 HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1

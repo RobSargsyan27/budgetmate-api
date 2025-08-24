@@ -7,6 +7,7 @@
 GET http://localhost:8089/api/v1/record-categories HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 

@@ -7,7 +7,8 @@
 GET http://localhost:8089/api/v3/users HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 
 ### Update user.
@@ -20,7 +21,8 @@ PATCH http://localhost:8089/api/v3/users HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 {
   "firstname": "T-firstname",
@@ -39,7 +41,8 @@ Cookie: JSESSIONID={{spring_cookie}}
 DELETE http://localhost:8089/api/v3/users HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
 
 
 ### Get user notifications.
@@ -51,4 +54,5 @@ Cookie: JSESSIONID={{spring_cookie}}
 GET http://localhost:8089/api/v3/users/notifications HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
+X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
