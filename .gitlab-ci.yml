@@ -1,46 +1,37 @@
-image: gradle:8.7-jdk21
+image: timbru31/java-node:21-alpine-jdk-22
 
-stages:
-  - build
-  - test
-
-variables:
-  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
-  SPRING_PROFILES_ACTIVE: "test"
-
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - .gradle
-    - build
+before_script:
+  - GRADLE_USER_HOME="$(pwd)/.gradle"
+  - export GRADLE_USER_HOME
 
 build:
   stage: build
   script:
-    - ./gradlew assemble
+    - ./gradlew --build-cache assemble
   cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - .gradle
-      - build
+    key: "$CI_COMMIT_REF_NAME"
     policy: push
-  artifacts:
     paths:
-      - build/libs/*.jar
+      - build
+      - .gradle
 
 test:
   stage: test
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - .gradle
-      - build
-    policy: pull
-  script:
-    - ./gradlew test
+  services:
+    - postgres:17.2-alpine
+  variables:
+    POSTGRES_DB: 'budgetmate'
+    POSTGRES_USER: 'spring'
+    POSTGRES_PASSWORD: 'spring'
+    CI_DB_HOST_PORT: 'postgres:5432'
+  script: ./gradlew check
   artifacts:
     when: always
     reports:
-      junit: build/test-results/test/*.xml
+      junit: build/test-results/test/**/TEST-*.xml
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
     paths:
-      - build/test-results/test/
+      - build
+      - .gradle
