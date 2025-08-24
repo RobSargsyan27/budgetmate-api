@@ -2,19 +2,20 @@ package budgetMate.api.api.analytics.service;
 
 import budgetMate.api.api.analytics.response.AnalyticsResponse;
 import budgetMate.api.api.analytics.response.ChartResponse;
+import budgetMate.api.security.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface AnalyticsService {
-    AnalyticsResponse getUserDashboardAnalytics(HttpServletRequest request);
+    AnalyticsResponse getUserDashboardAnalytics(CustomUserDetails user);
 
-    ChartResponse getUserDashboardCategoriesPieChart(HttpServletRequest request);
+    ChartResponse getUserDashboardCategoriesPieChart(CustomUserDetails user);
 
-    ChartResponse getUserDashboardExpensesLineChart(HttpServletRequest request);
+    ChartResponse getUserDashboardExpensesLineChart(CustomUserDetails user);
 
-    AnalyticsResponse getUserRecordsOverview(HttpServletRequest request, String startDate, String endDate);
+    AnalyticsResponse getUserRecordsOverview(CustomUserDetails user, String startDate, String endDate);
 
     ChartResponse getUserRecordsOverviewLineChart(
-            HttpServletRequest request, String startDate, String endDate, String recordType
+            CustomUserDetails user, String startDate, String endDate, String recordType
     );
 
     Integer getUsersCount();
