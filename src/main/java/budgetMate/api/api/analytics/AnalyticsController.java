@@ -7,6 +7,7 @@ import budgetMate.api.util.HttpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,6 +42,7 @@ public class AnalyticsController {
     }
 
     @GetMapping("/overview-line")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ChartResponse> getUserRecordsOverviewLineChart(
             @RequestParam String startDate,
             @RequestParam String endDate,

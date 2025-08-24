@@ -22,7 +22,8 @@ INSERT INTO record_categories (id,name,description) VALUES
 
 
 INSERT INTO users (id, username, firstname, lastname, password, country, city, address, postal_code, avatar_color, receive_news_letters, is_locked, is_enabled, role) VALUES
-('c6adf7be-c5e3-49a7-9e9b-0e1f9d2ae786','user@budgetmate.com','Ferdinand','Porsche','$2a$10$kJx2dRS0ZnDlMLwaOSuBqOUCLAh2NQm6mDwtxmV.340BeTyfSgULm','United States','New York','123 Main St, Apt 5B','10001','#00008B',FALSE,FALSE,TRUE,'USER');
+('c6adf7be-c5e3-49a7-9e9b-0e1f9d2ae786','user@budgetmate.com','Ferdinand','Porsche','$2a$10$kJx2dRS0ZnDlMLwaOSuBqOUCLAh2NQm6mDwtxmV.340BeTyfSgULm','United States','New York','123 Main St, Apt 5B','10001','#00008B',FALSE,FALSE,TRUE,'USER'),
+('f2b97e1a-4c3d-4f62-8e3d-2c7a4f9d8b25','user1@budgetmate.com','John','Doe','$2a$10$kJx2dRS0ZnDlMLwaOSuBqOUCLAh2NQm6mDwtxmV.340BeTyfSgULm','United States','New York','123 Main St, Apt 5B','10001','#00008B',FALSE,FALSE,TRUE,'ADMIN');
 
 
 INSERT INTO accounts (id, name, currency, current_balance, type, avatar_color, user_id) VALUES

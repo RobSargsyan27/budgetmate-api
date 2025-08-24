@@ -46,8 +46,8 @@ X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZi
 GET http://localhost:8089/api/v3/analytics/overview?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
-X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=f4ece74e-ac9b-4693-8da6-85b14e0c5f4a
+X-XSRF-TOKEN: -GWbLrRXc5demptge8lgn291CRQOVQ4aPlMG2GOO5f7ZJnlEnlH-TdFgR_Jz-_hZGeRUqVZGJCxqNDg3BmZk6Vfr1Z3sQE0l
 
 
 ### Get user records overview line chart.
@@ -59,5 +59,5 @@ X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZi
 GET http://localhost:8089/api/v3/analytics/overview-line?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z&recordType=expense HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
-Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=33203290-caef-4c60-bc24-812cef7c6828
-X-XSRF-TOKEN: AjbaL-Ej5pqav4MOAAWTQ5mr0sgTwiObPGjAQlBO1ZZC-wNNMQXoH9IR36q33OJrZiinIK-b_6pw8Be2BFnyITUo4vV0wzF1
+Cookie: JSESSIONID={{spring_cookie}}; XSRF-TOKEN=6747b230-3bf2-416c-8246-bb966cce1298
+X-XSRF-TOKEN: nBTfjDcRzu0E_9YfvuykGMqQ9k4ln7LzYHkXPTsIF48paiYkqiPru1Uj_d0pzLR5jMGQKfzz23YXq4TeAhsuCw1rdOoYWB8c

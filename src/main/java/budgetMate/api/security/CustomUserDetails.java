@@ -21,7 +21,7 @@ public class CustomUserDetails implements UserDetails {
 
     private String password;
 
-    private Boolean isLocked;
+    private boolean isLocked;
 
     private boolean isEnabled;
 
@@ -29,7 +29,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.role.name()));
+        return List.of(new SimpleGrantedAuthority(this.role.getName()));
     }
 
     @Override
