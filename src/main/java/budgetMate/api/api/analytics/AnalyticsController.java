@@ -5,7 +5,6 @@ import budgetMate.api.api.analytics.response.ChartResponse;
 import budgetMate.api.api.analytics.service.AnalyticsService;
 import budgetMate.api.security.CustomUserDetails;
 import budgetMate.api.util.HttpUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
