@@ -3,6 +3,7 @@ package budgetMate.api.api.auth.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -10,8 +11,8 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
 public class RegistrationRequest {
-
     @NotEmpty
     @Size(min = 2, max = 255, message = "Firstname must be specified!")
     private String firstname;
@@ -27,13 +28,5 @@ public class RegistrationRequest {
     @NotEmpty(message = "Password must be specified!")
     private String password;
 
-    private boolean receiveNewsLetters;
-
-    public RegistrationRequest(String firstname, String lastname, String email,String password, String receiveNewsLetters){
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.password = password;
-        this.receiveNewsLetters = Boolean.parseBoolean(receiveNewsLetters);
-    }
+    private Boolean receiveNewsLetters;
 }

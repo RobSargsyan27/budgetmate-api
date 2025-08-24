@@ -1,27 +1,24 @@
 package budgetMate.api.api.auth.service;
 
-
-import budgetMate.api.api.auth.request.TokenAuthenticationRequest;
 import budgetMate.api.api.auth.request.UserAuthenticationRequest;
 import budgetMate.api.api.auth.request.RegistrationRequest;
-import budgetMate.api.api.auth.response.UserAuthenticationResponse;
 import budgetMate.api.domain.EmailAuthToken;
 import budgetMate.api.domain.User;
 import budgetMate.api.domain.enums.Role;
 import budgetMate.api.producer.EmailProducer;
 import budgetMate.api.repository.EmailAuthTokenRepository;
 import budgetMate.api.repository.UserRepository;
-import budgetMate.api.security.JwtService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -30,7 +27,6 @@ import java.util.UUID;
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final EmailAuthTokenRepository emailAuthTokenRepository;
-    private final JwtService jwtService;
     private final AuthenticationManager authManager;
     private final PasswordEncoder passwordEncoder;
     private final EmailProducer emailProducer;
@@ -53,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
                     .firstname(request.getFirstname())
                     .lastname(request.getLastname())
                     .password(passwordEncoder.encode(request.getPassword()))
-                    .receiveNewsLetters(request.isReceiveNewsLetters())
+                    .receiveNewsLetters(request.getReceiveNewsLetters())
                     .avatarColor("#00008B")
                     .role(Role.USER)
                     .build();
@@ -95,34 +91,16 @@ public class AuthServiceImpl implements AuthService {
 
     /**
      * <h2>Login.</h2>
-     * @param request {AuthenticationRequest}
-     * @return AuthenticationResponse
+     * @param request {UserAuthenticationRequest}
+     * @return Void
      */
-    public UserAuthenticationResponse login(UserAuthenticationRequest request) {
+    public Void login (UserAuthenticationRequest request) {
         final String email = request.getEmail();
         final String password = request.getPassword();
 
-        authManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        User user = userRepository.findUserByUsername(email)
-                .orElseThrow(() -> new IllegalStateException("User not found!"));
-        String jwt = jwtService.generateToken(user);
-
-        return UserAuthenticationResponse.builder().token(jwt).build();
+        return null;
     }
-
-    public Map<String, Boolean> validateToken(TokenAuthenticationRequest request){
-        final String token = request.getToken();
-
-        if(token == null){
-            return Map.of("isTokenValid", false);
-        }
-
-        final String username = jwtService.extractUsername(token);
-        User user = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new IllegalStateException("User not found!"));
-
-        return Map.of("isTokenValid", jwtService.isTokenValid(token, user));
-    }
-
 }

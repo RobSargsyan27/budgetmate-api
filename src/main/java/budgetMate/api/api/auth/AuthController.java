@@ -1,18 +1,15 @@
 package budgetMate.api.api.auth;
 
-import budgetMate.api.api.auth.request.TokenAuthenticationRequest;
 import budgetMate.api.api.auth.request.UserAuthenticationRequest;
 import budgetMate.api.api.auth.request.RegistrationRequest;
-import budgetMate.api.api.auth.response.UserAuthenticationResponse;
 import budgetMate.api.api.auth.service.AuthService;
 import budgetMate.api.util.HttpUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -23,7 +20,8 @@ public class AuthController {
     private final HttpUtil httpUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid RegistrationRequest request) {
+    public ResponseEntity<Void> register(@RequestBody @Valid RegistrationRequest request, HttpServletRequest servletRequest) {
+        servletRequest.getSession();
         return httpUtil.handleAdd(registrationService.register(request));
     }
 
@@ -33,12 +31,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserAuthenticationResponse> login(@RequestBody UserAuthenticationRequest request) {
-       return httpUtil.handleAdd(registrationService.login(request));
-    }
+    public ResponseEntity<Void> login(@RequestBody UserAuthenticationRequest request, HttpServletRequest servletRequest) {
+        registrationService.login(request);
+        servletRequest.getSession(true);
 
-    @PostMapping("/validate-token")
-    public ResponseEntity<Map<String, Boolean>> validateToken(@RequestBody TokenAuthenticationRequest request){
-        return httpUtil.handleAdd(registrationService.validateToken(request));
+       return ResponseEntity.ok().build();
     }
 }

@@ -27,7 +27,7 @@ Content-Type: application/json
 ### Login user.
 # Expected response status => HTTP/1.1 201
 # Expected response content type => Content-Type: application/json
-# Expected response body => {{ "token" }}
+# Expected response body => empty
 POST http://localhost:8089/api/v2/auth/login HTTP/1.1
 Accept: application/json
 Content-Type: application/json
@@ -35,17 +35,4 @@ Content-Type: application/json
 {
   "email": "user@budgetmate.com",
   "password": "user123"
-}
-
-
-### Validate user token.
-# Expected response status => HTTP/1.1 201
-# Expected response content type => Content-Type: application/json
-# Expected response body => {{ "isTokenValid" }}
-POST http://localhost:8089/api/v2/auth/validate-token HTTP/1.1
-Accept: application/json
-Content-Type: application/json
-
-{
-  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGJ1ZGdldG1hdGUuY29tIiwiaWF0IjoxNzU1NTI0MzU3LCJleHAiOjE3NTU1MzUxNTd9.kFdfyAASog3ytr9rGPLXkV6g_3CfE0XXT2gHLqx92Xg"
 }
