@@ -1,9 +1,12 @@
 ### Get record categories.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {Array<{"id", "name", "description"}>}
 GET http://localhost:8089/api/v1/record-categories HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 

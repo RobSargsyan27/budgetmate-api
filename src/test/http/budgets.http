@@ -1,13 +1,18 @@
 ### Get user budgets.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {Array<{"id", "name", "amount", "userId", "recordCategories"}>}
 GET http://localhost:8089/api/v3/budgets HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Add user budget.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 201
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "name", "amount", "userId", "recordCategories"}}
@@ -15,6 +20,7 @@ POST http://localhost:8089/api/v3/budgets HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "name": "Budget-Test",
@@ -24,15 +30,20 @@ Sec-Fetch-Site: same-site;
 
 
 ### Get user budgets current balance.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {Array<{"id", "currentBalance"}>}
 GET http://localhost:8089/api/v3/budgets/current-balance HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Get user budgets report.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response content disposition => Content-Disposition: attachment; filename=budgets-report.json
@@ -40,18 +51,24 @@ Sec-Fetch-Site: same-site;
 GET http://localhost:8089/api/v3/budgets/report HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Get user budget.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "name", "amount", "userId", "recordCategories"}}
 GET http://localhost:8089/api/v3/budgets/d8652531-fb8b-49a8-8880-c73115060e9a HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Update user budget.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "name", "amount", "userId", "recordCategories"}}
@@ -59,6 +76,7 @@ PATCH http://localhost:8089/api/v3/budgets/d8652531-fb8b-49a8-8880-c73115060e9a 
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "name": "Budget-Test-2",
@@ -68,9 +86,12 @@ Sec-Fetch-Site: same-site;
 
 
 ### Delete user budget.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 204
 # Expected response content type => Content-Type: application/json
 # Expected response body => Empty
 DELETE http://localhost:8089/api/v3/budgets/d8652531-fb8b-49a8-8880-c73115060e9a HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}

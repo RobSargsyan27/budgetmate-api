@@ -1,4 +1,6 @@
 ### Search user records.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {Array<{"id", "amount", "userId", "category", "type", "note", "currency", "paymentTime", "withdrawalAccountName", "withdrawalAccountId", "receivingAccountName", "receivingAccountId"}>}
@@ -6,6 +8,7 @@ POST http://localhost:8089/api/v3/records/search HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "recordType": "EXPENSE",
@@ -19,6 +22,8 @@ Sec-Fetch-Site: same-site;
 
 
 ### Count user records.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {Number}
@@ -26,6 +31,7 @@ POST http://localhost:8089/api/v3/records/count HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "recordType": "INCOME",
@@ -36,6 +42,8 @@ Sec-Fetch-Site: same-site;
 }
 
 ### Get user records report.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response content disposition => Content-Disposition: attachment; filename=records-report.json
@@ -44,6 +52,7 @@ POST http://localhost:8089/api/v3/records/report HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "recordType": "INCOME",
@@ -55,15 +64,20 @@ Sec-Fetch-Site: same-site;
 
 
 ### Get user records.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {Array<{"id", "amount", "userId", "category", "type", "note", "currency", "paymentTime", "withdrawalAccountName", "withdrawalAccountId", "receivingAccountName", "receivingAccountId"}>}
 GET http://localhost:8089/api/v3/records HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Add user record.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 201
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "amount", "userId", "category", "type", "note", "currency", "paymentTime", "withdrawalAccountName", "withdrawalAccountId", "receivingAccountName", "receivingAccountId"}}
@@ -71,6 +85,7 @@ POST http://localhost:8089/api/v3/records HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "amount": 5000,
@@ -83,15 +98,20 @@ Sec-Fetch-Site: same-site;
 
 
 ### Get user record.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "amount", "userId", "category", "type", "note", "currency", "paymentTime", "withdrawalAccountName", "withdrawalAccountId", "receivingAccountName", "receivingAccountId"}}
 GET http://localhost:8089/api/v3/records/0cd12947-223c-4600-987d-5b8dfd9556b9 HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Update user record.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "amount", "userId", "category", "type", "note", "currency", "paymentTime", "withdrawalAccountName", "withdrawalAccountId", "receivingAccountName", "receivingAccountId"}}
@@ -99,6 +119,7 @@ PATCH http://localhost:8089/api/v3/records/0cd12947-223c-4600-987d-5b8dfd9556b9 
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "paymentTime": "2025-07-27T00:00:00.000Z",
@@ -108,9 +129,12 @@ Sec-Fetch-Site: same-site;
 
 
 ### Delete user record.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 204
 # Expected response content type => Content-Type: application/json
 # Expected response body => Empty
 DELETE http://localhost:8089/api/v3/records/0cd12947-223c-4600-987d-5b8dfd9556b9 HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}

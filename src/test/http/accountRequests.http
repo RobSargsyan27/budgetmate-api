@@ -1,4 +1,6 @@
 ### Add user account request.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 201
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{ "id", "ownerUsername", "requestedUsername", "accountName" }}
@@ -6,6 +8,7 @@ POST http://localhost:8089/api/v1/account-requests HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "accountName": "General Account",
@@ -14,6 +17,8 @@ Sec-Fetch-Site: same-site;
 
 
 ### Update user account request.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{ "id", "ownerUsername", "requestedUsername", "accountName" }}
@@ -21,6 +26,7 @@ PATCH http://localhost:8089/api/v1/account-requests/257b0760-24ce-46a1-ace0-b442
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "status": true

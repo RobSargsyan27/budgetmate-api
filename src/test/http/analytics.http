@@ -1,43 +1,58 @@
 ### Get user dashboard analytics.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"monthlyEarnings", "annualEarnings", "monthlyExpenses"}}
 GET http://localhost:8089/api/v3/analytics/dashboard HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Get user dashbaord category pie chart.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"labels", "data"}}
 GET http://localhost:8089/api/v3/analytics/dashboard/categories-pie HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Get user dashboard expenses line chart.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"labels", "data"}}
 GET http://localhost:8089/api/v3/analytics/dashboard/expenses-line-chart HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Get user records overview.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"monthlyEarnings", "annualEarnings", "monthlyExpenses"}}
 GET http://localhost:8089/api/v3/analytics/overview?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Get user records overview line chart.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"labels", "data"}}
 GET http://localhost:8089/api/v3/analytics/overview-line?startDate=2025-08-01T00:00:00.000Z&endDate=2025-08-15T23:59:59.000Z&recordType=expense HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}

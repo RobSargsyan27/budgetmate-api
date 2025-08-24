@@ -1,13 +1,18 @@
 ### Get user.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "username", "firstname", "lastname", "country", "city", "address", "postalCode", "avatarColor", "role"}}
 GET http://localhost:8089/api/v3/users HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Update user.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "username", "firstname", "lastname", "country", "city", "address", "postalCode", "avatarColor", "role"}}
@@ -15,6 +20,7 @@ PATCH http://localhost:8089/api/v3/users HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "firstname": "T-firstname",
@@ -25,18 +31,24 @@ Sec-Fetch-Site: same-site;
 
 
 ### Delete user.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 204
 # Expected response content type => Content-Type: application/json
 # Expected response body => Empty
 DELETE http://localhost:8089/api/v3/users HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Get user notifications.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {Array<{ "id", "ownerUsername", "requestedUsername", "accountName" }>}
 GET http://localhost:8089/api/v3/users/notifications HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}

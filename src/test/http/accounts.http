@@ -1,12 +1,18 @@
 ### Get user accounts.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {Array<{"id", "name", "currency", "currentBalance", "type", "avatarColor"}>}
 GET http://localhost:8089/api/v3/accounts HTTP/1.1
 Accept: application/json;
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
+
 
 ### Add user account.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 201
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "name", "currency", "currentBalance", "type", "avatarColor"}}
@@ -14,6 +20,7 @@ POST http://localhost:8089/api/v3/accounts HTTP/1.1
 Accept: application/json;
 Content-Type: application/json;charset=UTF-8
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "name": "Account-Test",
@@ -24,15 +31,20 @@ Sec-Fetch-Site: same-site;
 
 
 ### Get user accout.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "name", "currency", "currentBalance", "type", "avatarColor"}}
 GET http://localhost:8089/api/v3/accounts/33d114b6-75f9-4832-9730-ffadab2f54ef HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 
 ### Update user account.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 200
 # Expected response content type => Content-Type: application/json
 # Expected response body => {{"id", "name", "currency", "currentBalance", "type", "avatarColor"}}
@@ -40,6 +52,7 @@ PATCH http://localhost:8089/api/v3/accounts/33d114b6-75f9-4832-9730-ffadab2f54ef
 Accept: application/json
 Content-Type: application/json;charset=UTF-8
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
 
 {
   "type": "CREDIT_CARD",
@@ -48,9 +61,12 @@ Sec-Fetch-Site: same-site;
 
 
 ### Delete user account.
+# @no-redirect
+# @no-cookie-jar
 # Expected response status => HTTP/1.1 204
 # Expected response content type => Content-Type: application/json
 # Expected response body => Empty
 DELETE http://localhost:8089/api/v3/accounts/33d114b6-75f9-4832-9730-ffadab2f54ef HTTP/1.1
 Accept: application/json
 Sec-Fetch-Site: same-site;
+Cookie: JSESSIONID={{spring_cookie}}
